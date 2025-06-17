@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<ScrollPane xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.selfworkout.controller.ExerciseLibraryContentController" fitToWidth="true" style="-fx-background-color: transparent; -fx-background: transparent;">
+   <VBox spacing="24.0" style="-fx-padding: 32px;">
+      
+      <!-- BaÅŸlÄ±k -->
+      <VBox spacing="8.0">
+         <Label text="ğŸ“š Egzersiz KÃ¼tÃ¼phanesi" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+         <Label text="GeniÅŸ egzersiz koleksiyonumuzu keÅŸfedin ve antrenmanlarÄ±nÄ±zÄ± Ã§eÅŸitlendirin" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 14px; -fx-text-fill: #7f8c8d;" />
+      </VBox>
+      
+      <!-- Arama ve Filtreler -->
+      <HBox spacing="16.0" alignment="CENTER_LEFT" style="-fx-background-color: white; -fx-background-radius: 12px; -fx-padding: 20px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 8, 0, 0, 4);">
+         <TextField fx:id="searchField" promptText="ğŸ” Egzersiz ara..." prefWidth="300" prefHeight="36"
+                    style="-fx-background-color: #f8f9fa; -fx-background-radius: 18px; -fx-border-width: 0; -fx-padding: 0 16px; -fx-font-family: 'Segoe UI'; -fx-font-size: 12px;" />
+         
+         <ComboBox fx:id="categoryFilter" promptText="Kategori" prefWidth="150" prefHeight="36"
+                   style="-fx-background-color: #f8f9fa; -fx-background-radius: 18px; -fx-border-width: 0; -fx-font-family: 'Segoe UI'; -fx-font-size: 12px;" />
+         
+         <ComboBox fx:id="difficultyFilter" promptText="Zorluk" prefWidth="120" prefHeight="36"
+                   style="-fx-background-color: #f8f9fa; -fx-background-radius: 18px; -fx-border-width: 0; -fx-font-family: 'Segoe UI'; -fx-font-size: 12px;" />
+         
+         <Button fx:id="filterBtn" text="ğŸ” Filtrele" onAction="#handleFilter" prefWidth="100" prefHeight="36"
+                 style="-fx-background-color: linear-gradient(45deg, #3498db, #2980b9); -fx-background-radius: 18px; -fx-text-fill: white; -fx-font-family: 'Segoe UI'; -fx-font-size: 12px; -fx-font-weight: bold; -fx-cursor: hand; -fx-border-width: 0;" />
+      </HBox>
+      
+      <!-- Kategori KartlarÄ± -->
+      <VBox spacing="16.0">
+         <Label text="ğŸ¯ Kategoriler" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+         
+         <HBox spacing="20.0" alignment="CENTER_LEFT">
+            <!-- GÃ¶ÄŸÃ¼s -->
+            <VBox alignment="CENTER" spacing="8.0" style="-fx-background: linear-gradient(135deg, #667eea, #764ba2); -fx-background-radius: 12px; -fx-padding: 20px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 8, 0, 0, 4); -fx-cursor: hand;" prefWidth="200" prefHeight="120">
+               <Label text="ğŸ’ª" style="-fx-font-size: 28px;" />
+               <Label text="GÃ¶ÄŸÃ¼s" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: white;" />
+               <Label text="12 Egzersiz" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 10px; -fx-text-fill: rgba(255,255,255,0.8);" />
+            </VBox>
+            
+            <!-- SÄ±rt -->
+            <VBox alignment="CENTER" spacing="8.0" style="-fx-background: linear-gradient(135deg, #43e97b, #38f9d7); -fx-background-radius: 12px; -fx-padding: 20px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 8, 0, 0, 4); -fx-cursor: hand;" prefWidth="200" prefHeight="120">
+               <Label text="ğŸ‹ï¸" style="-fx-font-size: 28px;" />
+               <Label text="SÄ±rt" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: white;" />
+               <Label text="15 Egzersiz" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 10px; -fx-text-fill: rgba(255,255,255,0.8);" />
+            </VBox>
+            
+            <!-- Bacak -->
+            <VBox alignment="CENTER" spacing="8.0" style="-fx-background: linear-gradient(135deg, #fa709a, #fee140); -fx-background-radius: 12px; -fx-padding: 20px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 8, 0, 0, 4); -fx-cursor: hand;" prefWidth="200" prefHeight="120">
+               <Label text="ğŸ¦µ" style="-fx-font-size: 28px;" />
+               <Label text="Bacak" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: white;" />
+               <Label text="18 Egzersiz" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 10px; -fx-text-fill: rgba(255,255,255,0.8);" />
+            </VBox>
+            
+            <!-- Omuz -->
+            <VBox alignment="CENTER" spacing="8.0" style="-fx-background: linear-gradient(135deg, #4facfe, #00f2fe); -fx-background-radius: 12px; -fx-padding: 20px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 8, 0, 0, 4); -fx-cursor: hand;" prefWidth="200" prefHeight="120">
+               <Label text="ğŸ¤²" style="-fx-font-size: 28px;" />
+               <Label text="Omuz" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: white;" />
+               <Label text="10 Egzersiz" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 10px; -fx-text-fill: rgba(255,255,255,0.8);" />
+            </VBox>
+            
+            <!-- KarÄ±n -->
+            <VBox alignment="CENTER" spacing="8.0" style="-fx-background: linear-gradient(135deg, #a8edea, #fed6e3); -fx-background-radius: 12px; -fx-padding: 20px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 8, 0, 0, 4); -fx-cursor: hand;" prefWidth="200" prefHeight="120">
+               <Label text="ğŸ”¥" style="-fx-font-size: 28px;" />
+               <Label text="KarÄ±n" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+               <Label text="14 Egzersiz" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 10px; -fx-text-fill: rgba(44,62,80,0.8);" />
+            </VBox>
+            
+            <!-- Kardiyo -->
+            <VBox alignment="CENTER" spacing="8.0" style="-fx-background: linear-gradient(135deg, #ffecd2, #fcb69f); -fx-background-radius: 12px; -fx-padding: 20px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 8, 0, 0, 4); -fx-cursor: hand;" prefWidth="200" prefHeight="120">
+               <Label text="ğŸƒ" style="-fx-font-size: 28px;" />
+               <Label text="Kardiyo" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+               <Label text="8 Egzersiz" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 10px; -fx-text-fill: rgba(44,62,80,0.8);" />
+            </VBox>
+         </HBox>
+      </VBox>
+      
+      <!-- Egzersiz Listesi -->
+      <VBox spacing="16.0" style="-fx-background-color: white; -fx-background-radius: 16px; -fx-padding: 24px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 12, 0, 0, 6);">
+         <HBox alignment="CENTER_LEFT" spacing="16.0">
+            <Label text="ğŸ“‹ TÃ¼m Egzersizler" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+            <Region HBox.hgrow="ALWAYS" />
+            <Label fx:id="exerciseCountLabel" text="77 egzersiz bulundu" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 12px; -fx-text-fill: #7f8c8d;" />
+         </HBox>
+         
+         <ListView fx:id="exerciseList" prefHeight="400" style="-fx-background-color: transparent; -fx-border-width: 0;">
+            <placeholder>
+               <VBox alignment="CENTER" spacing="12.0" style="-fx-padding: 40px;">
+                  <Label text="ğŸ”" style="-fx-font-size: 32px;" />
+                  <Label text="Egzersiz bulunamadÄ±" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 14px; -fx-text-fill: #7f8c8d;" />
+                  <Label text="Arama kriterlerinizi deÄŸiÅŸtirmeyi deneyin" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 12px; -fx-text-fill: #bdc3c7;" />
+               </VBox>
+            </placeholder>
+         </ListView>
+      </VBox>
+      
+   </VBox>
+</ScrollPane> 
+
+

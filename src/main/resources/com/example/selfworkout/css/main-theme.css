@@ -1,0 +1,659 @@
+/* ========================================
+   SelfWorkout - FITNESS THEME (Ana Tema)
+   Modern Fitness Teması - Tam Ekran Tasarım
+   ======================================== */
+
+/* ========================================
+   CSS VARIABLES (Fitness Tema Renkleri)
+   ======================================== */
+.root {
+    /* Ana Renkler - Fitness Teması */
+    -fx-primary: #FF5722;           /* Ana turuncu */
+    -fx-primary-dark: #D84315;      /* Koyu turuncu */
+    -fx-primary-light: #FFAB91;     /* Açık turuncu */
+    -fx-secondary: #FF9800;         /* İkincil turuncu */
+    -fx-accent: #FFC107;            /* Vurgu sarısı */
+    
+    /* Durum Renkleri */
+    -fx-success: #4CAF50;           /* Başarı yeşili */
+    -fx-warning: #FF9800;           /* Uyarı turuncusu */
+    -fx-error: #F44336;             /* Hata kırmızısı */
+    -fx-info: #2196F3;              /* Bilgi mavisi */
+    
+    /* Arka Plan Renkleri */
+    -fx-background-primary: #FFFFFF;        /* Ana beyaz */
+    -fx-background-secondary: #FFF3E0;      /* Açık turuncu */
+    -fx-background-tertiary: #FFE0B2;       /* Orta turuncu */
+    -fx-background-gradient: linear-gradient(to bottom right, #FF5722, #FF9800);
+    -fx-background-card: #FFFFFF;           /* Kart arka planı */
+    
+    /* Metin Renkleri */
+    -fx-text-primary: #BF360C;              /* Ana metin koyu turuncu */
+    -fx-text-secondary: #E65100;            /* İkincil metin */
+    -fx-text-hint: #FFAB91;                 /* İpucu metni */
+    -fx-text-inverse: #FFFFFF;              /* Ters metin beyaz */
+    -fx-text-on-primary: #FFFFFF;           /* Primary üzerindeki metin */
+    
+    /* Border ve Shadow */
+    -fx-border-color: #FFCCBC;              /* Border rengi */
+    -fx-shadow-color: rgba(255, 87, 34, 0.15);     /* Gölge rengi */
+    -fx-shadow-hover: rgba(255, 87, 34, 0.25);     /* Hover gölgesi */
+    -fx-shadow-focus: rgba(255, 87, 34, 0.4);      /* Focus gölgesi */
+    
+    /* Font Ayarları - 125% Ölçeklendirme için Optimize */
+    -fx-font-family-base: "Segoe UI", "Roboto", "Arial", sans-serif;
+    -fx-font-size-small: 11px;             /* Küçük metin */
+    -fx-font-size-normal: 13px;            /* Normal metin */
+    -fx-font-size-large: 16px;             /* Büyük metin */
+    -fx-font-size-xlarge: 22px;            /* Çok büyük metin */
+    -fx-font-size-title: 29px;             /* Başlık */
+    
+    /* 125% Ölçeklendirme için Boyutlar */
+    -fx-card-width: 256px;                 /* Kart genişliği */
+    -fx-card-height: 160px;                /* Kart yüksekliği */
+    -fx-button-height: 40px;               /* Buton yüksekliği */
+    -fx-input-height: 36px;                /* Input yüksekliği */
+}
+
+/* ========================================
+   GENEL LAYOUT - TAM EKRAN
+   ======================================== */
+
+.full-screen-container {
+    -fx-min-width: 1200px;
+    -fx-min-height: 700px;
+    -fx-pref-width: 1536px;
+    -fx-pref-height: 864px;
+}
+
+/* Sabit boyutlu container - Tüm sayfalar için tutarlı boyutlandırma */
+.fixed-size-container {
+    -fx-pref-width: 1536px;
+    -fx-pref-height: 864px;
+    -fx-min-width: 1536px;
+    -fx-min-height: 864px;
+    -fx-max-width: 1536px;
+    -fx-max-height: 864px;
+}
+
+/* Sabit padding - Tüm sayfalar için tutarlı iç boşluk */
+.standard-padding {
+    -fx-padding: 20px;
+}
+
+/* Sabit içerik alanı */
+.content-area {
+    -fx-pref-width: 1496px;  /* 1536 - 40 (padding) */
+    -fx-pref-height: 824px;  /* 864 - 40 (padding) */
+    -fx-max-width: 1496px;
+    -fx-max-height: 824px;
+}
+
+/* Ekran sınırları içinde tut */
+.screen-bounds {
+    -fx-max-width: 1536px;
+    -fx-max-height: 864px;
+    -fx-clip-to-bounds: true;
+}
+
+/* Tüm root elementler için sabit boyut */
+.root {
+    -fx-pref-width: 1536px;
+    -fx-pref-height: 864px;
+    -fx-min-width: 1536px;
+    -fx-min-height: 864px;
+    -fx-max-width: 1536px;
+    -fx-max-height: 864px;
+}
+
+/* ========================================
+   LOGIN SCREEN - TAM EKRAN
+   ======================================== */
+
+.login-container {
+    -fx-background-color: linear-gradient(to bottom right, #FF5722, #FF9800);
+    -fx-background-radius: 0;
+    -fx-min-width: 1200px;
+    -fx-min-height: 800px;
+}
+
+.app-title {
+    -fx-font-family: "Segoe UI", "Roboto", "Arial", sans-serif;
+    -fx-font-size: 29px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-text-inverse;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 5, 0, 0, 2);
+}
+
+.app-subtitle {
+    -fx-font-family: "Segoe UI", "Roboto", "Arial", sans-serif;
+    -fx-font-size: 16px;
+    -fx-text-fill: derive(-fx-text-inverse, -15%);
+}
+
+.login-form {
+    -fx-background-color: -fx-background-card;
+    -fx-background-radius: 20px;
+    -fx-effect: dropshadow(gaussian, -fx-shadow-color, 20, 0, 0, 5);
+    -fx-min-width: 500px;
+    -fx-min-height: 600px;
+}
+
+.form-title {
+    -fx-font-family: "Segoe UI", "Roboto", "Arial", sans-serif;
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-text-primary;
+}
+
+.field-label {
+    -fx-font-family: "Segoe UI", "Roboto", "Arial", sans-serif;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-text-secondary;
+}
+
+.login-field {
+    -fx-font-family: "Segoe UI", "Roboto", "Arial", sans-serif;
+    -fx-font-size: 13px;
+    -fx-pref-height: 36px;
+    -fx-min-width: 400px;
+    -fx-background-color: -fx-background-secondary;
+    -fx-border-color: -fx-border-color;
+    -fx-border-radius: 12px;
+    -fx-background-radius: 12px;
+    -fx-padding: 0 20px;
+    -fx-text-fill: -fx-text-primary;
+}
+
+.login-field:focused {
+    -fx-border-color: -fx-primary;
+    -fx-border-width: 3px;
+    -fx-effect: dropshadow(gaussian, -fx-shadow-focus, 8, 0, 0, 0);
+}
+
+.remember-checkbox {
+    -fx-font-family: "Segoe UI", "Roboto", "Arial", sans-serif;
+    -fx-font-size: 16px;
+    -fx-text-fill: -fx-text-secondary;
+}
+
+.status-label {
+    -fx-font-family: "Segoe UI", "Roboto", "Arial", sans-serif;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-alignment: center;
+}
+
+.primary-button {
+    -fx-font-family: "Segoe UI", "Roboto", "Arial", sans-serif;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-text-on-primary;
+    -fx-background-color: -fx-primary;
+    -fx-background-radius: 12px;
+    -fx-pref-height: 40px;
+    -fx-min-width: 180px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, -fx-shadow-color, 8, 0, 0, 3);
+}
+
+.primary-button:hover {
+    -fx-background-color: -fx-primary-dark;
+    -fx-effect: dropshadow(gaussian, -fx-shadow-hover, 12, 0, 0, 5);
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+.primary-button:pressed {
+    -fx-background-color: derive(-fx-primary-dark, -15%);
+    -fx-scale-x: 0.95;
+    -fx-scale-y: 0.95;
+}
+
+.secondary-button {
+    -fx-font-family: "Segoe UI", "Roboto", "Arial", sans-serif;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-primary;
+    -fx-background-color: transparent;
+    -fx-border-color: -fx-primary;
+    -fx-border-width: 3px;
+    -fx-border-radius: 12px;
+    -fx-background-radius: 12px;
+    -fx-pref-height: 40px;
+    -fx-min-width: 180px;
+    -fx-cursor: hand;
+}
+
+.secondary-button:hover {
+    -fx-background-color: derive(-fx-primary, 85%);
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+.footer-text {
+    -fx-font-family: "Segoe UI", "Roboto", "Arial", sans-serif;
+    -fx-font-size: 12px;
+    -fx-text-fill: derive(-fx-text-inverse, -30%);
+}
+
+/* ========================================
+   ADMIN DASHBOARD - ÖZEL STİLLER
+   ======================================== */
+
+.admin-stat-card {
+    -fx-background-color: linear-gradient(to bottom right, #FF5722, #FF9800);
+    -fx-text-fill: white;
+    -fx-border-color: #D84315;
+    -fx-border-width: 2px;
+}
+
+.admin-stat-card:hover {
+    -fx-background-color: linear-gradient(to bottom right, #D84315, #F57C00);
+    -fx-effect: dropshadow(gaussian, rgba(255, 87, 34, 0.4), 15, 0, 0, 8);
+    -fx-scale-x: 1.08;
+    -fx-scale-y: 1.08;
+}
+
+.admin-menu-card {
+    -fx-background-color: linear-gradient(to bottom right, #FFFFFF, #FFF3E0);
+    -fx-border-color: #FF5722;
+    -fx-border-width: 2px;
+}
+
+.admin-menu-card:hover {
+    -fx-background-color: linear-gradient(to bottom right, #FFF3E0, #FFE0B2);
+    -fx-effect: dropshadow(gaussian, rgba(255, 87, 34, 0.3), 12, 0, 0, 6);
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+.admin-menu-button {
+    -fx-font-size: 48px;
+    -fx-text-fill: #FF5722;
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-cursor: hand;
+    -fx-pref-width: 80px;
+    -fx-pref-height: 80px;
+}
+
+.admin-menu-button:hover {
+    -fx-text-fill: #D84315;
+    -fx-scale-x: 1.2;
+    -fx-scale-y: 1.2;
+}
+
+.activity-section {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 15px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 8, 0, 0, 3);
+}
+
+.activity-container {
+    -fx-background-color: #FFF8F5;
+    -fx-background-radius: 10px;
+    -fx-border-color: #FFCCBC;
+    -fx-border-radius: 10px;
+    -fx-border-width: 1px;
+}
+
+.activity-item {
+    -fx-font-family: "Segoe UI", "Roboto", "Arial", sans-serif;
+    -fx-font-size: 16px;
+    -fx-text-fill: #BF360C;
+    -fx-padding: 8px 0;
+}
+
+/* ========================================
+   MAIN DASHBOARD - TAM EKRAN
+   ======================================== */
+
+.header-container {
+    -fx-background-color: -fx-background-card;
+    -fx-effect: dropshadow(gaussian, -fx-shadow-color, 10, 0, 0, 3);
+    -fx-min-height: 80px;
+}
+
+.header-bar {
+    -fx-background-color: -fx-background-card;
+    -fx-padding: 20px 40px;
+}
+
+.app-logo {
+    -fx-font-family: "Segoe UI", "Roboto", "Arial", sans-serif;
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-primary;
+    -fx-effect: dropshadow(gaussian, -fx-shadow-color, 3, 0, 0, 1);
+}
+
+.welcome-label {
+    -fx-font-family: "Segoe UI", "Roboto", "Arial", sans-serif;
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-text-primary;
+}
+
+.user-info-label {
+    -fx-font-family: "Segoe UI", "Roboto", "Arial", sans-serif;
+    -fx-font-size: 16px;
+    -fx-text-fill: -fx-text-secondary;
+}
+
+.logout-button {
+    -fx-font-family: "Segoe UI", "Roboto", "Arial", sans-serif;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-background-color: -fx-error;
+    -fx-background-radius: 8px;
+    -fx-pref-height: 40px;
+    -fx-min-width: 100px;
+    -fx-cursor: hand;
+}
+
+.logout-button:hover {
+    -fx-background-color: derive(-fx-error, -15%);
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+.main-content {
+    -fx-background-color: -fx-background-primary;
+}
+
+.dashboard-container {
+    -fx-background-color: -fx-background-primary;
+    -fx-padding: 40px;
+}
+
+.section-title {
+    -fx-font-family: "Segoe UI", "Roboto", "Arial", sans-serif;
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-text-primary;
+    -fx-effect: dropshadow(gaussian, -fx-shadow-color, 2, 0, 0, 1);
+    -fx-padding: 0 0 20px 0;
+}
+
+/* ========================================
+   İSTATİSTİK KARTLARI - TAM EKRAN
+   ======================================== */
+
+.stats-section {
+    -fx-padding: 0 0 40px 0;
+}
+
+.stats-container {
+    -fx-spacing: 30px;
+    -fx-alignment: center;
+}
+
+.stat-card {
+    -fx-background-color: -fx-background-card;
+    -fx-background-radius: 20px;
+    -fx-effect: dropshadow(gaussian, -fx-shadow-color, 15, 0, 0, 5);
+    -fx-pref-width: 320px;
+    -fx-pref-height: 200px;
+    -fx-padding: 30px;
+    -fx-cursor: hand;
+}
+
+.stat-card:hover {
+    -fx-effect: dropshadow(gaussian, -fx-shadow-hover, 25, 0, 0, 8);
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+.stat-value {
+    -fx-font-family: "Segoe UI", "Roboto", "Arial", sans-serif;
+    -fx-font-size: 48px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-primary;
+    -fx-text-alignment: center;
+}
+
+.stat-label {
+    -fx-font-family: "Segoe UI", "Roboto", "Arial", sans-serif;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-text-secondary;
+    -fx-text-alignment: center;
+    -fx-padding: 10px 0 0 0;
+}
+
+/* ========================================
+   MENÜ KARTLARI - TAM EKRAN
+   ======================================== */
+
+.menu-section {
+    -fx-padding: 20px 0;
+}
+
+.menu-grid {
+    -fx-hgap: 30px;
+    -fx-vgap: 30px;
+    -fx-alignment: center;
+}
+
+.menu-card {
+    -fx-background-color: -fx-background-card;
+    -fx-background-radius: 20px;
+    -fx-effect: dropshadow(gaussian, -fx-shadow-color, 15, 0, 0, 5);
+    -fx-pref-width: 256px;
+    -fx-pref-height: 200px;
+    -fx-max-width: 256px;
+    -fx-max-height: 200px;
+    -fx-cursor: hand;
+    -fx-clip-to-bounds: true;
+}
+
+.menu-card:hover {
+    -fx-effect: dropshadow(gaussian, -fx-shadow-hover, 25, 0, 0, 8);
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+}
+
+.menu-button {
+    -fx-font-family: "Segoe UI", "Roboto", "Arial", sans-serif;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-background-color: -fx-primary;
+    -fx-background-radius: 12px;
+    -fx-cursor: hand;
+}
+
+.menu-button:hover {
+    -fx-background-color: -fx-primary-dark;
+}
+
+.menu-label {
+    -fx-font-family: "Segoe UI", "Roboto", "Arial", sans-serif;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-text-primary;
+    -fx-text-alignment: center;
+}
+
+.menu-description {
+    -fx-font-family: "Segoe UI", "Roboto", "Arial", sans-serif;
+    -fx-font-size: 14px;
+    -fx-text-fill: -fx-text-secondary;
+    -fx-text-alignment: center;
+    -fx-wrap-text: true;
+    -fx-padding: 10px 15px;
+}
+
+/* ========================================
+   TEMA SEÇİCİ - TAM EKRAN
+   ======================================== */
+
+.theme-selector-container {
+    -fx-background-color: -fx-background-card;
+    -fx-background-radius: 15px;
+    -fx-effect: dropshadow(gaussian, -fx-shadow-color, 10, 0, 0, 3);
+    -fx-padding: 25px;
+}
+
+.theme-selector-title {
+    -fx-font-family: "Segoe UI", "Roboto", "Arial", sans-serif;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-text-primary;
+}
+
+.theme-option {
+    -fx-cursor: hand;
+    -fx-padding: 10px;
+}
+
+.theme-preview-circle {
+    -fx-stroke: -fx-border-color;
+    -fx-stroke-width: 2px;
+    -fx-effect: dropshadow(gaussian, -fx-shadow-color, 5, 0, 0, 2);
+    -fx-cursor: hand;
+}
+
+.theme-preview-circle:hover {
+    -fx-stroke-width: 3px;
+    -fx-effect: dropshadow(gaussian, -fx-shadow-hover, 8, 0, 0, 3);
+}
+
+.theme-preview-circle.selected {
+    -fx-stroke: -fx-primary;
+    -fx-stroke-width: 4px;
+    -fx-effect: dropshadow(gaussian, -fx-shadow-focus, 10, 0, 0, 4);
+}
+
+.theme-fitness-preview {
+    -fx-fill: -fx-primary;
+}
+
+.theme-dark-preview {
+    -fx-fill: #BB86FC;
+}
+
+.theme-name-label {
+    -fx-font-family: "Segoe UI", "Roboto", "Arial", sans-serif;
+    -fx-font-size: 12px;
+    -fx-text-fill: -fx-text-secondary;
+}
+
+/* ========================================
+   SCROLL BAR VE DİĞER BILEŞENLER
+   ======================================== */
+
+.scroll-bar {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar .track {
+    -fx-background-color: -fx-background-secondary;
+    -fx-border-color: transparent;
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+}
+
+.scroll-bar .thumb {
+    -fx-background-color: -fx-primary;
+    -fx-background-radius: 10px;
+}
+
+.scroll-bar .thumb:hover {
+    -fx-background-color: -fx-primary-dark;
+}
+
+.progress-indicator {
+    -fx-progress-color: -fx-primary;
+    -fx-pref-width: 50px;
+    -fx-pref-height: 50px;
+}
+
+/* Alert Dialogs */
+.alert {
+    -fx-background-color: -fx-background-card;
+}
+
+.alert .header-panel {
+    -fx-background-color: -fx-primary;
+}
+
+.alert .header-panel .label {
+    -fx-text-fill: -fx-text-on-primary;
+    -fx-font-family: "Segoe UI", "Roboto", "Arial", sans-serif;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+/* ========================================
+   ANİMASYONLAR
+   ======================================== */
+
+.fade-in {
+    -fx-opacity: 0;
+}
+
+.slide-in {
+    -fx-translate-y: 50px;
+}
+
+.scale-in {
+    -fx-scale-x: 0.8;
+    -fx-scale-y: 0.8;
+}
+
+.smooth-transition {
+    -fx-transition: all 0.3s ease-in-out;
+}
+
+/* ========================================
+   RESPONSIVE DESIGN - BÜYÜK EKRANLAR
+   ======================================== */
+
+/* Sabit 1536x864 çözünürlük için optimize edilmiş */
+@media (min-width: 1920px) {
+    .menu-card {
+        -fx-pref-width: 256px;
+        -fx-pref-height: 200px;
+        -fx-max-width: 256px;
+        -fx-max-height: 200px;
+    }
+    
+    .stat-card {
+        -fx-pref-width: 256px;
+        -fx-pref-height: 160px;
+        -fx-max-width: 256px;
+        -fx-max-height: 160px;
+    }
+    
+    .stat-value {
+        -fx-font-size: 29px;
+    }
+}
+
+@media (max-width: 1366px) {
+    .menu-card {
+        -fx-pref-width: 256px;
+        -fx-pref-height: 200px;
+        -fx-max-width: 256px;
+        -fx-max-height: 200px;
+    }
+    
+    .stat-card {
+        -fx-pref-width: 256px;
+        -fx-pref-height: 160px;
+        -fx-max-width: 256px;
+        -fx-max-height: 160px;
+    }
+    
+    .stat-value {
+        -fx-font-size: 22px;
+    }
+    
+    .menu-button {
+        -fx-font-size: 13px;
+    }
+} 

@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<ScrollPane xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.selfworkout.controller.DashboardOverviewSimpleController" 
+           fitToWidth="true" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED" styleClass="fixed-size-container" prefWidth="1312" prefHeight="864" maxWidth="1312" maxHeight="864"
+           style="-fx-background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -fx-background-color: #667eea;">
+   
+   <content>
+      <VBox spacing="40.0" style="-fx-padding: 50px 60px;" alignment="TOP_CENTER">
+         
+         <!-- Modern Header Section - Daha bÃ¼yÃ¼k ve ferah -->
+         <VBox spacing="20.0" alignment="CENTER" style="-fx-padding: 40px 50px; -fx-background-color: rgba(255,255,255,0.95); -fx-background-radius: 25px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 20, 0, 0, 8);" prefWidth="1200.0">
+            <Label fx:id="welcomeLabel" text="ğŸ¯ Admin Kontrol Paneli" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 38px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+            <Label fx:id="dateLabel" text="Sistem yÃ¶netim merkezinize hoÅŸ geldiniz" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 18px; -fx-text-fill: #7f8c8d;" />
+            <Label fx:id="currentUserLabel" text="" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 16px; -fx-text-fill: #3498db; -fx-font-weight: bold;" />
+         </VBox>
+         
+         <!-- Stats Cards with Modern Design - Daha bÃ¼yÃ¼k ve geniÅŸ -->
+         <HBox spacing="40.0" alignment="CENTER">
+            <!-- Total Users Card -->
+            <VBox alignment="CENTER" spacing="25.0" prefWidth="220.0" prefHeight="180.0"
+                  style="-fx-background-color: rgba(255,255,255,0.95); -fx-background-radius: 25px; -fx-padding: 35px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 15, 0, 0, 6);">
+               <Label text="ğŸ‘¥" style="-fx-font-size: 45px;" />
+               <Label fx:id="totalUsersCard" text="0" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: #3498db;" />
+               <Label text="Toplam KullanÄ±cÄ±" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 14px; -fx-text-fill: #7f8c8d; -fx-font-weight: 500;" />
+            </VBox>
+            
+            <!-- Total Exercises Card -->
+            <VBox alignment="CENTER" spacing="25.0" prefWidth="220.0" prefHeight="180.0"
+                  style="-fx-background-color: rgba(255,255,255,0.95); -fx-background-radius: 25px; -fx-padding: 35px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 15, 0, 0, 6);">
+               <Label text="ğŸ‹" style="-fx-font-size: 45px;" />
+               <Label fx:id="totalExercisesCard" text="0" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: #27ae60;" />
+               <Label text="Toplam Egzersiz" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 14px; -fx-text-fill: #7f8c8d; -fx-font-weight: 500;" />
+            </VBox>
+            
+            <!-- Total Equipment Card -->
+            <VBox alignment="CENTER" spacing="25.0" prefWidth="220.0" prefHeight="180.0"
+                  style="-fx-background-color: rgba(255,255,255,0.95); -fx-background-radius: 25px; -fx-padding: 35px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 15, 0, 0, 6);">
+               <Label text="ğŸ”§" style="-fx-font-size: 45px;" />
+               <Label fx:id="totalEquipmentCard" text="0" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: #9b59b6;" />
+               <Label text="Toplam Ekipman" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 14px; -fx-text-fill: #7f8c8d; -fx-font-weight: 500;" />
+            </VBox>
+         </HBox>
+         
+         <!-- Son Ä°ÅŸlemler Paneli - Daha geniÅŸ ve bÃ¼yÃ¼k -->
+         <VBox spacing="25.0" prefWidth="1200.0" 
+               style="-fx-background-color: rgba(255,255,255,0.95); -fx-background-radius: 25px; -fx-padding: 40px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 15, 0, 0, 6);">
+            <Label text="ğŸ“‹ Son Ä°ÅŸlemler" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+            
+            <VBox fx:id="recentActivitiesContainer" spacing="16.0">
+               <!-- Bu alan dinamik olarak doldurulacak -->
+               <HBox spacing="20.0" alignment="CENTER_LEFT" style="-fx-padding: 20px; -fx-background-color: #e3f2fd; -fx-background-radius: 15px;">
+                  <Label text="â„¹ï¸" style="-fx-font-size: 24px;" />
+                  <VBox spacing="8.0" alignment="CENTER_LEFT">
+                     <Label text="Son iÅŸlemler yÃ¼kleniyor..." style="-fx-font-family: 'Segoe UI'; -fx-font-size: 16px; -fx-text-fill: #1976d2; -fx-font-weight: 600;" />
+                     <Label text="YakÄ±nda gerÃ§ek aktivite verileri burada gÃ¶rÃ¼necek" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 13px; -fx-text-fill: #757575;" />
+                  </VBox>
+               </HBox>
+            </VBox>
+            
+            <!-- TÃ¼mÃ¼nÃ¼ GÃ¶rÃ¼ntÃ¼le Butonu - Daha bÃ¼yÃ¼k -->
+            <HBox alignment="CENTER" style="-fx-padding: 15px 0 0 0;">
+               <Button fx:id="viewAllActivitiesBtn" text="ğŸ“„ TÃ¼m Ä°ÅŸlemleri GÃ¶rÃ¼ntÃ¼le" onAction="#handleViewAllActivities"
+                       style="-fx-background-color: linear-gradient(45deg, #667eea, #764ba2); -fx-background-radius: 12px; -fx-text-fill: white; -fx-font-family: 'Segoe UI'; -fx-font-size: 14px; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 12px 25px; -fx-effect: dropshadow(gaussian, rgba(102,126,234,0.4), 10, 0, 0, 4);" />
+            </HBox>
+         </VBox>
+         
+      </VBox>
+   </content>
+</ScrollPane> 
+
+

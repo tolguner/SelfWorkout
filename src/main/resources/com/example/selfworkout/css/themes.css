@@ -1,0 +1,352 @@
+/* ========================================
+   SelfWorkout - DARK THEME
+   Modern Dark Mode - Tam Ekran Tasarım
+   ======================================== */
+
+/* ========================================
+   DARK THEME CSS VARIABLES
+   ======================================== */
+.theme-dark {
+    /* Ana Renkler - Dark Mode */
+    -fx-primary: #BB86FC;           /* Ana mor */
+    -fx-primary-dark: #9C27B0;      /* Koyu mor */
+    -fx-primary-light: #E1BEE7;     /* Açık mor */
+    -fx-secondary: #03DAC6;         /* İkincil teal */
+    -fx-accent: #CF6679;            /* Vurgu pembe */
+    
+    /* Durum Renkleri */
+    -fx-success: #4CAF50;           /* Başarı yeşili */
+    -fx-warning: #FF9800;           /* Uyarı turuncusu */
+    -fx-error: #CF6679;             /* Hata pembe */
+    -fx-info: #03DAC6;              /* Bilgi teal */
+    
+    /* Arka Plan Renkleri - Dark Mode */
+    -fx-background-primary: #121212;        /* Ana koyu */
+    -fx-background-secondary: #1E1E1E;      /* İkincil koyu */
+    -fx-background-tertiary: #2D2D2D;       /* Üçüncül koyu */
+    /*noinspection CssInvalidFunction*/
+    -fx-background-gradient: linear-gradient(135deg, #121212 0%, #1E1E1E 50%, #2D2D2D 100%);
+    -fx-background-card: #1E1E1E;           /* Kart arka planı */
+    
+    /* Metin Renkleri - Dark Mode */
+    -fx-text-primary: #FFFFFF;              /* Ana metin beyaz */
+    -fx-text-secondary: #B3B3B3;            /* İkincil metin gri */
+    -fx-text-hint: #666666;                 /* İpucu metni koyu gri */
+    -fx-text-inverse: #121212;              /* Ters metin koyu */
+    -fx-text-on-primary: #121212;           /* Primary üzerindeki metin */
+    
+    /* Border ve Shadow - Dark Mode */
+    -fx-border-color: #333333;              /* Border rengi */
+    -fx-shadow-color: rgba(0, 0, 0, 0.5);          /* Gölge rengi */
+    -fx-shadow-hover: rgba(187, 134, 252, 0.3);    /* Hover gölgesi */
+    -fx-shadow-focus: rgba(187, 134, 252, 0.5);    /* Focus gölgesi */
+    
+    /* Font Ayarları - Tam Ekran için Büyük Fontlar */
+    -fx-font-family: "Segoe UI", "Roboto", "Arial", sans-serif;
+    -fx-font-size-small: 14px;             /* Küçük metin */
+    -fx-font-size-normal: 16px;            /* Normal metin */
+    -fx-font-size-large: 20px;             /* Büyük metin */
+    -fx-font-size-xlarge: 28px;            /* Çok büyük metin */
+    -fx-font-size-title: 36px;             /* Başlık */
+    
+    /* Tam Ekran Boyutları */
+    -fx-card-width: 320px;                 /* Kart genişliği */
+    -fx-card-height: 200px;                /* Kart yüksekliği */
+    -fx-button-height: 50px;               /* Buton yüksekliği */
+    -fx-input-height: 45px;                /* Input yüksekliği */
+}
+
+/* ========================================
+   DARK THEME - LOGIN SCREEN
+   ======================================== */
+
+.theme-dark .login-container {
+    -fx-background-color: -fx-background-gradient;
+}
+
+.theme-dark .app-title {
+    -fx-text-fill: -fx-text-primary;
+    -fx-effect: dropshadow(gaussian, rgba(187, 134, 252, 0.4), 8, 0, 0, 3);
+}
+
+.theme-dark .app-subtitle {
+    -fx-text-fill: derive(-fx-text-primary, -20%);
+}
+
+.theme-dark .login-form {
+    -fx-background-color: -fx-background-card;
+    -fx-effect: dropshadow(gaussian, -fx-shadow-color, 25, 0, 0, 8);
+}
+
+.theme-dark .form-title {
+    -fx-text-fill: -fx-text-primary;
+}
+
+.theme-dark .field-label {
+    -fx-text-fill: -fx-text-secondary;
+}
+
+.theme-dark .login-field {
+    -fx-background-color: -fx-background-tertiary;
+    -fx-border-color: -fx-border-color;
+    -fx-text-fill: -fx-text-primary;
+}
+
+.theme-dark .login-field:focused {
+    -fx-border-color: -fx-primary;
+    -fx-effect: dropshadow(gaussian, -fx-shadow-focus, 10, 0, 0, 0);
+}
+
+.theme-dark .remember-checkbox {
+    -fx-text-fill: -fx-text-secondary;
+}
+
+.theme-dark .primary-button {
+    -fx-background-color: -fx-primary;
+    -fx-text-fill: -fx-text-on-primary;
+    -fx-effect: dropshadow(gaussian, -fx-shadow-color, 10, 0, 0, 4);
+}
+
+.theme-dark .primary-button:hover {
+    -fx-background-color: -fx-primary-dark;
+    -fx-effect: dropshadow(gaussian, -fx-shadow-hover, 15, 0, 0, 6);
+}
+
+.theme-dark .secondary-button {
+    -fx-border-color: -fx-primary;
+    -fx-text-fill: -fx-primary;
+}
+
+.theme-dark .secondary-button:hover {
+    -fx-background-color: derive(-fx-primary, 85%);
+}
+
+.theme-dark .footer-text {
+    -fx-text-fill: derive(-fx-text-primary, -40%);
+}
+
+/* ========================================
+   DARK THEME - MAIN DASHBOARD
+   ======================================== */
+
+.theme-dark .header-container {
+    -fx-background-color: -fx-background-card;
+    -fx-effect: dropshadow(gaussian, -fx-shadow-color, 15, 0, 0, 5);
+}
+
+.theme-dark .header-bar {
+    -fx-background-color: -fx-background-card;
+}
+
+.theme-dark .app-logo {
+    -fx-text-fill: -fx-primary;
+    -fx-effect: dropshadow(gaussian, -fx-shadow-color, 5, 0, 0, 2);
+}
+
+.theme-dark .welcome-label {
+    -fx-text-fill: -fx-text-primary;
+}
+
+.theme-dark .user-info-label {
+    -fx-text-fill: -fx-text-secondary;
+}
+
+.theme-dark .logout-button {
+    -fx-background-color: -fx-error;
+    -fx-text-fill: -fx-text-primary;
+}
+
+.theme-dark .logout-button:hover {
+    -fx-background-color: derive(-fx-error, -20%);
+}
+
+.theme-dark .main-content {
+    -fx-background-color: -fx-background-primary;
+}
+
+.theme-dark .dashboard-container {
+    -fx-background-color: -fx-background-primary;
+}
+
+.theme-dark .section-title {
+    -fx-text-fill: -fx-text-primary;
+    -fx-effect: dropshadow(gaussian, -fx-shadow-color, 3, 0, 0, 1);
+}
+
+/* ========================================
+   DARK THEME - İSTATİSTİK KARTLARI
+   ======================================== */
+
+.theme-dark .stat-card {
+    -fx-background-color: -fx-background-card;
+    -fx-effect: dropshadow(gaussian, -fx-shadow-color, 20, 0, 0, 6);
+}
+
+.theme-dark .stat-card:hover {
+    -fx-effect: dropshadow(gaussian, -fx-shadow-hover, 30, 0, 0, 10);
+}
+
+.theme-dark .stat-value {
+    -fx-text-fill: -fx-primary;
+}
+
+.theme-dark .stat-label {
+    -fx-text-fill: -fx-text-secondary;
+}
+
+/* ========================================
+   DARK THEME - MENÜ KARTLARI
+   ======================================== */
+
+.theme-dark .menu-card {
+    -fx-background-color: -fx-background-card;
+    -fx-effect: dropshadow(gaussian, -fx-shadow-color, 20, 0, 0, 6);
+}
+
+.theme-dark .menu-card:hover {
+    -fx-effect: dropshadow(gaussian, -fx-shadow-hover, 35, 0, 0, 12);
+}
+
+.theme-dark .menu-button {
+    -fx-text-fill: -fx-primary;
+}
+
+.theme-dark .menu-label {
+    -fx-text-fill: -fx-text-primary;
+}
+
+.theme-dark .menu-description {
+    -fx-text-fill: -fx-text-secondary;
+}
+
+/* ========================================
+   DARK THEME - TEMA SEÇİCİ
+   ======================================== */
+
+.theme-dark .theme-selector-container {
+    -fx-background-color: -fx-background-card;
+    -fx-effect: dropshadow(gaussian, -fx-shadow-color, 8, 0, 0, 3);
+}
+
+.theme-dark .theme-selector-title {
+    -fx-text-fill: -fx-text-secondary;
+}
+
+.theme-dark .theme-preview-circle:hover {
+    -fx-border-color: -fx-text-secondary;
+}
+
+.theme-dark .theme-preview-circle.selected {
+    -fx-border-color: -fx-primary;
+    -fx-effect: dropshadow(gaussian, -fx-primary, 10, 0, 0, 0);
+}
+
+/* ========================================
+   DARK THEME - GENEL COMPONENTS
+   ======================================== */
+
+.theme-dark .scroll-bar .track {
+    -fx-background-color: -fx-background-tertiary;
+}
+
+.theme-dark .scroll-bar .thumb {
+    -fx-background-color: -fx-primary-light;
+}
+
+.theme-dark .scroll-bar .thumb:hover {
+    -fx-background-color: -fx-primary;
+}
+
+.theme-dark .progress-indicator {
+    -fx-progress-color: -fx-primary;
+}
+
+.theme-dark .alert {
+    -fx-background-color: -fx-background-card;
+}
+
+.theme-dark .alert .header-panel {
+    -fx-background-color: -fx-primary;
+}
+
+.theme-dark .alert .header-panel .label {
+    -fx-text-fill: -fx-text-on-primary;
+}
+
+/* ========================================
+   DARK THEME - ÖZEL EFEKTLER
+   ======================================== */
+
+.theme-dark .glow-effect {
+    -fx-effect: dropshadow(gaussian, -fx-primary, 15, 0, 0, 0);
+}
+
+.theme-dark .neon-text {
+    -fx-text-fill: -fx-primary;
+    -fx-effect: dropshadow(gaussian, -fx-primary, 10, 0, 0, 0);
+}
+
+.theme-dark .card-hover-glow:hover {
+    -fx-effect: dropshadow(gaussian, -fx-primary, 20, 0, 0, 0);
+}
+
+/* ========================================
+   DARK THEME - ANİMASYONLAR
+   ======================================== */
+
+.theme-dark .fade-in {
+    -fx-opacity: 0;
+}
+
+.theme-dark .slide-in {
+    -fx-translate-x: -50px;
+}
+
+.theme-dark .scale-in {
+    -fx-scale-x: 0.8;
+    -fx-scale-y: 0.8;
+}
+
+.theme-dark .smooth-transition {
+    -fx-transition: all 0.3s ease-in-out;
+}
+
+/* ========================================
+   DARK THEME - RESPONSIVE DESIGN
+   ======================================== */
+
+@media (min-width: 1920px) {
+    .theme-dark .menu-card {
+        -fx-min-width: 400px;
+        -fx-min-height: 300px;
+    }
+    
+    .theme-dark .stat-card {
+        -fx-min-width: 380px;
+        -fx-min-height: 220px;
+    }
+    
+    .theme-dark .stat-value {
+        -fx-font-size: 56px;
+    }
+}
+
+@media (max-width: 1366px) {
+    .theme-dark .menu-card {
+        -fx-min-width: 300px;
+        -fx-min-height: 200px;
+    }
+    
+    .theme-dark .stat-card {
+        -fx-min-width: 280px;
+        -fx-min-height: 180px;
+    }
+    
+    .theme-dark .stat-value {
+        -fx-font-size: 40px;
+    }
+    
+    .theme-dark .menu-button {
+        -fx-font-size: 48px;
+    }
+} 

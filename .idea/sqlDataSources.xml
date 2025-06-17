@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DdlMappings">
+    <mapping uuid="88373ff3-39e6-429b-8827-cb287644cd5f" name="@localhost Mapping">
+      <data-sources db="15c96c7d-15b4-45d3-b802-47c32df73556" />
+    </mapping>
+    <mapping uuid="a4d62169-295b-4310-835d-77eed4b50b13" name="Microsoft SQL Server LocalDB Mapping">
+      <data-sources db="a1ca420a-6fb5-4154-a5c3-1e544dd17ad3" />
+      <scope>
+        <node kind="database" negative="1" />
+      </scope>
+    </mapping>
+  </component>
+</project>

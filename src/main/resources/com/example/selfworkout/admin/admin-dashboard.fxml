@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.selfworkout.controller.admin.AdminDashboardController" styleClass="fixed-size-container" prefWidth="1536" prefHeight="864" maxWidth="1536" maxHeight="864">
+   <left>
+      <!-- Sol Navigation Panel (Sabit) -->
+      <VBox prefWidth="224.0" style="-fx-background-color: linear-gradient(to bottom, #2c3e50, #34495e); -fx-padding: 0;">
+         
+         <!-- Ana Başlık ve Navigation Menüsü -->
+         <VBox spacing="8.0" style="-fx-padding: 24px 16px 20px 16px;">
+            <Label text="🏯 YÖNETİM PANELİ" style="-fx-font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif; -fx-font-size: 14px; -fx-text-fill: #ecf0f1; -fx-font-weight: bold; -fx-padding: 0 0 8px 0;" />
+            <Separator style="-fx-background-color: #3498db; -fx-pref-height: 3px; -fx-background-radius: 2px;" />
+            
+            <!-- Navigation Butonları - Daha büyük ve belirgin -->
+            <VBox spacing="6.0" style="-fx-padding: 12px 0 0 0;">
+               <Button fx:id="dashboardBtn" alignment="CENTER_LEFT" mnemonicParsing="false" onAction="#handleDashboard" prefHeight="42.0" prefWidth="192.0" 
+                       style="-fx-background-color: #3498db; -fx-background-radius: 8px; -fx-text-fill: white; -fx-font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif; -fx-font-size: 13px; -fx-font-weight: bold; -fx-padding: 0 16px; -fx-border-width: 0; -fx-effect: dropshadow(gaussian, rgba(52,152,219,0.4), 6, 0, 0, 2);" 
+                       text="📊 Dashboard" />
+               
+               <Separator style="-fx-background-color: #3498db; -fx-pref-height: 1px; -fx-opacity: 0.3;" />
+               
+               <Button fx:id="userManagementBtn" alignment="CENTER_LEFT" mnemonicParsing="false" onAction="#handleUserManagement" prefHeight="42.0" prefWidth="192.0" 
+                       style="-fx-background-color: transparent; -fx-text-fill: #ecf0f1; -fx-font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif; -fx-font-size: 13px; -fx-padding: 0 16px; -fx-border-width: 0; -fx-cursor: hand; -fx-background-radius: 8px;" 
+                       text="👥 Kullanıcı Yönetimi" />
+               
+               <Separator style="-fx-background-color: #3498db; -fx-pref-height: 1px; -fx-opacity: 0.3;" />
+               
+               <Button fx:id="exerciseManagementBtn" alignment="CENTER_LEFT" mnemonicParsing="false" onAction="#handleExerciseManagement" prefHeight="42.0" prefWidth="192.0" 
+                       style="-fx-background-color: transparent; -fx-text-fill: #ecf0f1; -fx-font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif; -fx-font-size: 13px; -fx-padding: 0 16px; -fx-border-width: 0; -fx-cursor: hand; -fx-background-radius: 8px;" 
+                       text="🏋 Egzersiz Yönetimi" />
+               
+               <Separator style="-fx-background-color: #3498db; -fx-pref-height: 1px; -fx-opacity: 0.3;" />
+               
+               <Button fx:id="muscleGroupManagementBtn" alignment="CENTER_LEFT" mnemonicParsing="false" onAction="#handleMuscleGroupManagement" prefHeight="42.0" prefWidth="192.0" 
+                       style="-fx-background-color: transparent; -fx-text-fill: #ecf0f1; -fx-font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif; -fx-font-size: 13px; -fx-padding: 0 16px; -fx-border-width: 0; -fx-cursor: hand; -fx-background-radius: 8px;" 
+                       text="💪 Kas Grubu Yönetimi" />
+               
+               <Separator style="-fx-background-color: #3498db; -fx-pref-height: 1px; -fx-opacity: 0.3;" />
+               
+               <Button fx:id="equipmentManagementBtn" alignment="CENTER_LEFT" mnemonicParsing="false" onAction="#handleEquipmentManagement" prefHeight="42.0" prefWidth="192.0" 
+                       style="-fx-background-color: transparent; -fx-text-fill: #ecf0f1; -fx-font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif; -fx-font-size: 13px; -fx-padding: 0 16px; -fx-border-width: 0; -fx-cursor: hand; -fx-background-radius: 8px;" 
+                       text="🔧 Ekipman Yönetimi" />
+               
+               <Separator style="-fx-background-color: #3498db; -fx-pref-height: 1px; -fx-opacity: 0.3;" />
+               
+               <Button fx:id="systemReportsBtn" alignment="CENTER_LEFT" mnemonicParsing="false" onAction="#handleSystemReports" prefHeight="42.0" prefWidth="192.0" 
+                       style="-fx-background-color: transparent; -fx-text-fill: #ecf0f1; -fx-font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif; -fx-font-size: 13px; -fx-padding: 0 16px; -fx-border-width: 0; -fx-cursor: hand; -fx-background-radius: 8px;" 
+                       text="📈 Sistem Raporları" />
+               
+               <Separator style="-fx-background-color: #3498db; -fx-pref-height: 1px; -fx-opacity: 0.3;" />
+               
+               <Button fx:id="activityLogBtn" alignment="CENTER_LEFT" mnemonicParsing="false" onAction="#handleActivityLog" prefHeight="42.0" prefWidth="192.0" 
+                       style="-fx-background-color: transparent; -fx-text-fill: #ecf0f1; -fx-font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif; -fx-font-size: 13px; -fx-padding: 0 16px; -fx-border-width: 0; -fx-cursor: hand; -fx-background-radius: 8px;" 
+                       text="📋 Aktivite Geçmişi" />
+            </VBox>
+         </VBox>
+         
+         <!-- Spacer - Kullanıcı panelini en alta itmek için -->
+         <Region VBox.vgrow="ALWAYS" />
+                  
+         <!-- Kullanıcı Profil ve İşlemler Alt Paneli -->
+         <VBox spacing="12.0" style="-fx-padding: 20px 16px;">
+            <!-- Kullanıcı Bilgileri Kutucuğu -->
+            <VBox spacing="8.0" style="-fx-background-color: rgba(255,255,255,0.1); -fx-background-radius: 12px; -fx-padding: 16px; -fx-border-color: rgba(255,255,255,0.2); -fx-border-radius: 12px; -fx-border-width: 1px;">
+               <HBox spacing="12.0" alignment="CENTER_LEFT">
+                  <Label text="👤" style="-fx-font-size: 20px;" />
+                  <VBox spacing="2.0">
+                     <Label fx:id="userFullNameLabel" text="System Administrator" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 12px; -fx-text-fill: white; -fx-font-weight: bold;" />
+                     <Label fx:id="userRoleLabel" text="Admin" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 10px; -fx-text-fill: #bdc3c7;" />
+                  </VBox>
+               </HBox>
+               
+               <!-- Kullanıcı İşlem Butonları -->
+                <VBox spacing="6.0">
+                   <Button fx:id="userProfileBtn" text="👤 Bilgilerim" onAction="#handleUserProfile" prefHeight="24.0" prefWidth="160.0" 
+                           style="-fx-background-color: rgba(255,255,255,0.15); -fx-background-radius: 6px; -fx-text-fill: white; -fx-font-family: 'Segoe UI'; -fx-font-size: 9px; -fx-cursor: hand; -fx-border-color: rgba(255,255,255,0.3); -fx-border-radius: 6px; -fx-border-width: 1px;" />
+                </VBox>
+            </VBox>
+            
+            <!-- Çıkış Butonu -->
+            <Button fx:id="logoutBtn" alignment="CENTER" mnemonicParsing="false" onAction="#handleLogout" prefHeight="36.0" prefWidth="192.0" 
+                    style="-fx-background-color: linear-gradient(45deg, #c0392b, #a93226); -fx-background-radius: 12px; -fx-text-fill: white; -fx-font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif; -fx-font-size: 11px; -fx-cursor: hand; -fx-font-weight: bold; -fx-effect: dropshadow(gaussian, rgba(192,57,43,0.5), 8, 0, 0, 3); -fx-border-color: rgba(255,255,255,0.2); -fx-border-radius: 12px; -fx-border-width: 1px;" 
+                    text="🚪 Çıkış Yap" />
+         </VBox>
+      </VBox>
+   </left>
+
+   <center>
+      <!-- Ana Content Area - Daha geniş -->
+      <StackPane fx:id="contentArea" style="-fx-background-color: #f8f9fa;" prefWidth="1312" prefHeight="864" maxWidth="1312" maxHeight="864">
+         <!-- İçerik buraya dinamik olarak yüklenecek -->
+      </StackPane>
+   </center>
+</BorderPane> 
+
+
