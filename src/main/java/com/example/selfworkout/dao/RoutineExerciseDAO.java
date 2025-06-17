@@ -14,52 +14,53 @@ import java.util.List;
  * Rutin-egzersiz ilişkilerini yönetir
  */
 public class RoutineExerciseDAO {
-    
+
     // SQL sorguları
-    private static final String INSERT_ROUTINE_EXERCISE = 
-        "INSERT INTO RoutineExercises (routine_id, exercise_id, exercise_order, set_count, reps_per_set, weight_per_set) " +
-        "VALUES (?, ?, ?, ?, ?, ?)";
-    
-    private static final String SELECT_BY_ID = 
-        "SELECT re.*, er.name as routine_name, e.name as exercise_name " +
-        "FROM RoutineExercises re " +
-        "LEFT JOIN ExerciseRoutines er ON re.routine_id = er.id " +
-        "LEFT JOIN Exercises e ON re.exercise_id = e.id " +
-        "WHERE re.id = ?";
-    
-    private static final String SELECT_BY_ROUTINE_ID = 
-        "SELECT re.*, er.name as routine_name, e.name as exercise_name " +
-        "FROM RoutineExercises re " +
-        "LEFT JOIN ExerciseRoutines er ON re.routine_id = er.id " +
-        "LEFT JOIN Exercises e ON re.exercise_id = e.id " +
-        "WHERE re.routine_id = ? ORDER BY re.exercise_order";
-    
-    private static final String DELETE_ROUTINE_EXERCISE = 
-        "DELETE FROM RoutineExercises WHERE id = ?";
-    
-    private static final String DELETE_BY_ROUTINE_ID = 
-        "DELETE FROM RoutineExercises WHERE routine_id = ?";
-    
+    private static final String INSERT_ROUTINE_EXERCISE =
+            "INSERT INTO RoutineExercises (routine_id, exercise_id, exercise_order, set_count, reps_per_set, weight_per_set) " +
+                    "VALUES (?, ?, ?, ?, ?, ?)";
+
+    private static final String SELECT_BY_ID =
+            "SELECT re.*, er.name as routine_name, e.name as exercise_name " +
+                    "FROM RoutineExercises re " +
+                    "LEFT JOIN ExerciseRoutines er ON re.routine_id = er.id " +
+                    "LEFT JOIN Exercises e ON re.exercise_id = e.id " +
+                    "WHERE re.id = ?";
+
+    private static final String SELECT_BY_ROUTINE_ID =
+            "SELECT re.*, er.name as routine_name, e.name as exercise_name " +
+                    "FROM RoutineExercises re " +
+                    "LEFT JOIN ExerciseRoutines er ON re.routine_id = er.id " +
+                    "LEFT JOIN Exercises e ON re.exercise_id = e.id " +
+                    "WHERE re.routine_id = ? ORDER BY re.exercise_order";
+
+    private static final String DELETE_ROUTINE_EXERCISE =
+            "DELETE FROM RoutineExercises WHERE id = ?";
+
+    private static final String DELETE_BY_ROUTINE_ID =
+            "DELETE FROM RoutineExercises WHERE routine_id = ?";
+
     /**
      * Yeni rutin-egzersiz ilişkisi ekler
      */
     public RoutineExercise save(RoutineExercise routineExercise) throws SQLException {
-        try (Connection connection = DatabaseConnection.getConnection();
+        // DÜZELTİLDİ: DatabaseConnection.getInstance().getConnection() olarak değiştirildi
+        try (Connection connection = DatabaseConnection.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(INSERT_ROUTINE_EXERCISE, Statement.RETURN_GENERATED_KEYS)) {
-            
+
             statement.setInt(1, routineExercise.getRoutineId());
             statement.setInt(2, routineExercise.getExerciseId());
             statement.setInt(3, routineExercise.getExerciseOrder());
             statement.setInt(4, routineExercise.getSetCount());
             statement.setString(5, routineExercise.getRepsPerSet());
             statement.setString(6, routineExercise.getWeightPerSet());
-            
+
             int affectedRows = statement.executeUpdate();
-            
+
             if (affectedRows == 0) {
                 throw new SQLException("Rutin-egzersiz ilişkisi ekleme başarısız, hiçbir satır etkilenmedi.");
             }
-            
+
             try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
                     routineExercise.setId(generatedKeys.getInt(1));
@@ -71,16 +72,17 @@ public class RoutineExerciseDAO {
             }
         }
     }
-    
+
     /**
      * ID'ye göre rutin-egzersiz ilişkisi bulur
      */
     public RoutineExercise findById(int id) throws SQLException {
-        try (Connection connection = DatabaseConnection.getConnection();
+        // DÜZELTİLDİ: DatabaseConnection.getInstance().getConnection() olarak değiştirildi
+        try (Connection connection = DatabaseConnection.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(SELECT_BY_ID)) {
-            
+
             statement.setInt(1, id);
-            
+
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
                     return mapResultSetToRoutineExercise(resultSet);
@@ -89,39 +91,41 @@ public class RoutineExerciseDAO {
             }
         }
     }
-    
+
     /**
      * Rutin ID'sine göre egzersizleri getirir (sıralı)
      */
     public List<RoutineExercise> findByRoutineId(int routineId) throws SQLException {
         List<RoutineExercise> routineExercises = new ArrayList<>();
-        
-        try (Connection connection = DatabaseConnection.getConnection();
+
+        // DÜZELTİLDİ: DatabaseConnection.getInstance().getConnection() olarak değiştirildi
+        try (Connection connection = DatabaseConnection.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(SELECT_BY_ROUTINE_ID)) {
-            
+
             statement.setInt(1, routineId);
-            
+
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
                     routineExercises.add(mapResultSetToRoutineExercise(resultSet));
                 }
             }
         }
-        
+
         return routineExercises;
     }
-    
+
     /**
      * Rutin-egzersiz ilişkisini siler
      */
     public boolean delete(int id) throws SQLException {
-        try (Connection connection = DatabaseConnection.getConnection();
+        // DÜZELTİLDİ: DatabaseConnection.getInstance().getConnection() olarak değiştirildi
+        try (Connection connection = DatabaseConnection.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(DELETE_ROUTINE_EXERCISE)) {
-            
+
             statement.setInt(1, id);
-            
+
             int affectedRows = statement.executeUpdate();
-            
+
             if (affectedRows > 0) {
                 System.out.println("✅ Rutin-egzersiz ilişkisi başarıyla silindi.");
                 return true;
@@ -129,18 +133,19 @@ public class RoutineExerciseDAO {
             return false;
         }
     }
-    
+
     /**
      * Belirli rutinin tüm egzersizlerini siler
      */
     public boolean deleteByRoutineId(int routineId) throws SQLException {
-        try (Connection connection = DatabaseConnection.getConnection();
+        // DÜZELTİLDİ: DatabaseConnection.getInstance().getConnection() olarak değiştirildi
+        try (Connection connection = DatabaseConnection.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(DELETE_BY_ROUTINE_ID)) {
-            
+
             statement.setInt(1, routineId);
-            
+
             int affectedRows = statement.executeUpdate();
-            
+
             if (affectedRows > 0) {
                 System.out.println("✅ Rutinin tüm egzersizleri silindi. Silinen: " + affectedRows);
                 return true;
@@ -148,7 +153,7 @@ public class RoutineExerciseDAO {
             return false;
         }
     }
-    
+
     /**
      * ResultSet'ten RoutineExercise nesnesini oluşturur
      */
@@ -161,7 +166,7 @@ public class RoutineExerciseDAO {
         routineExercise.setSetCount(resultSet.getInt("set_count"));
         routineExercise.setRepsPerSet(resultSet.getString("reps_per_set"));
         routineExercise.setWeightPerSet(resultSet.getString("weight_per_set"));
-        
+
         // İlişkili objeler
         try {
             String routineName = resultSet.getString("routine_name");
@@ -171,7 +176,7 @@ public class RoutineExerciseDAO {
                 routine.setName(routineName);
                 routineExercise.setRoutine(routine);
             }
-            
+
             String exerciseName = resultSet.getString("exercise_name");
             if (exerciseName != null) {
                 Exercise exercise = new Exercise();
@@ -182,7 +187,7 @@ public class RoutineExerciseDAO {
         } catch (SQLException e) {
             // JOIN yapılmamışsa ignore et
         }
-        
+
         return routineExercise;
     }
 }

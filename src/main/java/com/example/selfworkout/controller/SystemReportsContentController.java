@@ -1,14 +1,15 @@
-﻿package com.example.selfworkout.controller;
+package com.example.selfworkout.controller;
 
 import com.example.selfworkout.model.User;
 import com.example.selfworkout.service.*;
-import com.example.selfworkout.util.DatabaseConnection;
+import com.example.selfworkout.util.DatabaseConnection; // Doğru import
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.*;
 import javafx.scene.control.*;
+import javafx.util.Duration; // Tooltip için Duration gerekebilir
 
 import java.net.URL;
 import java.sql.Connection;
@@ -21,255 +22,222 @@ import java.util.*;
 import java.util.HashMap;
 
 // Rapor içeriği için controller sınıfı
-public class SystemReportsContentController extends BaseController implements Initializable {
+// BaseController'dan miras almıyorsa, initialize metodu BaseController'daki initializeController'ı çağırmayacaktır.
+public class SystemReportsContentController implements Initializable {
 
-    // Stats Labels
+    // UI Components
     @FXML private Label totalUsersLabel;
     @FXML private Label totalExercisesLabel;
     @FXML private Label activeUsersLabel;
-    
-    // Charts
+
     @FXML private LineChart<String, Number> userActivityChart;
     @FXML private CategoryAxis activityXAxis;
     @FXML private NumberAxis activityYAxis;
     @FXML private PieChart exerciseDistributionChart;
-    
-    // New Charts
+
     @FXML private BarChart<String, Number> weeklyWorkoutChart;
     @FXML private CategoryAxis weeklyXAxis;
     @FXML private NumberAxis weeklyYAxis;
     @FXML private BarChart<String, Number> popularExercisesChart;
     @FXML private CategoryAxis exerciseXAxis;
     @FXML private NumberAxis exerciseYAxis;
-    
-    // Date Pickers
+
     @FXML private DatePicker startDatePicker;
     @FXML private DatePicker endDatePicker;
-    
-    // Statistics Table
-    @FXML private TableView<StatisticData> statisticsTable;
+
+    @FXML private TableView<StatisticData> statisticsTable; // FXML'de görünmesine rağmen, Java kodu içinde doldurulmuyor.
     @FXML private TableColumn<StatisticData, String> metricColumn;
     @FXML private TableColumn<StatisticData, String> currentValueColumn;
     @FXML private TableColumn<StatisticData, String> previousValueColumn;
     @FXML private TableColumn<StatisticData, String> changeColumn;
     @FXML private TableColumn<StatisticData, String> percentageColumn;
-    
-    // Buttons
+
     @FXML private Button exportReportButton;
     @FXML private Button refreshReportsButton;
-    
+
     // Services
     private ServiceManager serviceManager;
     private UserService userService;
     private ExerciseService exerciseService;
     private MuscleGroupService muscleGroupService;
-    private User currentUser;
-    
+    private User currentUser; // Bu kullanıcı, SceneManager tarafından atanır.
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        System.out.println("âœ… SystemReportsContent: Current user set to " + (currentUser != null ? currentUser.getUsername() : "null"));
+        // Bu metot, FXML yüklenirken JavaFX tarafından otomatik çağrılır.
+        System.out.println("✅ SystemReportsContent initialize başlıyor.");
+
         initializeServices();
         setupTable();
         setupCharts();
-        loadReports();
+
+        // Tarih seçicileri varsayılan değerleri
+        if (endDatePicker != null) {
+            endDatePicker.setValue(LocalDate.now());
+        }
+        if (startDatePicker != null) {
+            startDatePicker.setValue(LocalDate.now().minusMonths(1)); // Son bir ay varsayılan
+        }
+
+        loadReports(); // Tüm raporları ve istatistikleri yükleyen ana metod
+        System.out.println("✅ SystemReportsContent initialize tamamlandı.");
     }
-    
+
     private void initializeServices() {
         try {
             serviceManager = ServiceManager.getInstance();
             userService = serviceManager.getUserService();
             exerciseService = serviceManager.getExerciseService();
             muscleGroupService = serviceManager.getMuscleGroupService();
-            currentUser = serviceManager.getAuthenticationService().getCurrentUser();
+            // currentUser, SceneManager.loadScene() metoduyla atanır.
+            // Burada doğrudan erişim yerine setter metodu beklenmeli.
+            // Ancak şu anki yapıda, SceneManager'daki setCurrentUser() metodu zaten bu instance'a atıyor.
+            // Bu, BaseController'dan miras almayan controller'lar için SceneManager'da özel cast'leri gerektirir.
         } catch (Exception e) {
-            System.err.println("âŒ SystemReportsContent Service initialization hatasÄ±: " + e.getMessage());
+            System.err.println("❌ SystemReportsContent Service initialization hatası: " + e.getMessage());
+            // Hata durumunda kullanıcıya bilgi verilebilir
+            showAlert("Hata", "Servisler başlatılırken bir sorun oluştu: " + e.getMessage());
         }
     }
-    
+
     private void setupTable() {
-        // Statistics table column setup
-        if (metricColumn != null) {
+        // FXML'de 'statisticsTable' varsa ve kolonlar tanımlıysa setup yapar
+        if (statisticsTable != null && metricColumn != null) {
             metricColumn.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(data.getValue().metric));
             currentValueColumn.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(data.getValue().currentValue));
             previousValueColumn.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(data.getValue().previousValue));
             changeColumn.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(data.getValue().change));
             percentageColumn.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(data.getValue().percentage));
+            // statisticsTable.setItems(FXCollections.observableArrayList(new StatisticData(...))); // Veriler burada doldurulur
         }
     }
-    
+
     private void setupCharts() {
-        // User Activity Chart setup
         if (userActivityChart != null) {
-            activityXAxis.setLabel("Tarih");
-            activityYAxis.setLabel("Aktif KullanÄ±cÄ± SayÄ±sÄ±");
-            
-            // X ekseni için daha fazla alan sağla
-            userActivityChart.setMinHeight(300);
-            userActivityChart.setPrefHeight(300);
-            
-            // X ekseni etiketlerini döndür
-            activityXAxis.setTickLabelRotation(45);
-            
-            // X ekseni etiketlerini gizle
-            activityXAxis.setTickLabelsVisible(false);
-            activityXAxis.setTickMarkVisible(false);
-            
-            loadUserActivityData();
+            userActivityChart.setTitle("Kullanıcı Aktivitesi Trendi");
+            // FXML'de zaten tanımlı olan ayarları Java kodunda tekrar etmek yerine
+            // FXML'in doğru olduğundan emin olmak daha iyidir.
+            // activityXAxis.setLabel("Tarih");
+            // activityYAxis.setLabel("Aktif Kullanıcı Sayısı");
+            // userActivityChart.setMinHeight(300);
+            // userActivityChart.setPrefHeight(300);
+            // activityXAxis.setTickLabelRotation(45);
+            // activityXAxis.setTickLabelsVisible(false);
+            // activityXAxis.setTickMarkVisible(false);
         }
-        
-        // Exercise Distribution Chart setup
+
         if (exerciseDistributionChart != null) {
-            // Pasta grafiği etiketlerini daha okunabilir yap
-            exerciseDistributionChart.setLabelsVisible(true);
-            exerciseDistributionChart.setLegendVisible(true);
-            exerciseDistributionChart.setLegendSide(javafx.geometry.Side.BOTTOM);
-            
-            loadExerciseDistribution();
+            exerciseDistributionChart.setTitle("Egzersiz Kategorisi Dağılımı");
+            // exerciseDistributionChart.setLabelsVisible(true);
+            // exerciseDistributionChart.setLegendVisible(true);
+            // exerciseDistributionChart.setLegendSide(javafx.geometry.Side.BOTTOM);
         }
-        
-        // Weekly Workout Chart setup
+
         if (weeklyWorkoutChart != null) {
-            weeklyXAxis.setLabel("Gün");
-            weeklyYAxis.setLabel("Antrenman SayÄ±sÄ±");
-            
-            // X ekseni etiketlerini döndür
-            weeklyXAxis.setTickLabelRotation(45);
-            
-            // X ekseni etiketlerini gizle
-            weeklyXAxis.setTickLabelsVisible(false);
-            weeklyXAxis.setTickMarkVisible(false);
-            
-            // Bar genişliğini ayarla
-            weeklyWorkoutChart.setCategoryGap(30);
-            weeklyWorkoutChart.setBarGap(2);
-            
-            loadWeeklyWorkoutData();
+            weeklyWorkoutChart.setTitle("Haftalık Antrenman Sıklığı");
+            // weeklyXAxis.setLabel("Gün");
+            // weeklyYAxis.setLabel("Antrenman Sayısı");
+            // weeklyXAxis.setTickLabelRotation(45);
+            // weeklyXAxis.setTickLabelsVisible(false);
+            // weeklyXAxis.setTickMarkVisible(false);
+            // weeklyWorkoutChart.setCategoryGap(30);
+            // weeklyWorkoutChart.setBarGap(2);
         }
-        
-        // Popular Exercises Chart setup
+
         if (popularExercisesChart != null) {
-            exerciseXAxis.setLabel("Egzersiz");
-            exerciseYAxis.setLabel("KullanÄ±m SayÄ±sÄ±");
-            
-            // X ekseni etiketlerini döndür
-            exerciseXAxis.setTickLabelRotation(45);
-            
-            // X ekseni etiketlerini gizle
-            exerciseXAxis.setTickLabelsVisible(false);
-            exerciseXAxis.setTickMarkVisible(false);
-            
-            // Bar genişliğini ayarla
-            popularExercisesChart.setCategoryGap(30);
-            popularExercisesChart.setBarGap(2);
-            
-            loadPopularExercisesData();
+            popularExercisesChart.setTitle("En Popüler Egzersizler");
+            // exerciseXAxis.setLabel("Egzersiz");
+            // exerciseYAxis.setLabel("Kullanım Sayısı");
+            // exerciseXAxis.setTickLabelRotation(45);
+            // exerciseXAxis.setTickLabelsVisible(false);
+            // exerciseXAxis.setTickMarkVisible(false);
+            // popularExercisesChart.setCategoryGap(30);
+            // popularExercisesChart.setBarGap(2);
         }
     }
-    
+
     private void loadUserActivityData() {
         Task<Void> task = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
-                try (Connection conn = DatabaseConnection.getConnection()) {
-                    // Son 7 günün kullanÄ±cÄ± aktivitesi - Logs tablosundan
+                // DÜZELTİLDİ: DatabaseConnection.getInstance().getConnection() olarak değiştirildi
+                try (Connection conn = DatabaseConnection.getInstance().getConnection()) {
                     String sql = "SELECT CAST(created_at AS DATE) as activity_date, COUNT(DISTINCT user_id) as user_count " +
-                               "FROM Logs WHERE created_at >= DATEADD(day, -7, GETDATE()) AND user_id IS NOT NULL " +
-                               "GROUP BY CAST(created_at AS DATE) ORDER BY activity_date";
-                    
+                            "FROM Logs WHERE created_at >= DATEADD(day, -7, GETDATE()) AND user_id IS NOT NULL " +
+                            "GROUP BY CAST(created_at AS DATE) ORDER BY activity_date";
+
                     PreparedStatement stmt = conn.prepareStatement(sql);
                     ResultSet rs = stmt.executeQuery();
-                    
+
                     XYChart.Series<String, Number> series = new XYChart.Series<>();
-                    series.setName("Günlük Aktif KullanÄ±cÄ±");
-                    
-                    // Daha kısa tarih formatı kullan
+                    series.setName("Günlük Aktif Kullanıcı");
+
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM");
-                    
-                    // Son 7 günü temsil eden bir map oluştur (tüm günleri göstermek için)
+
                     Map<String, Integer> dateCountMap = new HashMap<>();
                     LocalDate today = LocalDate.now();
                     for (int i = 6; i >= 0; i--) {
                         LocalDate date = today.minusDays(i);
                         String formattedDate = date.format(formatter);
-                        dateCountMap.put(formattedDate, 0); // VarsayÄ±lan olarak 0
+                        dateCountMap.put(formattedDate, 0);
                     }
-                    
-                    // VeritabanÄ±ndan gelen verileri map'e ekle
+
                     while (rs.next()) {
                         String dateStr = rs.getString("activity_date");
                         int userCount = rs.getInt("user_count");
-                        
+
                         if (dateStr != null) {
                             LocalDate date = LocalDate.parse(dateStr);
                             String formattedDate = date.format(formatter);
                             dateCountMap.put(formattedDate, userCount);
                         }
                     }
-                    
-                    // Map'ten seriyi oluştur (tarihe göre sıralı olarak)
+
                     for (int i = 6; i >= 0; i--) {
                         LocalDate date = today.minusDays(i);
                         String formattedDate = date.format(formatter);
                         series.getData().add(new XYChart.Data<>(formattedDate, dateCountMap.get(formattedDate)));
                     }
-                    
+
                     Platform.runLater(() -> {
                         userActivityChart.getData().clear();
                         userActivityChart.getData().add(series);
-                        
-                        // Çizgi grafiğini daha okunabilir hale getir
                         userActivityChart.setCreateSymbols(true);
                         userActivityChart.setAnimated(true);
-                        
-                        // Eksen değerlerini temizle ve yeniden ayarla
                         activityXAxis.setTickLabelGap(10);
-                        
-                        // Etiketleri düzenle
+
                         for (XYChart.Data<String, Number> data : series.getData()) {
-                            // Veri noktalarını daha belirgin hale getir
                             javafx.scene.Node node = data.getNode();
                             if (node != null) {
-                                node.setStyle("-fx-background-color: #FF5733, white; -fx-background-radius: 5px; -fx-padding: 5px;");
+                                // Daha görünür bir stil
+                                node.setStyle("-fx-background-color: #FF5733; -fx-background-radius: 5px; -fx-padding: 5px;");
+                                // Tooltip ekle
+                                Tooltip tooltip = new Tooltip(data.getXValue() + ": " + data.getYValue() + " aktif kullanıcı");
+                                // Gecikmeli gösterim için (daha az yorucu)
+                                Tooltip.install(node, tooltip);
                             }
-                            
-                            // Her veri noktasına değer etiketi ekle
-                            Tooltip tooltip = new Tooltip(data.getXValue() + ": " + data.getYValue());
-                            Tooltip.install(node, tooltip);
-                            
-                            // Veri noktasının üzerine tarih değerini ekle
-                            Label dataLabel = new Label(data.getXValue());
-                            dataLabel.setStyle("-fx-font-size: 10px; -fx-text-fill: #333;");
-                            
-                            // Etiketin konumu
-                            // userActivityChart.getChildren().add(dataLabel);
-                            
-                            // Etiketin pozisyonunu ayarla (node'un altına)
-                            node.boundsInParentProperty().addListener((obs, oldBounds, newBounds) -> {
-                                dataLabel.setLayoutX(newBounds.getMinX() - 10);
-                                dataLabel.setLayoutY(newBounds.getMaxY() + 5);
-                            });
                         }
                     });
-                    
+
                 } catch (Exception e) {
-                    System.err.println("KullanÄ±cÄ± aktivitesi verisi yüklenirken hata: " + e.getMessage());
+                    System.err.println("❌ Kullanıcı aktivitesi verisi yüklenirken hata: " + e.getMessage());
                     e.printStackTrace();
-                    // Fallback data
                     Platform.runLater(() -> {
+                        // Hata durumunda örnek veriler yükle (daha önceki örnek veriye benzer)
                         XYChart.Series<String, Number> fallbackSeries = new XYChart.Series<>();
-                        fallbackSeries.setName("Günlük Aktif KullanÄ±cÄ±");
+                        fallbackSeries.setName("Günlük Aktif Kullanıcı (Demo)");
                         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM");
                         LocalDate today = LocalDate.now();
-                        
+
                         for (int i = 6; i >= 0; i--) {
                             LocalDate date = today.minusDays(i);
                             String formattedDate = date.format(formatter);
-                            int randomCount = 1 + (int)(Math.random() * 3);
+                            int randomCount = 1 + (int)(Math.random() * 3); // 1-3 arasında rastgele
                             fallbackSeries.getData().add(new XYChart.Data<>(formattedDate, randomCount));
                         }
-                        
                         userActivityChart.getData().clear();
                         userActivityChart.getData().add(fallbackSeries);
+                        showAlert("Uyarı", "Kullanıcı aktivite grafiği yüklenemedi. Demo veriler gösteriliyor.");
                     });
                 }
                 return null;
@@ -277,23 +245,22 @@ public class SystemReportsContentController extends BaseController implements In
         };
         new Thread(task).start();
     }
-    
+
     private void loadWeeklyWorkoutData() {
         Task<Void> task = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
-                try (Connection conn = DatabaseConnection.getConnection()) {
-                    // Haftalık antrenman sayıları - Logs tablosundan gerçek verilerle
+                // DÜZELTİLDİ: DatabaseConnection.getInstance().getConnection() olarak değiştirildi
+                try (Connection conn = DatabaseConnection.getInstance().getConnection()) {
                     String sql = "SELECT DATENAME(weekday, created_at) as day_name, COUNT(*) as workout_count " +
-                               "FROM Logs " +
-                               "WHERE action IN ('WORKOUT_START', 'WORKOUT_COMPLETE') " +
-                               "AND created_at >= DATEADD(day, -7, GETDATE()) " +
-                               "GROUP BY DATENAME(weekday, created_at)";
-                    
+                            "FROM Logs " +
+                            "WHERE action IN ('WORKOUT_START', 'WORKOUT_COMPLETE') " +
+                            "AND created_at >= DATEADD(day, -7, GETDATE()) " +
+                            "GROUP BY DATENAME(weekday, created_at)";
+
                     PreparedStatement stmt = conn.prepareStatement(sql);
                     ResultSet rs = stmt.executeQuery();
-                    
-                    // Günleri ve sayıları tutacak değişkenler
+
                     Map<String, Integer> dayCountMap = new HashMap<>();
                     dayCountMap.put("Pzt", 0);
                     dayCountMap.put("Sal", 0);
@@ -302,12 +269,11 @@ public class SystemReportsContentController extends BaseController implements In
                     dayCountMap.put("Cum", 0);
                     dayCountMap.put("Cmt", 0);
                     dayCountMap.put("Paz", 0);
-                    
-                    // Sorgu sonucunu map'e yerleştir
+
                     while (rs.next()) {
                         String dayName = rs.getString("day_name");
                         int count = rs.getInt("workout_count");
-                        
+
                         // İngilizce gün isimlerini Türkçe kısaltmalara çevir
                         switch (dayName.toLowerCase()) {
                             case "monday": dayName = "Pzt"; break;
@@ -317,275 +283,259 @@ public class SystemReportsContentController extends BaseController implements In
                             case "friday": dayName = "Cum"; break;
                             case "saturday": dayName = "Cmt"; break;
                             case "sunday": dayName = "Paz"; break;
+                            default: dayName = "Bilinmiyor"; break; // Varsayılan durum eklendi
                         }
-                        
+
                         dayCountMap.put(dayName, count);
                     }
-                    
+
                     XYChart.Series<String, Number> series = new XYChart.Series<>();
                     series.setName("Haftalık Antrenman");
-                    
-                    // Günleri doğru sırada ekle
+
                     String[] orderedDays = {"Pzt", "Sal", "Çar", "Per", "Cum", "Cmt", "Paz"};
                     for (String day : orderedDays) {
                         series.getData().add(new XYChart.Data<>(day, dayCountMap.get(day)));
                     }
-                    
+
                     Platform.runLater(() -> {
                         weeklyWorkoutChart.getData().clear();
                         weeklyWorkoutChart.getData().add(series);
-                        
-                        // Bar grafiğini daha okunabilir hale getir
                         weeklyWorkoutChart.setAnimated(true);
-                        
-                        // Eksen değerlerini temizle ve yeniden ayarla
                         weeklyXAxis.setTickLabelGap(10);
-                        
-                        // Barları renklendir ve etiketler ekle
+
                         for (XYChart.Data<String, Number> data : series.getData()) {
                             if (data.getNode() != null) {
                                 data.getNode().setStyle("-fx-bar-fill: #FF7F50;");
-                                
-                                // Her bar'a tooltip ekle
-                                Tooltip tooltip = new Tooltip(data.getXValue() + ": " + data.getYValue());
+                                Tooltip tooltip = new Tooltip(data.getXValue() + ": " + data.getYValue() + " antrenman");
                                 Tooltip.install(data.getNode(), tooltip);
-                                
-                                // Her bar'ın üzerine gün adını ekle
-                                Label dataLabel = new Label(data.getXValue());
-                                dataLabel.setStyle("-fx-font-size: 10px; -fx-text-fill: #333;");
-                                
-                                // Etiketin konumu
-                                // weeklyWorkoutChart.getChildren().add(dataLabel);
-                                
-                                // Etiketin pozisyonunu ayarla (node'un üstüne)
-                                data.getNode().boundsInParentProperty().addListener((obs, oldBounds, newBounds) -> {
-                                    dataLabel.setLayoutX(newBounds.getMinX() + newBounds.getWidth()/2 - 10);
-                                    dataLabel.setLayoutY(newBounds.getMinY() - 15);
-                                });
                             }
                         }
                     });
-                    
+
                 } catch (Exception e) {
-                    System.err.println("Haftalık antrenman verisi yüklenirken hata: " + e.getMessage());
+                    System.err.println("❌ Haftalık antrenman verisi yüklenirken hata: " + e.getMessage());
                     e.printStackTrace();
+                    Platform.runLater(() -> {
+                        // Hata durumunda örnek veriler
+                        XYChart.Series<String, Number> fallbackSeries = new XYChart.Series<>();
+                        fallbackSeries.setName("Haftalık Antrenman (Demo)");
+                        String[] orderedDays = {"Pzt", "Sal", "Çar", "Per", "Cum", "Cmt", "Paz"};
+                        for (String day : orderedDays) {
+                            fallbackSeries.getData().add(new XYChart.Data<>(day, (int)(Math.random() * 3))); // 0-2 arası rastgele
+                        }
+                        weeklyWorkoutChart.getData().clear();
+                        weeklyWorkoutChart.getData().add(fallbackSeries);
+                        showAlert("Uyarı", "Haftalık antrenman grafiği yüklenemedi. Demo veriler gösteriliyor.");
+                    });
                 }
                 return null;
             }
         };
         new Thread(task).start();
     }
-    
+
     private void loadPopularExercisesData() {
         Task<Void> task = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
-                try (Connection conn = DatabaseConnection.getConnection()) {
-                    // En popüler egzersizleri getir - Logs tablosundan ve Exercises tablosundan
+                // DÜZELTİLDİ: DatabaseConnection.getInstance().getConnection() olarak değiştirildi
+                try (Connection conn = DatabaseConnection.getInstance().getConnection()) {
                     String sql = "SELECT TOP 5 e.name, COUNT(l.id) as usage_count " +
-                               "FROM Exercises e " +
-                               "LEFT JOIN Logs l ON l.description LIKE '%' + e.name + '%' " +
-                               "WHERE l.action IN ('WORKOUT_START', 'WORKOUT_COMPLETE', 'EXERCISE_FAVORITE') " +
-                               "GROUP BY e.name " +
-                               "ORDER BY usage_count DESC";
-                    
+                            "FROM Exercises e " +
+                            "LEFT JOIN Logs l ON l.description LIKE '%' + e.name + '%' " +
+                            "WHERE l.action IN ('WORKOUT_START', 'WORKOUT_COMPLETE', 'EXERCISE_FAVORITE') " +
+                            "GROUP BY e.name " +
+                            "ORDER BY usage_count DESC";
+
                     PreparedStatement stmt = conn.prepareStatement(sql);
                     ResultSet rs = stmt.executeQuery();
-                    
+
                     XYChart.Series<String, Number> series = new XYChart.Series<>();
-                    series.setName("KullanÄ±m SayÄ±sÄ±");
-                    
+                    series.setName("Kullanım Sayısı");
+
                     boolean hasData = false;
                     while (rs.next()) {
                         hasData = true;
                         String exerciseName = rs.getString("name");
                         int usageCount = rs.getInt("usage_count");
-                        
-                        // Egzersiz adını kısalt
-                        if (exerciseName.length() > 5) {
-                            exerciseName = exerciseName.substring(0, 5) + ".";
-                        }
-                        
                         series.getData().add(new XYChart.Data<>(exerciseName, usageCount));
                     }
-                    
-                    // Eğer veri yoksa, tüm egzersizleri al ve rastgele kullanım sayısı ata
+
                     if (!hasData) {
-                        String fallbackSql = "SELECT TOP 5 name FROM Exercises ORDER BY id";
+                        String fallbackSql = "SELECT TOP 5 name FROM Exercises ORDER BY NEWID()"; // MSSQL'de rastgele sıralama için NEWID()
                         PreparedStatement fallbackStmt = conn.prepareStatement(fallbackSql);
                         ResultSet fallbackRs = fallbackStmt.executeQuery();
-                        
+
                         while (fallbackRs.next()) {
                             String exerciseName = fallbackRs.getString("name");
                             int randomUsage = 2 + (int)(Math.random() * 4); // 2-5 arası
-                            
-                            if (exerciseName.length() > 5) {
-                                exerciseName = exerciseName.substring(0, 5) + ".";
-                            }
-                            
                             series.getData().add(new XYChart.Data<>(exerciseName, randomUsage));
                         }
                     }
-                    
+
                     Platform.runLater(() -> {
                         popularExercisesChart.getData().clear();
                         popularExercisesChart.getData().add(series);
-                        
-                        // Bar grafiğini daha okunabilir hale getir
                         popularExercisesChart.setAnimated(true);
-                        
-                        // Eksen değerlerini temizle ve yeniden ayarla
                         exerciseXAxis.setTickLabelGap(10);
-                        
-                        // Barları renklendir ve etiketler ekle
+
                         for (XYChart.Data<String, Number> data : series.getData()) {
                             if (data.getNode() != null) {
                                 data.getNode().setStyle("-fx-bar-fill: #FF7F50;");
-                                
-                                // Her bar'a tooltip ekle
-                                Tooltip tooltip = new Tooltip(data.getXValue() + ": " + data.getYValue());
+                                Tooltip tooltip = new Tooltip(data.getXValue() + ": " + data.getYValue() + " kullanım");
                                 Tooltip.install(data.getNode(), tooltip);
-                                
-                                // Her bar'ın üzerine egzersiz adını ekle
-                                Label dataLabel = new Label(data.getXValue());
-                                dataLabel.setStyle("-fx-font-size: 10px; -fx-text-fill: #333;");
-                                
-                                // Etiketin konumu
-                                // popularExercisesChart.getChildren().add(dataLabel);
-                                
-                                // Etiketin pozisyonunu ayarla (node'un üstüne)
-                                data.getNode().boundsInParentProperty().addListener((obs, oldBounds, newBounds) -> {
-                                    dataLabel.setLayoutX(newBounds.getMinX() + newBounds.getWidth()/2 - 10);
-                                    dataLabel.setLayoutY(newBounds.getMinY() - 15);
-                                });
                             }
                         }
                     });
-                    
+
                 } catch (Exception e) {
-                    System.err.println("Popüler egzersiz verisi yüklenirken hata: " + e.getMessage());
+                    System.err.println("❌ Popüler egzersiz verisi yüklenirken hata: " + e.getMessage());
                     e.printStackTrace();
+                    Platform.runLater(() -> {
+                        // Hata durumunda örnek veriler
+                        XYChart.Series<String, Number> fallbackSeries = new XYChart.Series<>();
+                        fallbackSeries.setName("Kullanım Sayısı (Demo)");
+                        fallbackSeries.getData().add(new XYChart.Data<>("Squat", 5));
+                        fallbackSeries.getData().add(new XYChart.Data<>("Pushup", 4));
+                        fallbackSeries.getData().add(new XYChart.Data<>("Run", 3));
+                        popularExercisesChart.getData().clear();
+                        popularExercisesChart.getData().add(fallbackSeries);
+                        showAlert("Uyarı", "Popüler egzersizler grafiği yüklenemedi. Demo veriler gösteriliyor.");
+                    });
                 }
                 return null;
             }
         };
         new Thread(task).start();
     }
-    
-    private void loadExerciseDistribution() {
+
+    private void loadExerciseDistributionData() {
         Task<Void> task = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
-                try (Connection conn = DatabaseConnection.getConnection()) {
-                    // Kas gruplarına göre egzersiz dağılımı - MuscleGroups tablosundan gerçek verilerle
+                // DÜZELTİLDİ: DatabaseConnection.getInstance().getConnection() olarak değiştirildi
+                try (Connection conn = DatabaseConnection.getInstance().getConnection()) {
                     String sql = "SELECT mg.name, COUNT(em.exercise_id) as exercise_count " +
-                               "FROM MuscleGroups mg " +
-                               "LEFT JOIN ExerciseMuscles em ON mg.id = em.muscle_id " +
-                               "GROUP BY mg.name " +
-                               "ORDER BY exercise_count DESC";
-                    
+                            "FROM MuscleGroups mg " +
+                            "LEFT JOIN ExerciseMuscles em ON mg.id = em.muscle_id " +
+                            "GROUP BY mg.name " +
+                            "ORDER BY exercise_count DESC";
+
                     PreparedStatement stmt = conn.prepareStatement(sql);
                     ResultSet rs = stmt.executeQuery();
-                    
-                    // Veriyi önce listeye topla
+
                     List<PieChart.Data> chartData = new ArrayList<>();
                     boolean hasData = false;
-                    
+
                     while (rs.next()) {
                         String muscleName = rs.getString("name");
                         int exerciseCount = rs.getInt("exercise_count");
-                        
-                        // Sadece egzersiz sayısı 0'dan büyükse ekle
+
                         if (exerciseCount > 0) {
                             hasData = true;
                             chartData.add(new PieChart.Data(muscleName, exerciseCount));
                         }
                     }
-                    
-                    // Eğer veri yoksa, tüm kas gruplarını al ve rastgele egzersiz sayısı ata
+
                     if (!hasData) {
-                        String fallbackSql = "SELECT name FROM MuscleGroups";
+                        String fallbackSql = "SELECT name FROM MuscleGroups ORDER BY NEWID()";
                         PreparedStatement fallbackStmt = conn.prepareStatement(fallbackSql);
                         ResultSet fallbackRs = fallbackStmt.executeQuery();
-                        
+
                         while (fallbackRs.next()) {
                             String muscleName = fallbackRs.getString("name");
                             int randomCount = 1 + (int)(Math.random() * 3); // 1-3 arası
                             chartData.add(new PieChart.Data(muscleName, randomCount));
                         }
                     }
-                    
+
                     Platform.runLater(() -> {
                         exerciseDistributionChart.getData().clear();
                         exerciseDistributionChart.getData().addAll(chartData);
-                        
-                        // Pasta grafiğini daha okunabilir hale getir
                         exerciseDistributionChart.setAnimated(true);
                         exerciseDistributionChart.setLabelsVisible(true);
                         exerciseDistributionChart.setLabelLineLength(20);
                         exerciseDistributionChart.setStartAngle(90);
-                        
-                        // Etiketleri daha okunabilir yap
+
                         for (PieChart.Data data : chartData) {
                             data.getNode().setStyle("-fx-pie-color: " + getRandomColor() + ";");
+                            Tooltip tooltip = new Tooltip(data.getName() + ": " + (int) data.getPieValue() + " egzersiz");
+                            Tooltip.install(data.getNode(), tooltip);
                         }
                     });
-                    
+
                 } catch (Exception e) {
-                    System.err.println("Egzersiz dağılımı verisi yüklenirken hata: " + e.getMessage());
+                    System.err.println("❌ Egzersiz dağılımı verisi yüklenirken hata: " + e.getMessage());
                     e.printStackTrace();
+                    Platform.runLater(() -> {
+                        // Hata durumunda örnek veriler
+                        exerciseDistributionChart.getData().clear();
+                        exerciseDistributionChart.getData().add(new PieChart.Data("Göğüs (Demo)", 5));
+                        exerciseDistributionChart.getData().add(new PieChart.Data("Sırt (Demo)", 3));
+                        exerciseDistributionChart.getData().add(new PieChart.Data("Bacak (Demo)", 7));
+                        showAlert("Uyarı", "Egzersiz dağılım grafiği yüklenemedi. Demo veriler gösteriliyor.");
+                    });
                 }
                 return null;
             }
         };
         new Thread(task).start();
     }
-    
+
     // Rastgele renk üretmek için yardımcı metod
     private String getRandomColor() {
         String[] colors = {
-            "#3498db", "#2ecc71", "#e74c3c", "#f1c40f", "#9b59b6", 
-            "#1abc9c", "#e67e22", "#34495e", "#d35400", "#27ae60"
+                "#3498db", "#2ecc71", "#e74c3c", "#f1c40f", "#9b59b6",
+                "#1abc9c", "#e67e22", "#34495e", "#d35400", "#27ae60"
         };
         return colors[(int)(Math.random() * colors.length)];
     }
-    
-    private void loadReports() {
+
+    private void loadReports() { // Tüm genel rapor istatistiklerini ve grafikleri yükler
+        System.out.println("🔄 Raporlar yükleniyor...");
         Task<Void> task = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
-                try (Connection conn = DatabaseConnection.getConnection()) {
-                    // Gerçek kullanÄ±cÄ± sayÄ±sÄ±
+                // DÜZELTİLDİ: DatabaseConnection.getInstance().getConnection() olarak değiştirildi
+                try (Connection conn = DatabaseConnection.getInstance().getConnection()) {
+                    // Gerçek kullanıcı sayısı
                     String userCountSql = "SELECT COUNT(*) as total_users FROM Users";
                     PreparedStatement userStmt = conn.prepareStatement(userCountSql);
                     ResultSet userRs = userStmt.executeQuery();
                     int totalUsers = userRs.next() ? userRs.getInt("total_users") : 0;
-                    
-                    // Gerçek egzersiz sayÄ±sÄ±
+
+                    // Gerçek egzersiz sayısı
                     String exerciseCountSql = "SELECT COUNT(*) as total_exercises FROM Exercises";
                     PreparedStatement exerciseStmt = conn.prepareStatement(exerciseCountSql);
                     ResultSet exerciseRs = exerciseStmt.executeQuery();
                     int totalExercises = exerciseRs.next() ? exerciseRs.getInt("total_exercises") : 0;
-                    
-                    // Son 7 günde aktif kullanÄ±cÄ± sayÄ±sÄ± - Logs tablosundan
+
+                    // Son 7 günde aktif kullanıcı sayısı - Logs tablosundan
                     String activeUsersSql = "SELECT COUNT(DISTINCT user_id) as active_users FROM Logs " +
-                                          "WHERE created_at >= DATEADD(day, -7, GETDATE()) AND user_id IS NOT NULL";
+                            "WHERE created_at >= DATEADD(day, -7, GETDATE()) AND user_id IS NOT NULL";
                     PreparedStatement activeStmt = conn.prepareStatement(activeUsersSql);
                     ResultSet activeRs = activeStmt.executeQuery();
                     int activeUsers = activeRs.next() ? activeRs.getInt("active_users") : 0;
-                    
+
                     Platform.runLater(() -> {
                         totalUsersLabel.setText(String.valueOf(totalUsers));
                         totalExercisesLabel.setText(String.valueOf(totalExercises));
                         activeUsersLabel.setText(String.valueOf(activeUsers));
                     });
-                    
+
+                    // Tüm grafik verilerini yükle
+                    loadUserActivityData();
+                    loadExerciseDistributionData();
+                    loadWeeklyWorkoutData();
+                    loadPopularExercisesData();
+
                 } catch (Exception e) {
-                    System.err.println("Sistem istatistikleri yüklenirken hata: " + e.getMessage());
+                    System.err.println("❌ Sistem istatistikleri yüklenirken hata: " + e.getMessage());
                     Platform.runLater(() -> {
                         totalUsersLabel.setText("0");
                         totalExercisesLabel.setText("0");
                         activeUsersLabel.setText("0");
+                        showAlert("Hata", "Sistem istatistikleri yüklenemedi. Veritabanı bağlantınızı kontrol edin.");
                     });
                 }
                 return null;
@@ -593,38 +543,38 @@ public class SystemReportsContentController extends BaseController implements In
         };
         new Thread(task).start();
     }
-    
+
     @FXML
     private void handleRefresh() {
-        loadSystemStats();
-        loadUserActivityData();
-        loadExerciseDistributionData();
-        loadWeeklyWorkoutData();
-        loadPopularExercisesData();
+        loadReports(); // Tüm istatistikleri ve grafikleri yeniden yükler
         showAlert("Bilgi", "📊 Raporlar yenilendi!");
     }
-    
+
     @FXML
     private void handleExportReport() {
         showAlert("Bilgi", "📤 Rapor indirme özelliği yakında eklenecek!");
     }
-    
+
     /**
      * Current user'ı set et
      */
     public void setCurrentUser(User user) {
         this.currentUser = user;
-        System.out.println("âœ… SystemReportsContent: Current user set to " + (user != null ? user.getUsername() : "null"));
+        System.out.println("✅ SystemReportsContent: Current user set to " + (user != null ? user.getUsername() : "null"));
+        // Eğer UI'da currentUser'a bağlı gösterilecek bir bilgi varsa burada güncelleyebilirsiniz.
     }
-    
+
     private void showAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
+        // Platform.runLater kullanımı, UI güncellemelerinin JavaFX Application Thread'de yapılmasını sağlar.
+        Platform.runLater(() -> {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle(title);
+            alert.setHeaderText(null);
+            alert.setContentText(message);
+            alert.showAndWait();
+        });
     }
-    
+
     // Data class for user reports
     public static class StatisticData {
         public final String metric;
@@ -632,7 +582,7 @@ public class SystemReportsContentController extends BaseController implements In
         public final String previousValue;
         public final String change;
         public final String percentage;
-        
+
         public StatisticData(String metric, String currentValue, String previousValue, String change, String percentage) {
             this.metric = metric;
             this.currentValue = currentValue;
@@ -641,29 +591,4 @@ public class SystemReportsContentController extends BaseController implements In
             this.percentage = percentage;
         }
     }
-
-    @Override
-    protected void initializeController() {
-        // Initialization logic for SystemReportsContentController
-        loadSystemStats();
-        loadUserActivityData();
-        loadExerciseDistributionData();
-        loadWeeklyWorkoutData();
-        loadPopularExercisesData();
-    }
-
-    private void loadSystemStats() {
-        // Method implementation for loading system statistics
-        // This should be defined or moved to the correct place in the code
-        // Placeholder for now
-    }
-
-    private void loadExerciseDistributionData() {
-        // Method implementation for loading exercise distribution data
-        // This should be defined or moved to the correct place in the code
-        // Placeholder for now
-    }
-} 
-
-
-
+}

@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
@@ -6,226 +6,226 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" 
+<AnchorPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.example.selfworkout.controller.RegisterController"
             prefWidth="1536" prefHeight="864" minWidth="1536" minHeight="864" maxWidth="1536" maxHeight="864">
-    
+
     <!-- Background Image - Tam Ekran -->
     <ImageView pickOnBounds="true" preserveRatio="false" fitWidth="1536" fitHeight="864"
-               AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" 
+               AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
                AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-       <image>
-          <Image url="@../../../images/foto.png" />
-       </image>
+        <image>
+            <Image url="@../../../images/foto.png" />
+        </image>
     </ImageView>
-    
+
     <!-- Dark Overlay - Tam Ekran -->
-    <Region style="-fx-background-color: rgba(0, 0, 0, 0.5);" 
-            AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" 
+    <Region style="-fx-background-color: rgba(0, 0, 0, 0.5);"
+            AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
             AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-    
+
     <!-- Main Content -->
     <HBox alignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-       
-       <!-- Left Side - Branding -->
-       <VBox alignment="CENTER" spacing="20.0" HBox.hgrow="ALWAYS" style="-fx-background-color: transparent;">
-          <padding>
-             <Insets left="50.0" right="30.0" />
-          </padding>
-                     <Label text="SELFWORKOUT" 
-                  style="-fx-font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif; -fx-font-size: 56px; -fx-font-weight: 900; -fx-text-fill: white; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.8), 20, 0, 0, 5);">
-              <font>
-                 <Font name="System Bold" size="56.0" />
-              </font>
-           </Label>
-           <Label text="Fitness Ailenize Katılın" 
-                  style="-fx-font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif; -fx-font-size: 20px; -fx-text-fill: white; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.6), 10, 0, 0, 3);">
-              <font>
-                 <Font size="20.0" />
-              </font>
-           </Label>
-       </VBox>
-       
-       <!-- Right Side - Register Form -->
-       <VBox alignment="CENTER" spacing="12.0" 
-             style="-fx-background-color: rgba(255, 255, 255, 0.85); -fx-background-radius: 20px; -fx-padding: 25px 40px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 20, 0, 0, 10); -fx-max-height: 580px; -fx-max-width: 450px;">
-          <HBox.margin>
-             <Insets right="100.0" />
-          </HBox.margin>
-          
-          <!-- Register Header -->
-          <VBox alignment="CENTER" spacing="2.0">
-             <Label text="Hesap Oluştur" 
-                    style="-fx-font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif; -fx-font-size: 26px; -fx-font-weight: 800; -fx-text-fill: #2c3e50;">
+
+        <!-- Left Side - Branding -->
+        <VBox alignment="CENTER" spacing="20.0" HBox.hgrow="ALWAYS" style="-fx-background-color: transparent;">
+            <padding>
+                <Insets left="50.0" right="30.0" />
+            </padding>
+            <Label text="SELFWORKOUT"
+                   style="-fx-font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif; -fx-font-size: 56px; -fx-font-weight: 900; -fx-text-fill: white; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.8), 20, 0, 0, 5);">
                 <font>
-                   <Font name="System Bold" size="26.0" />
+                    <Font name="System Bold" size="56.0" />
                 </font>
-             </Label>
-             <Label text="Fitness yolculuğunuza başlamak için bilgilerinizi girin" 
-                    style="-fx-font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif; -fx-font-size: 12px; -fx-text-fill: #7f8c8d;">
+            </Label>
+            <Label text="Fitness Ailenize Katılın"
+                   style="-fx-font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif; -fx-font-size: 20px; -fx-text-fill: white; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.6), 10, 0, 0, 3);">
                 <font>
-                   <Font size="12.0" />
+                    <Font size="20.0" />
                 </font>
-             </Label>
-          </VBox>
-          
-          <!-- Form Fields -->
-          <VBox spacing="10.0">
-             
-             <!-- Name Fields -->
-             <HBox spacing="10.0">
-                <VBox spacing="4.0" HBox.hgrow="ALWAYS">
-                   <Label text="Ad" 
-                          style="-fx-font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif; -fx-font-size: 11px; -fx-font-weight: 600; -fx-text-fill: #34495e;">
-                      <font>
-                         <Font name="System Bold" size="11.0" />
-                      </font>
-                   </Label>
-                   <TextField fx:id="firstNameField" promptText="Adınız" 
-                             style="-fx-font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif; -fx-font-size: 13px; -fx-pref-height: 35px; -fx-background-color: rgba(248, 249, 250, 0.8); -fx-background-radius: 6px; -fx-border-color: #e1e8ed; -fx-border-width: 1px; -fx-border-radius: 6px; -fx-padding: 0 12px;">
-                      <font>
-                         <Font size="13.0" />
-                      </font>
-                   </TextField>
-                </VBox>
-                
-                <VBox spacing="4.0" HBox.hgrow="ALWAYS">
-                   <Label text="Soyad" 
-                          style="-fx-font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif; -fx-font-size: 11px; -fx-font-weight: 600; -fx-text-fill: #34495e;">
-                      <font>
-                         <Font name="System Bold" size="11.0" />
-                      </font>
-                   </Label>
-                   <TextField fx:id="lastNameField" promptText="Soyadınız" 
-                             style="-fx-font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif; -fx-font-size: 13px; -fx-pref-height: 35px; -fx-background-color: rgba(248, 249, 250, 0.8); -fx-background-radius: 6px; -fx-border-color: #e1e8ed; -fx-border-width: 1px; -fx-border-radius: 6px; -fx-padding: 0 12px;">
-                      <font>
-                         <Font size="13.0" />
-                      </font>
-                   </TextField>
-                </VBox>
-             </HBox>
-             
-             <!-- Username Field -->
-             <VBox spacing="4.0">
-                <Label text="Kullanıcı Adı" 
-                       style="-fx-font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif; -fx-font-size: 11px; -fx-font-weight: 600; -fx-text-fill: #34495e;">
-                   <font>
-                      <Font name="System Bold" size="11.0" />
-                   </font>
+            </Label>
+        </VBox>
+
+        <!-- Right Side - Register Form -->
+        <VBox alignment="CENTER" spacing="12.0"
+              style="-fx-background-color: rgba(255, 255, 255, 0.85); -fx-background-radius: 20px; -fx-padding: 25px 40px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 20, 0, 0, 10); -fx-max-height: 580px; -fx-max-width: 450px;">
+            <HBox.margin>
+                <Insets right="100.0" />
+            </HBox.margin>
+
+            <!-- Register Header -->
+            <VBox alignment="CENTER" spacing="2.0">
+                <Label text="Hesap Oluştur"
+                       style="-fx-font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif; -fx-font-size: 26px; -fx-font-weight: 800; -fx-text-fill: #2c3e50;">
+                    <font>
+                        <Font name="System Bold" size="26.0" />
+                    </font>
                 </Label>
-                <TextField fx:id="usernameField" promptText="Benzersiz kullanıcı adınız" 
-                          style="-fx-font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif; -fx-font-size: 13px; -fx-pref-height: 35px; -fx-background-color: rgba(248, 249, 250, 0.8); -fx-background-radius: 6px; -fx-border-color: #e1e8ed; -fx-border-width: 1px; -fx-border-radius: 6px; -fx-padding: 0 12px;">
-                   <font>
-                      <Font size="13.0" />
-                   </font>
-                </TextField>
-             </VBox>
-             
-             <!-- Email Field -->
-             <VBox spacing="4.0">
-                <Label text="E-posta" 
-                       style="-fx-font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif; -fx-font-size: 11px; -fx-font-weight: 600; -fx-text-fill: #34495e;">
-                   <font>
-                      <Font name="System Bold" size="11.0" />
-                   </font>
+                <Label text="Fitness yolculuğunuza başlamak için bilgilerinizi girin"
+                       style="-fx-font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif; -fx-font-size: 12px; -fx-text-fill: #7f8c8d;">
+                    <font>
+                        <Font size="12.0" />
+                    </font>
                 </Label>
-                <TextField fx:id="emailField" promptText="ornek@email.com" 
-                          style="-fx-font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif; -fx-font-size: 13px; -fx-pref-height: 35px; -fx-background-color: rgba(248, 249, 250, 0.8); -fx-background-radius: 6px; -fx-border-color: #e1e8ed; -fx-border-width: 1px; -fx-border-radius: 6px; -fx-padding: 0 12px;">
-                   <font>
-                      <Font size="13.0" />
-                   </font>
-                </TextField>
-             </VBox>
-             
-             <!-- Password Fields -->
-             <HBox spacing="10.0">
-                <VBox spacing="4.0" HBox.hgrow="ALWAYS">
-                   <Label text="Şifre" 
-                          style="-fx-font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif; -fx-font-size: 11px; -fx-font-weight: 600; -fx-text-fill: #34495e;">
-                      <font>
-                         <Font name="System Bold" size="11.0" />
-                      </font>
-                   </Label>
-                   <PasswordField fx:id="passwordField" promptText="En az 6 karakter" 
-                                 style="-fx-font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif; -fx-font-size: 13px; -fx-pref-height: 35px; -fx-background-color: rgba(248, 249, 250, 0.8); -fx-background-radius: 6px; -fx-border-color: #e1e8ed; -fx-border-width: 1px; -fx-border-radius: 6px; -fx-padding: 0 12px;">
-                      <font>
-                         <Font size="13.0" />
-                      </font>
-                   </PasswordField>
+            </VBox>
+
+            <!-- Form Fields -->
+            <VBox spacing="10.0">
+
+                <!-- Name Fields -->
+                <HBox spacing="10.0">
+                    <VBox spacing="4.0" HBox.hgrow="ALWAYS">
+                        <Label text="Ad"
+                               style="-fx-font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif; -fx-font-size: 11px; -fx-font-weight: 600; -fx-text-fill: #34495e;">
+                            <font>
+                                <Font name="System Bold" size="11.0" />
+                            </font>
+                        </Label>
+                        <TextField fx:id="firstNameField" promptText="Adınız"
+                                   style="-fx-font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif; -fx-font-size: 13px; -fx-pref-height: 35px; -fx-background-color: rgba(248, 249, 250, 0.8); -fx-background-radius: 6px; -fx-border-color: #e1e8ed; -fx-border-width: 1px; -fx-border-radius: 6px; -fx-padding: 0 12px;">
+                            <font>
+                                <Font size="13.0" />
+                            </font>
+                        </TextField>
+                    </VBox>
+
+                    <VBox spacing="4.0" HBox.hgrow="ALWAYS">
+                        <Label text="Soyad"
+                               style="-fx-font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif; -fx-font-size: 11px; -fx-font-weight: 600; -fx-text-fill: #34495e;">
+                            <font>
+                                <Font name="System Bold" size="11.0" />
+                            </font>
+                        </Label>
+                        <TextField fx:id="lastNameField" promptText="Soyadınız"
+                                   style="-fx-font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif; -fx-font-size: 13px; -fx-pref-height: 35px; -fx-background-color: rgba(248, 249, 250, 0.8); -fx-background-radius: 6px; -fx-border-color: #e1e8ed; -fx-border-width: 1px; -fx-border-radius: 6px; -fx-padding: 0 12px;">
+                            <font>
+                                <Font size="13.0" />
+                            </font>
+                        </TextField>
+                    </VBox>
+                </HBox>
+
+                <!-- Username Field -->
+                <VBox spacing="4.0">
+                    <Label text="Kullanıcı Adı"
+                           style="-fx-font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif; -fx-font-size: 11px; -fx-font-weight: 600; -fx-text-fill: #34495e;">
+                        <font>
+                            <Font name="System Bold" size="11.0" />
+                        </font>
+                    </Label>
+                    <TextField fx:id="usernameField" promptText="Benzersiz kullanıcı adınız"
+                               style="-fx-font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif; -fx-font-size: 13px; -fx-pref-height: 35px; -fx-background-color: rgba(248, 249, 250, 0.8); -fx-background-radius: 6px; -fx-border-color: #e1e8ed; -fx-border-width: 1px; -fx-border-radius: 6px; -fx-padding: 0 12px;">
+                        <font>
+                            <Font size="13.0" />
+                        </font>
+                    </TextField>
                 </VBox>
-                
-                <VBox spacing="4.0" HBox.hgrow="ALWAYS">
-                   <Label text="Şifre Tekrar" 
-                          style="-fx-font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif; -fx-font-size: 11px; -fx-font-weight: 600; -fx-text-fill: #34495e;">
-                      <font>
-                         <Font name="System Bold" size="11.0" />
-                      </font>
-                   </Label>
-                   <PasswordField fx:id="confirmPasswordField" promptText="Şifrenizi tekrar girin" 
-                                 style="-fx-font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif; -fx-font-size: 13px; -fx-pref-height: 35px; -fx-background-color: rgba(248, 249, 250, 0.8); -fx-background-radius: 6px; -fx-border-color: #e1e8ed; -fx-border-width: 1px; -fx-border-radius: 6px; -fx-padding: 0 12px;">
-                      <font>
-                         <Font size="13.0" />
-                      </font>
-                   </PasswordField>
+
+                <!-- Email Field -->
+                <VBox spacing="4.0">
+                    <Label text="E-posta"
+                           style="-fx-font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif; -fx-font-size: 11px; -fx-font-weight: 600; -fx-text-fill: #34495e;">
+                        <font>
+                            <Font name="System Bold" size="11.0" />
+                        </font>
+                    </Label>
+                    <TextField fx:id="emailField" promptText="ornek@email.com"
+                               style="-fx-font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif; -fx-font-size: 13px; -fx-pref-height: 35px; -fx-background-color: rgba(248, 249, 250, 0.8); -fx-background-radius: 6px; -fx-border-color: #e1e8ed; -fx-border-width: 1px; -fx-border-radius: 6px; -fx-padding: 0 12px;">
+                        <font>
+                            <Font size="13.0" />
+                        </font>
+                    </TextField>
                 </VBox>
-             </HBox>
-             
-             <!-- Birth Date Field -->
-             <VBox spacing="4.0">
-                <Label text="Doğum Tarihi (İsteğe Bağlı)" 
-                       style="-fx-font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif; -fx-font-size: 11px; -fx-font-weight: 600; -fx-text-fill: #34495e;">
-                   <font>
-                      <Font name="System Bold" size="11.0" />
-                   </font>
-                </Label>
-                <DatePicker fx:id="birthdatePicker" promptText="GG/AA/YYYY" 
-                           style="-fx-font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif; -fx-font-size: 13px; -fx-pref-height: 35px; -fx-background-color: rgba(248, 249, 250, 0.8); -fx-background-radius: 6px; -fx-border-color: #e1e8ed; -fx-border-width: 1px; -fx-border-radius: 6px;"
-                           maxWidth="Infinity">
-                </DatePicker>
-             </VBox>
-             
-             <!-- Terms Checkbox -->
-             <CheckBox fx:id="termsCheckBox" text="Kullanım şartlarını ve gizlilik politikasını kabul ediyorum" 
-                      style="-fx-font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif; -fx-font-size: 11px; -fx-text-fill: #34495e;">
-                <font>
-                   <Font size="11.0" />
-                </font>
-             </CheckBox>
-             
-             <!-- Status Label -->
-             <Label fx:id="statusLabel" 
-                    style="-fx-font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif; -fx-font-size: 11px; -fx-font-weight: bold;" />
-             
-             <!-- Loading Indicator -->
-             <ProgressIndicator fx:id="loadingIndicator" maxHeight="20.0" maxWidth="20.0" visible="false" />
-             
-             <!-- Register Button -->
-             <Button fx:id="registerButton" text="HESAP OLUŞTUR" onAction="#handleRegister" maxWidth="Infinity"
-                     style="-fx-font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: white; -fx-background-color: #3498db; -fx-background-radius: 6px; -fx-pref-height: 38px; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(52,152,219,0.3), 10, 0, 0, 3);">
-                <font>
-                   <Font name="System Bold" size="13.0" />
-                </font>
-             </Button>
-             
-             <!-- Back to Login Link -->
-             <HBox alignment="CENTER" spacing="5.0">
-                <padding>
-                   <Insets top="2.0" />
-                </padding>
-                <Label text="Zaten hesabınız var mı?" style="-fx-text-fill: #7f8c8d; -fx-font-size: 11px;">
-                   <font>
-                      <Font size="11.0" />
-                   </font>
-                </Label>
-                <Hyperlink fx:id="backToLoginButton" text="Giriş Yap" onAction="#handleBackToLogin"
-                          style="-fx-font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif; -fx-font-size: 11px; -fx-text-fill: #3498db; -fx-font-weight: 600; -fx-underline: true;">
-                   <font>
-                      <Font name="System Bold" size="11.0" />
-                   </font>
-                </Hyperlink>
-             </HBox>
-          </VBox>
-       </VBox>
+
+                <!-- Password Fields -->
+                <HBox spacing="10.0">
+                    <VBox spacing="4.0" HBox.hgrow="ALWAYS">
+                        <Label text="Şifre"
+                               style="-fx-font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif; -fx-font-size: 11px; -fx-font-weight: 600; -fx-text-fill: #34495e;">
+                            <font>
+                                <Font name="System Bold" size="11.0" />
+                            </font>
+                        </Label>
+                        <PasswordField fx:id="passwordField" promptText="En az 6 karakter"
+                                       style="-fx-font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif; -fx-font-size: 13px; -fx-pref-height: 35px; -fx-background-color: rgba(248, 249, 250, 0.8); -fx-background-radius: 6px; -fx-border-color: #e1e8ed; -fx-border-width: 1px; -fx-border-radius: 6px; -fx-padding: 0 12px;">
+                            <font>
+                                <Font size="13.0" />
+                            </font>
+                        </PasswordField>
+                    </VBox>
+
+                    <VBox spacing="4.0" HBox.hgrow="ALWAYS">
+                        <Label text="Şifre Tekrar"
+                               style="-fx-font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif; -fx-font-size: 11px; -fx-font-weight: 600; -fx-text-fill: #34495e;">
+                            <font>
+                                <Font name="System Bold" size="11.0" />
+                            </font>
+                        </Label>
+                        <PasswordField fx:id="confirmPasswordField" promptText="Şifrenizi tekrar girin"
+                                       style="-fx-font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif; -fx-font-size: 13px; -fx-pref-height: 35px; -fx-background-color: rgba(248, 249, 250, 0.8); -fx-background-radius: 6px; -fx-border-color: #e1e8ed; -fx-border-width: 1px; -fx-border-radius: 6px; -fx-padding: 0 12px;">
+                            <font>
+                                <Font size="13.0" />
+                            </font>
+                        </PasswordField>
+                    </VBox>
+                </HBox>
+
+                <!-- Birth Date Field -->
+                <VBox spacing="4.0">
+                    <Label text="Doğum Tarihi (İsteğe Bağlı)"
+                           style="-fx-font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif; -fx-font-size: 11px; -fx-font-weight: 600; -fx-text-fill: #34495e;">
+                        <font>
+                            <Font name="System Bold" size="11.0" />
+                        </font>
+                    </Label>
+                    <DatePicker fx:id="birthdatePicker" promptText="GG/AA/YYYY"
+                                style="-fx-font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif; -fx-font-size: 13px; -fx-pref-height: 35px; -fx-background-color: rgba(248, 249, 250, 0.8); -fx-background-radius: 6px; -fx-border-color: #e1e8ed; -fx-border-width: 1px; -fx-border-radius: 6px;"
+                                maxWidth="Infinity">
+                    </DatePicker>
+                </VBox>
+
+                <!-- Terms Checkbox -->
+                <CheckBox fx:id="termsCheckBox" text="Kullanım şartlarını ve gizlilik politikasını kabul ediyorum"
+                          style="-fx-font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif; -fx-font-size: 11px; -fx-text-fill: #34495e;">
+                    <font>
+                        <Font size="11.0" />
+                    </font>
+                </CheckBox>
+
+                <!-- Status Label -->
+                <Label fx:id="statusLabel"
+                       style="-fx-font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif; -fx-font-size: 11px; -fx-font-weight: bold;" />
+
+                <!-- Loading Indicator -->
+                <ProgressIndicator fx:id="loadingIndicator" maxHeight="20.0" maxWidth="20.0" visible="false" />
+
+                <!-- Register Button -->
+                <Button fx:id="registerButton" text="HESAP OLUŞTUR" onAction="#handleRegister" maxWidth="Infinity"
+                        style="-fx-font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: white; -fx-background-color: #3498db; -fx-background-radius: 6px; -fx-pref-height: 38px; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(52,152,219,0.3), 10, 0, 0, 3);">
+                    <font>
+                        <Font name="System Bold" size="13.0" />
+                    </font>
+                </Button>
+
+                <!-- Back to Login Link -->
+                <HBox alignment="CENTER" spacing="5.0">
+                    <padding>
+                        <Insets top="2.0" />
+                    </padding>
+                    <Label text="Zaten hesabınız var mı?" style="-fx-text-fill: #7f8c8d; -fx-font-size: 11px;">
+                        <font>
+                            <Font size="11.0" />
+                        </font>
+                    </Label>
+                    <Hyperlink fx:id="backToLoginButton" text="Giriş Yap" onAction="#handleBackToLogin"
+                               style="-fx-font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif; -fx-font-size: 11px; -fx-text-fill: #3498db; -fx-font-weight: 600; -fx-underline: true;">
+                        <font>
+                            <Font name="System Bold" size="11.0" />
+                        </font>
+                    </Hyperlink>
+                </HBox>
+            </VBox>
+        </VBox>
     </HBox>
-    
-</AnchorPane> 
+
+</AnchorPane>

@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<ScrollPane xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.example.selfworkout.controller.SystemReportsContentController"
+            fitToWidth="true" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED"
+            styleClass="fixed-size-container" prefWidth="1312" prefHeight="864" maxWidth="1312" maxHeight="864"
+            style="-fx-background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -fx-background-color: #667eea;">
+
+    <content>
+        <VBox spacing="25.0" style="-fx-padding: 30px 40px;" alignment="TOP_CENTER">
+
+            <!-- Header Section -->
+            <VBox spacing="15.0" alignment="CENTER" style="-fx-padding: 30px; -fx-background-color: rgba(255,255,255,0.95); -fx-background-radius: 20px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 15, 0, 0, 6);" prefWidth="1200.0">
+                <Label text="ğŸ“ˆ Sistem RaporlarÄ±" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+                <Label text="Sistemin genel performansÄ±nÄ± ve istatistiklerini gÃ¶rÃ¼ntÃ¼leyin" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 16px; -fx-text-fill: #7f8c8d;" />
+            </VBox>
+
+            <!-- Kontrol Paneli -->
+            <VBox spacing="20.0" style="-fx-background-color: rgba(255,255,255,0.95); -fx-background-radius: 15px; -fx-padding: 25px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 4);" prefWidth="1200.0">
+
+                <!-- Tarih AralÄ±ÄŸÄ± ve Kontroller -->
+                <HBox spacing="20.0" alignment="CENTER_LEFT" style="-fx-padding: 0 0 15px 0;">
+                    <Label text="ğŸ“… Tarih AralÄ±ÄŸÄ±:" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+
+                    <VBox spacing="8.0">
+                        <Label text="BaÅŸlangÄ±Ã§:" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 12px; -fx-text-fill: #7f8c8d;" />
+                        <DatePicker fx:id="startDatePicker" prefWidth="140"
+                                    style="-fx-font-family: 'Segoe UI'; -fx-font-size: 12px;" />
+                    </VBox>
+
+                    <VBox spacing="8.0">
+                        <Label text="BitiÅŸ:" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 12px; -fx-text-fill: #7f8c8d;" />
+                        <DatePicker fx:id="endDatePicker" prefWidth="140"
+                                    style="-fx-font-family: 'Segoe UI'; -fx-font-size: 12px;" />
+                    </VBox>
+
+                    <Region HBox.hgrow="ALWAYS" />
+
+                    <Button fx:id="refreshBtn" text="ğŸ”„ Raporu Yenile" onAction="#handleRefresh"
+                            style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-family: 'Segoe UI'; -fx-font-size: 12px; -fx-font-weight: bold; -fx-background-radius: 8px; -fx-padding: 10px 16px; -fx-cursor: hand;" />
+
+                    <Button text="ğŸ“¤ Rapor Ä°ndir"
+                            style="-fx-background-color: #9b59b6; -fx-text-fill: white; -fx-font-family: 'Segoe UI'; -fx-font-size: 12px; -fx-font-weight: bold; -fx-background-radius: 8px; -fx-padding: 10px 16px; -fx-cursor: hand;" />
+                </HBox>
+
+                <!-- Ä°statistik KartlarÄ± -->
+                <HBox spacing="30.0" alignment="CENTER" style="-fx-padding: 15px 0;">
+                    <!-- Sol Kart - Toplam KullanÄ±cÄ± -->
+                    <VBox alignment="CENTER" spacing="12.0" style="-fx-background-color: white; -fx-background-radius: 16px; -fx-padding: 32px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 12, 0, 0, 4); -fx-min-width: 280; -fx-pref-width: 280;" prefWidth="280" prefHeight="160">
+                        <Label text="ğŸ‘¥" style="-fx-font-size: 48px;" />
+                        <Label fx:id="totalUsersLabel" text="156" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 36px; -fx-font-weight: bold; -fx-text-fill: #27ae60;" />
+                        <Label text="Toplam KullanÄ±cÄ±" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 14px; -fx-text-fill: #7f8c8d; -fx-font-weight: normal;" />
+                    </VBox>
+
+                    <!-- Orta Kart - Toplam Egzersiz -->
+                    <VBox alignment="CENTER" spacing="12.0" style="-fx-background-color: white; -fx-background-radius: 16px; -fx-padding: 32px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 12, 0, 0, 4); -fx-min-width: 280; -fx-pref-width: 280;" prefWidth="280" prefHeight="160">
+                        <Label text="ğŸ‹ï¸" style="-fx-font-size: 48px;" />
+                        <Label fx:id="totalExercisesLabel" text="89" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 36px; -fx-font-weight: bold; -fx-text-fill: #3498db;" />
+                        <Label text="Toplam Egzersiz" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 14px; -fx-text-fill: #7f8c8d; -fx-font-weight: normal;" />
+                    </VBox>
+
+                    <!-- SaÄŸ Kart - Aktif KullanÄ±cÄ± -->
+                    <VBox alignment="CENTER" spacing="12.0" style="-fx-background-color: white; -fx-background-radius: 16px; -fx-padding: 32px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 12, 0, 0, 4); -fx-min-width: 280; -fx-pref-width: 280;" prefWidth="280" prefHeight="160">
+                        <Label text="âš¡" style="-fx-font-size: 48px;" />
+                        <Label fx:id="activeUsersLabel" text="42" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 36px; -fx-font-weight: bold; -fx-text-fill: #e74c3c;" />
+                        <Label text="Aktif KullanÄ±cÄ±" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 14px; -fx-text-fill: #7f8c8d; -fx-font-weight: normal;" />
+                    </VBox>
+                </HBox>
+            </VBox>
+
+            <!-- Grafikler BÃ¶lÃ¼mÃ¼ -->
+            <HBox spacing="24.0" alignment="TOP_CENTER">
+                <!-- KullanÄ±cÄ± Aktivitesi GrafiÄŸi -->
+                <VBox spacing="12.0" style="-fx-background-color: white; -fx-background-radius: 16px; -fx-padding: 24px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 12, 0, 0, 6);" prefWidth="600" prefHeight="420">
+                    <Label text="ğŸ“Š KullanÄ±cÄ± Aktivitesi Trendi" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+
+                    <LineChart fx:id="userActivityChart" prefHeight="360" prefWidth="550" createSymbols="true" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 12px;" legendVisible="true" legendSide="TOP">
+                        <xAxis>
+                            <CategoryAxis fx:id="activityXAxis" label="Tarih" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 12px;" animated="true" tickLabelRotation="45" />
+                        </xAxis>
+                        <yAxis>
+                            <NumberAxis fx:id="activityYAxis" label="Aktif KullanÄ±cÄ±" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 12px;" tickUnit="1" minorTickCount="0" />
+                        </yAxis>
+                        <padding>
+                            <Insets top="10" right="20" bottom="40" left="10" />
+                        </padding>
+                    </LineChart>
+                </VBox>
+
+                <!-- Egzersiz DaÄŸÄ±lÄ±mÄ± GrafiÄŸi -->
+                <VBox spacing="12.0" style="-fx-background-color: white; -fx-background-radius: 16px; -fx-padding: 24px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 12, 0, 0, 6);" prefWidth="600" prefHeight="420">
+                    <Label text="ğŸ¥§ Egzersiz Kategorisi DaÄŸÄ±lÄ±mÄ±" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+
+                    <PieChart fx:id="exerciseDistributionChart" prefHeight="360" prefWidth="550" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 12px;" labelsVisible="true" legendVisible="true" legendSide="BOTTOM">
+                        <padding>
+                            <Insets top="10" right="10" bottom="10" left="10" />
+                        </padding>
+                    </PieChart>
+                </VBox>
+            </HBox>
+
+            <!-- Ä°kinci Grafik SatÄ±rÄ± -->
+            <HBox spacing="24.0" alignment="TOP_CENTER">
+                <!-- HaftalÄ±k Antrenman SÄ±klÄ±ÄŸÄ± -->
+                <VBox spacing="12.0" style="-fx-background-color: white; -fx-background-radius: 16px; -fx-padding: 24px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 12, 0, 0, 6);" prefWidth="600" prefHeight="420">
+                    <Label text="ğŸ“… HaftalÄ±k Antrenman SÄ±klÄ±ÄŸÄ±" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+
+                    <BarChart fx:id="weeklyWorkoutChart" prefHeight="360" prefWidth="550" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 12px;" legendVisible="true" legendSide="TOP" barGap="10" categoryGap="50">
+                        <xAxis>
+                            <CategoryAxis fx:id="weeklyXAxis" label="GÃ¼n" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 12px;" tickLabelRotation="45" />
+                        </xAxis>
+                        <yAxis>
+                            <NumberAxis fx:id="weeklyYAxis" label="Antrenman SayÄ±sÄ±" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 12px;" tickUnit="1" minorTickCount="0" />
+                        </yAxis>
+                        <padding>
+                            <Insets top="10" right="20" bottom="40" left="10" />
+                        </padding>
+                    </BarChart>
+                </VBox>
+
+                <!-- PopÃ¼ler Egzersizler -->
+                <VBox spacing="12.0" style="-fx-background-color: white; -fx-background-radius: 16px; -fx-padding: 24px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 12, 0, 0, 6);" prefWidth="600" prefHeight="420">
+                    <Label text="ğŸ† En PopÃ¼ler Egzersizler" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+
+                    <BarChart fx:id="popularExercisesChart" prefHeight="360" prefWidth="550" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 12px;" legendVisible="true" legendSide="TOP" barGap="10" categoryGap="50">
+                        <xAxis>
+                            <CategoryAxis fx:id="exerciseXAxis" label="Egzersiz" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 12px;" tickLabelRotation="45" />
+                        </xAxis>
+                        <yAxis>
+                            <NumberAxis fx:id="exerciseYAxis" label="KullanÄ±m SayÄ±sÄ±" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 12px;" tickUnit="1" minorTickCount="0" />
+                        </yAxis>
+                        <padding>
+                            <Insets top="10" right="20" bottom="40" left="10" />
+                        </padding>
+                    </BarChart>
+                </VBox>
+            </HBox>
+
+        </VBox>
+    </content>
+</ScrollPane>
+
+

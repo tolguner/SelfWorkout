@@ -13,50 +13,50 @@ import java.util.List;
  * Egzersiz etiketlerini yönetir
  */
 public class ExerciseTagDAO {
-    
+
     // SQL sorguları
-    private static final String INSERT_EXERCISE_TAG = 
-        "INSERT INTO ExerciseTags (exercise_id, tag) VALUES (?, ?)";
-    
-    private static final String SELECT_BY_ID = 
-        "SELECT et.*, e.name as exercise_name " +
-        "FROM ExerciseTags et " +
-        "LEFT JOIN Exercises e ON et.exercise_id = e.id " +
-        "WHERE et.id = ?";
-    
-    private static final String SELECT_BY_EXERCISE_ID = 
-        "SELECT et.*, e.name as exercise_name " +
-        "FROM ExerciseTags et " +
-        "LEFT JOIN Exercises e ON et.exercise_id = e.id " +
-        "WHERE et.exercise_id = ?";
-    
-    private static final String SELECT_BY_TAG = 
-        "SELECT et.*, e.name as exercise_name " +
-        "FROM ExerciseTags et " +
-        "LEFT JOIN Exercises e ON et.exercise_id = e.id " +
-        "WHERE et.tag LIKE ?";
-    
-    private static final String SELECT_ALL = 
-        "SELECT et.*, e.name as exercise_name " +
-        "FROM ExerciseTags et " +
-        "LEFT JOIN Exercises e ON et.exercise_id = e.id " +
-        "ORDER BY e.name, et.tag";
-    
-    private static final String SELECT_DISTINCT_TAGS = 
-        "SELECT DISTINCT tag FROM ExerciseTags ORDER BY tag";
-    
-    private static final String DELETE_EXERCISE_TAG = 
-        "DELETE FROM ExerciseTags WHERE id = ?";
-    
-    private static final String DELETE_BY_EXERCISE_ID = 
-        "DELETE FROM ExerciseTags WHERE exercise_id = ?";
-    
-    private static final String DELETE_BY_TAG = 
-        "DELETE FROM ExerciseTags WHERE tag = ?";
-    
-    private static final String CHECK_EXISTS = 
-        "SELECT COUNT(*) FROM ExerciseTags WHERE exercise_id = ? AND tag = ?";
-    
+    private static final String INSERT_EXERCISE_TAG =
+            "INSERT INTO ExerciseTags (exercise_id, tag) VALUES (?, ?)";
+
+    private static final String SELECT_BY_ID =
+            "SELECT et.*, e.name as exercise_name " +
+                    "FROM ExerciseTags et " +
+                    "LEFT JOIN Exercises e ON et.exercise_id = e.id " +
+                    "WHERE et.id = ?";
+
+    private static final String SELECT_BY_EXERCISE_ID =
+            "SELECT et.*, e.name as exercise_name " +
+                    "FROM ExerciseTags et " +
+                    "LEFT JOIN Exercises e ON et.exercise_id = e.id " +
+                    "WHERE et.exercise_id = ?";
+
+    private static final String SELECT_BY_TAG =
+            "SELECT et.*, e.name as exercise_name " +
+                    "FROM ExerciseTags et " +
+                    "LEFT JOIN Exercises e ON et.exercise_id = e.id " +
+                    "WHERE et.tag LIKE ?";
+
+    private static final String SELECT_ALL =
+            "SELECT et.*, e.name as exercise_name " +
+                    "FROM ExerciseTags et " +
+                    "LEFT JOIN Exercises e ON et.exercise_id = e.id " +
+                    "ORDER BY e.name, et.tag";
+
+    private static final String SELECT_DISTINCT_TAGS =
+            "SELECT DISTINCT tag FROM ExerciseTags ORDER BY tag";
+
+    private static final String DELETE_EXERCISE_TAG =
+            "DELETE FROM ExerciseTags WHERE id = ?";
+
+    private static final String DELETE_BY_EXERCISE_ID =
+            "DELETE FROM ExerciseTags WHERE exercise_id = ?";
+
+    private static final String DELETE_BY_TAG =
+            "DELETE FROM ExerciseTags WHERE tag = ?";
+
+    private static final String CHECK_EXISTS =
+            "SELECT COUNT(*) FROM ExerciseTags WHERE exercise_id = ? AND tag = ?";
+
     /**
      * Yeni egzersiz etiketi ekler
      */
@@ -66,19 +66,20 @@ public class ExerciseTagDAO {
             System.out.println("⚠️ Bu egzersiz etiketi zaten mevcut!");
             return null;
         }
-        
-        try (Connection connection = DatabaseConnection.getConnection();
+
+        // DÜZELTİLDİ: DatabaseConnection.getInstance().getConnection() olarak değiştirildi
+        try (Connection connection = DatabaseConnection.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(INSERT_EXERCISE_TAG, Statement.RETURN_GENERATED_KEYS)) {
-            
+
             statement.setInt(1, exerciseTag.getExerciseId());
             statement.setString(2, exerciseTag.getTag().trim().toLowerCase());
-            
+
             int affectedRows = statement.executeUpdate();
-            
+
             if (affectedRows == 0) {
                 throw new SQLException("Egzersiz etiketi ekleme başarısız, hiçbir satır etkilenmedi.");
             }
-            
+
             try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
                     exerciseTag.setId(generatedKeys.getInt(1));
@@ -90,16 +91,17 @@ public class ExerciseTagDAO {
             }
         }
     }
-    
+
     /**
      * ID'ye göre egzersiz etiketi bulur
      */
     public ExerciseTag findById(int id) throws SQLException {
-        try (Connection connection = DatabaseConnection.getConnection();
+        // DÜZELTİLDİ: DatabaseConnection.getInstance().getConnection() olarak değiştirildi
+        try (Connection connection = DatabaseConnection.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(SELECT_BY_ID)) {
-            
+
             statement.setInt(1, id);
-            
+
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
                     return mapResultSetToExerciseTag(resultSet);
@@ -108,96 +110,101 @@ public class ExerciseTagDAO {
             }
         }
     }
-    
+
     /**
      * Egzersiz ID'sine göre etiketleri getirir
      */
     public List<ExerciseTag> findByExerciseId(int exerciseId) throws SQLException {
         List<ExerciseTag> exerciseTags = new ArrayList<>();
-        
-        try (Connection connection = DatabaseConnection.getConnection();
+
+        // DÜZELTİLDİ: DatabaseConnection.getInstance().getConnection() olarak değiştirildi
+        try (Connection connection = DatabaseConnection.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(SELECT_BY_EXERCISE_ID)) {
-            
+
             statement.setInt(1, exerciseId);
-            
+
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
                     exerciseTags.add(mapResultSetToExerciseTag(resultSet));
                 }
             }
         }
-        
+
         return exerciseTags;
     }
-    
+
     /**
      * Etikete göre egzersizleri arar (LIKE ile)
      */
     public List<ExerciseTag> findByTag(String tag) throws SQLException {
         List<ExerciseTag> exerciseTags = new ArrayList<>();
-        
-        try (Connection connection = DatabaseConnection.getConnection();
+
+        // DÜZELTİLDİ: DatabaseConnection.getInstance().getConnection() olarak değiştirildi
+        try (Connection connection = DatabaseConnection.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(SELECT_BY_TAG)) {
-            
+
             statement.setString(1, "%" + tag.trim().toLowerCase() + "%");
-            
+
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
                     exerciseTags.add(mapResultSetToExerciseTag(resultSet));
                 }
             }
         }
-        
+
         return exerciseTags;
     }
-    
+
     /**
      * Tüm egzersiz etiketlerini getirir
      */
     public List<ExerciseTag> findAll() throws SQLException {
         List<ExerciseTag> exerciseTags = new ArrayList<>();
-        
-        try (Connection connection = DatabaseConnection.getConnection();
+
+        // DÜZELTİLDİ: DatabaseConnection.getInstance().getConnection() olarak değiştirildi
+        try (Connection connection = DatabaseConnection.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(SELECT_ALL);
              ResultSet resultSet = statement.executeQuery()) {
-            
+
             while (resultSet.next()) {
                 exerciseTags.add(mapResultSetToExerciseTag(resultSet));
             }
         }
-        
+
         return exerciseTags;
     }
-    
+
     /**
      * Tüm benzersiz etiketleri getirir
      */
     public List<String> findAllDistinctTags() throws SQLException {
         List<String> tags = new ArrayList<>();
-        
-        try (Connection connection = DatabaseConnection.getConnection();
+
+        // DÜZELTİLDİ: DatabaseConnection.getInstance().getConnection() olarak değiştirildi
+        try (Connection connection = DatabaseConnection.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(SELECT_DISTINCT_TAGS);
              ResultSet resultSet = statement.executeQuery()) {
-            
+
             while (resultSet.next()) {
                 tags.add(resultSet.getString("tag"));
             }
         }
-        
+
         return tags;
     }
-    
+
     /**
      * Egzersiz etiketini siler
      */
     public boolean delete(int id) throws SQLException {
-        try (Connection connection = DatabaseConnection.getConnection();
+        // DÜZELTİLDİ: DatabaseConnection.getInstance().getConnection() olarak değiştirildi
+        try (Connection connection = DatabaseConnection.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(DELETE_EXERCISE_TAG)) {
-            
+
             statement.setInt(1, id);
-            
+
             int affectedRows = statement.executeUpdate();
-            
+
             if (affectedRows > 0) {
                 System.out.println("✅ Egzersiz etiketi başarıyla silindi.");
                 return true;
@@ -205,18 +212,19 @@ public class ExerciseTagDAO {
             return false;
         }
     }
-    
+
     /**
      * Belirli egzersizin tüm etiketlerini siler
      */
     public boolean deleteByExerciseId(int exerciseId) throws SQLException {
-        try (Connection connection = DatabaseConnection.getConnection();
+        // DÜZELTİLDİ: DatabaseConnection.getInstance().getConnection() olarak değiştirildi
+        try (Connection connection = DatabaseConnection.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(DELETE_BY_EXERCISE_ID)) {
-            
+
             statement.setInt(1, exerciseId);
-            
+
             int affectedRows = statement.executeUpdate();
-            
+
             if (affectedRows > 0) {
                 System.out.println("✅ Egzersizin tüm etiketleri silindi. Silinen: " + affectedRows);
                 return true;
@@ -224,18 +232,19 @@ public class ExerciseTagDAO {
             return false;
         }
     }
-    
+
     /**
      * Belirli etiketi tüm egzersizlerden siler
      */
     public boolean deleteByTag(String tag) throws SQLException {
-        try (Connection connection = DatabaseConnection.getConnection();
+        // DÜZELTİLDİ: DatabaseConnection.getInstance().getConnection() olarak değiştirildi
+        try (Connection connection = DatabaseConnection.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(DELETE_BY_TAG)) {
-            
+
             statement.setString(1, tag.trim().toLowerCase());
-            
+
             int affectedRows = statement.executeUpdate();
-            
+
             if (affectedRows > 0) {
                 System.out.println("✅ '" + tag + "' etiketi tüm egzersizlerden silindi. Silinen: " + affectedRows);
                 return true;
@@ -243,17 +252,18 @@ public class ExerciseTagDAO {
             return false;
         }
     }
-    
+
     /**
      * Belirli egzersiz-etiket kombinasyonunun var olup olmadığını kontrol eder
      */
     public boolean exists(int exerciseId, String tag) throws SQLException {
-        try (Connection connection = DatabaseConnection.getConnection();
+        // DÜZELTİLDİ: DatabaseConnection.getInstance().getConnection() olarak değiştirildi
+        try (Connection connection = DatabaseConnection.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(CHECK_EXISTS)) {
-            
+
             statement.setInt(1, exerciseId);
             statement.setString(2, tag.trim().toLowerCase());
-            
+
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
                     return resultSet.getInt(1) > 0;
@@ -262,23 +272,25 @@ public class ExerciseTagDAO {
             }
         }
     }
-    
+
     /**
      * Toplu egzersiz etiketi ekleme
      */
     public boolean saveAll(int exerciseId, List<String> tags) throws SQLException {
         if (tags == null || tags.isEmpty()) {
-            return true;
+            // Eğer eklenecek tag yoksa, mevcutları silip true döner
+            return deleteByExerciseId(exerciseId);
         }
-        
+
         Connection connection = null;
         try {
-            connection = DatabaseConnection.getConnection();
+            // DÜZELTİLDİ: DatabaseConnection.getInstance().getConnection() olarak değiştirildi
+            connection = DatabaseConnection.getInstance().getConnection();
             connection.setAutoCommit(false);
-            
+
             // Önce mevcut etiketleri sil
             deleteByExerciseId(exerciseId);
-            
+
             // Yeni etiketleri ekle
             try (PreparedStatement statement = connection.prepareStatement(INSERT_EXERCISE_TAG)) {
                 for (String tag : tags) {
@@ -288,14 +300,14 @@ public class ExerciseTagDAO {
                         statement.addBatch();
                     }
                 }
-                
+
                 int[] results = statement.executeBatch();
                 connection.commit();
-                
+
                 System.out.println("✅ " + results.length + " egzersiz etiketi başarıyla eklendi.");
                 return true;
             }
-            
+
         } catch (SQLException e) {
             if (connection != null) {
                 connection.rollback();
@@ -308,33 +320,35 @@ public class ExerciseTagDAO {
             }
         }
     }
-    
+
     /**
      * Etiket arama (autocomplete için)
      */
     public List<String> searchTags(String searchTerm, int limit) throws SQLException {
         List<String> tags = new ArrayList<>();
         String sql = "SELECT DISTINCT tag FROM ExerciseTags WHERE tag LIKE ? ORDER BY tag";
-        
+
         if (limit > 0) {
-            sql += " OFFSET 0 ROWS FETCH NEXT " + limit + " ROWS ONLY";
+            // MSSQL için TOP N kullanımı
+            sql = "SELECT TOP " + limit + " DISTINCT tag FROM ExerciseTags WHERE tag LIKE ? ORDER BY tag";
         }
-        
-        try (Connection connection = DatabaseConnection.getConnection();
+
+        // DÜZELTİLDİ: DatabaseConnection.getInstance().getConnection() olarak değiştirildi
+        try (Connection connection = DatabaseConnection.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
-            
+
             statement.setString(1, "%" + searchTerm.trim().toLowerCase() + "%");
-            
+
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
                     tags.add(resultSet.getString("tag"));
                 }
             }
         }
-        
+
         return tags;
     }
-    
+
     /**
      * ResultSet'ten ExerciseTag nesnesini oluşturur
      */
@@ -343,7 +357,7 @@ public class ExerciseTagDAO {
         exerciseTag.setId(resultSet.getInt("id"));
         exerciseTag.setExerciseId(resultSet.getInt("exercise_id"));
         exerciseTag.setTag(resultSet.getString("tag"));
-        
+
         // İlişkili egzersiz objesi
         try {
             String exerciseName = resultSet.getString("exercise_name");
@@ -356,7 +370,7 @@ public class ExerciseTagDAO {
         } catch (SQLException e) {
             // JOIN yapılmamışsa ignore et
         }
-        
+
         return exerciseTag;
     }
-} 
+}

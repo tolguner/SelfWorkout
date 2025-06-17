@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Font?>
+
+<VBox spacing="20.0" style="-fx-background-color: white; -fx-padding: 30px;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.selfworkout.controller.UserProfileContentController">
+
+    <!-- Header -->
+    <VBox spacing="5.0">
+        <Label text="ğŸ‘¤ KullanÄ±cÄ± Profili" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+        <Label fx:id="userInfoLabel" text="Profil bilgilerinizi gÃ¼ncelleyebilirsiniz" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 14px; -fx-text-fill: #7f8c8d;" />
+        <Label fx:id="lastUpdateLabel" text="Son gÃ¼ncelleme: --" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 12px; -fx-text-fill: #95a5a6;" />
+    </VBox>
+
+    <!-- Profile Display -->
+    <HBox spacing="20.0" style="-fx-background-color: #f8f9fa; -fx-background-radius: 12px; -fx-padding: 20px;">
+        <Label fx:id="profileAvatarLabel" text="ğŸ‘¤" style="-fx-font-size: 48px;" />
+        <VBox spacing="5.0">
+            <Label fx:id="displayNameLabel" text="KullanÄ±cÄ± AdÄ±" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+            <Label fx:id="roleDisplayLabel" text="KullanÄ±cÄ±" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 14px; -fx-text-fill: #3498db;" />
+            <Label fx:id="memberSinceLabel" text="Ãœyelik: --" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 12px; -fx-text-fill: #7f8c8d;" />
+        </VBox>
+    </HBox>
+
+    <!-- Form Container -->
+    <HBox spacing="30.0">
+        <!-- Left Column -->
+        <VBox spacing="20.0" HBox.hgrow="ALWAYS" prefWidth="400.0">
+            <!-- Account Information -->
+            <VBox spacing="15.0" style="-fx-background-color: #f8f9fa; -fx-background-radius: 12px; -fx-padding: 20px;">
+                <Label text="Hesap Bilgileri" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+
+                <VBox spacing="5.0">
+                    <Label text="KullanÄ±cÄ± AdÄ±" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 12px; -fx-text-fill: #7f8c8d;" />
+                    <TextField fx:id="usernameField" promptText="KullanÄ±cÄ± adÄ±" style="-fx-background-radius: 6px;" disable="true" />
+                </VBox>
+
+                <VBox spacing="5.0">
+                    <Label text="E-posta" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 12px; -fx-text-fill: #7f8c8d;" />
+                    <TextField fx:id="emailField" promptText="E-posta adresi" style="-fx-background-radius: 6px;" />
+                </VBox>
+            </VBox>
+
+            <!-- Personal Information -->
+            <VBox spacing="15.0" style="-fx-background-color: #f8f9fa; -fx-background-radius: 12px; -fx-padding: 20px;">
+                <Label text="KiÅŸisel Bilgiler" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+
+                <VBox spacing="5.0">
+                    <Label text="Ad" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 12px; -fx-text-fill: #7f8c8d;" />
+                    <TextField fx:id="nameField" promptText="AdÄ±nÄ±z" style="-fx-background-radius: 6px;" />
+                </VBox>
+
+                <VBox spacing="5.0">
+                    <Label text="Soyad" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 12px; -fx-text-fill: #7f8c8d;" />
+                    <TextField fx:id="surnameField" promptText="SoyadÄ±nÄ±z" style="-fx-background-radius: 6px;" />
+                </VBox>
+
+                <VBox spacing="5.0">
+                    <Label text="DoÄŸum Tarihi" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 12px; -fx-text-fill: #7f8c8d;" />
+                    <DatePicker fx:id="birthdateField" promptText="DoÄŸum tarihi" style="-fx-background-radius: 6px;" />
+                </VBox>
+            </VBox>
+        </VBox>
+
+        <!-- Right Column -->
+        <VBox spacing="20.0" HBox.hgrow="ALWAYS" prefWidth="400.0">
+            <!-- Password Change -->
+            <VBox spacing="15.0" style="-fx-background-color: #f8f9fa; -fx-background-radius: 12px; -fx-padding: 20px;">
+                <Label text="Åifre DeÄŸiÅŸtirme" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+
+                <VBox spacing="5.0">
+                    <Label text="Mevcut Åifre" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 12px; -fx-text-fill: #7f8c8d;" />
+                    <PasswordField fx:id="currentPasswordField" promptText="Mevcut ÅŸifreniz" style="-fx-background-radius: 6px;" />
+                </VBox>
+
+                <VBox spacing="5.0">
+                    <Label text="Yeni Åifre" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 12px; -fx-text-fill: #7f8c8d;" />
+                    <PasswordField fx:id="newPasswordField" promptText="Yeni ÅŸifre (en az 6 karakter)" style="-fx-background-radius: 6px;" />
+                </VBox>
+
+                <VBox spacing="5.0">
+                    <Label text="Yeni Åifre Tekrar" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 12px; -fx-text-fill: #7f8c8d;" />
+                    <PasswordField fx:id="confirmPasswordField" promptText="Yeni ÅŸifre tekrar" style="-fx-background-radius: 6px;" />
+                </VBox>
+
+                <Label text="Not: Åifre deÄŸiÅŸtirmek istemiyorsanÄ±z bu alanlarÄ± boÅŸ bÄ±rakÄ±n." style="-fx-font-family: 'Segoe UI'; -fx-font-size: 12px; -fx-text-fill: #95a5a6; -fx-font-style: italic;" />
+            </VBox>
+
+            <!-- Action Buttons -->
+            <VBox spacing="15.0" style="-fx-background-color: #f8f9fa; -fx-background-radius: 12px; -fx-padding: 20px;">
+                <Label text="Ä°ÅŸlemler" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+
+                <HBox spacing="10.0" alignment="CENTER_LEFT">
+                    <Button fx:id="updateProfileBtn" text="Profili GÃ¼ncelle" onAction="#handleUpdateProfile"
+                            style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-family: 'Segoe UI'; -fx-font-size: 14px; -fx-background-radius: 6px; -fx-cursor: hand; -fx-padding: 10px 20px;" />
+
+                    <Button fx:id="resetBtn" text="SÄ±fÄ±rla" onAction="#handleReset"
+                            style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-family: 'Segoe UI'; -fx-font-size: 14px; -fx-background-radius: 6px; -fx-cursor: hand; -fx-padding: 10px 20px;" />
+
+                    <ProgressIndicator fx:id="loadingIndicator" progress="-1.0" prefWidth="30.0" prefHeight="30.0" />
+                </HBox>
+
+                <!-- Message Container -->
+                <VBox fx:id="messageContainer" spacing="10.0" style="-fx-background-color: #ecf0f1; -fx-background-radius: 6px; -fx-padding: 15px;">
+                    <Label fx:id="messageLabel" text="Ä°ÅŸlem mesajÄ± burada gÃ¶rÃ¼ntÃ¼lenecek"
+                           style="-fx-font-family: 'Segoe UI'; -fx-font-size: 14px; -fx-text-fill: #27ae60;" />
+                </VBox>
+            </VBox>
+        </VBox>
+    </HBox>
+</VBox>
+
+

@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
@@ -6,96 +6,96 @@
 <?import javafx.scene.text.*?>
 
 <BorderPane xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.selfworkout.controller.user.UserDashboardController" styleClass="fixed-size-container" prefWidth="1536" prefHeight="864" maxWidth="1536" maxHeight="864">
-   <left>
-      <!-- Sol Navigation Panel -->
-      <VBox prefWidth="240.0" style="-fx-background-color: linear-gradient(to bottom, #2c3e50, #34495e); -fx-padding: 0;">
-         
-         <!-- Kullanıcı Profil Bölümü -->
-         <VBox spacing="12.0" style="-fx-padding: 24px 16px 20px 16px;">
-            <HBox spacing="12.0" alignment="CENTER_LEFT">
-               <Label text="💪" style="-fx-font-size: 24px;" />
-               <VBox spacing="2.0">
-                  <Label fx:id="userFullNameLabel" text="Sporcu Adı" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 14px; -fx-text-fill: white; -fx-font-weight: bold;" />
-                  <Label fx:id="userLevelLabel" text="Başlangıç Seviyesi" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 10px; -fx-text-fill: #bdc3c7;" />
-               </VBox>
-            </HBox>
-            <Separator style="-fx-background-color: #3498db; -fx-pref-height: 2px; -fx-background-radius: 2px;" />
-         </VBox>
-         
-         <!-- Navigation Menüsü -->
-         <VBox spacing="8.0" style="-fx-padding: 0 16px 20px 16px;">
-            <Label text="🏠 ANA MENÜ" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 12px; -fx-text-fill: #ecf0f1; -fx-font-weight: bold; -fx-padding: 0 0 8px 0;" />
-            
-            <VBox spacing="4.0">
-               <Button fx:id="dashboardBtn" alignment="CENTER_LEFT" mnemonicParsing="false" onAction="#handleDashboard" prefHeight="40.0" prefWidth="208.0" 
-                       style="-fx-background-color: #3498db; -fx-background-radius: 8px; -fx-text-fill: white; -fx-font-family: 'Segoe UI'; -fx-font-size: 12px; -fx-font-weight: bold; -fx-padding: 0 16px; -fx-border-width: 0; -fx-effect: dropshadow(gaussian, rgba(52,152,219,0.4), 6, 0, 0, 2);" 
-                       text="📊 Dashboard" />
-               
-               <Button fx:id="workoutBtn" alignment="CENTER_LEFT" mnemonicParsing="false" onAction="#handleWorkout" prefHeight="40.0" prefWidth="208.0" 
-                       style="-fx-background-color: transparent; -fx-text-fill: #ecf0f1; -fx-font-family: 'Segoe UI'; -fx-font-size: 12px; -fx-padding: 0 16px; -fx-border-width: 0; -fx-cursor: hand; -fx-background-radius: 8px;" 
-                       text="🏋️ Antrenman" />
-               
-               <Button fx:id="exerciseLibraryBtn" alignment="CENTER_LEFT" mnemonicParsing="false" onAction="#handleExerciseLibrary" prefHeight="40.0" prefWidth="208.0" 
-                       style="-fx-background-color: transparent; -fx-text-fill: #ecf0f1; -fx-font-family: 'Segoe UI'; -fx-font-size: 12px; -fx-padding: 0 16px; -fx-border-width: 0; -fx-cursor: hand; -fx-background-radius: 8px;" 
-                       text="📚 Egzersiz Kütüphanesi" />
-               
-               <Button fx:id="progressBtn" alignment="CENTER_LEFT" mnemonicParsing="false" onAction="#handleProgress" prefHeight="40.0" prefWidth="208.0" 
-                       style="-fx-background-color: transparent; -fx-text-fill: #ecf0f1; -fx-font-family: 'Segoe UI'; -fx-font-size: 12px; -fx-padding: 0 16px; -fx-border-width: 0; -fx-cursor: hand; -fx-background-radius: 8px;" 
-                       text="📈 İlerleme Takibi" />
-               
-               <Button fx:id="bodyStatsBtn" alignment="CENTER_LEFT" mnemonicParsing="false" onAction="#handleBodyStats" prefHeight="40.0" prefWidth="208.0" 
-                       style="-fx-background-color: transparent; -fx-text-fill: #ecf0f1; -fx-font-family: 'Segoe UI'; -fx-font-size: 12px; -fx-padding: 0 16px; -fx-border-width: 0; -fx-cursor: hand; -fx-background-radius: 8px;" 
-                       text="📏 Vücut Ölçümleri" />
-               
-               <Button fx:id="goalsBtn" alignment="CENTER_LEFT" mnemonicParsing="false" onAction="#handleGoals" prefHeight="40.0" prefWidth="208.0" 
-                       style="-fx-background-color: transparent; -fx-text-fill: #ecf0f1; -fx-font-family: 'Segoe UI'; -fx-font-size: 12px; -fx-padding: 0 16px; -fx-border-width: 0; -fx-cursor: hand; -fx-background-radius: 8px;" 
-                       text="🎯 Hedeflerim" />
-            </VBox>
-         </VBox>
-         
-         <!-- Spacer -->
-         <Region VBox.vgrow="ALWAYS" />
-         
-         <!-- Alt Menü -->
-         <VBox spacing="12.0" style="-fx-padding: 20px 16px;">
-            <!-- Hızlı İstatistikler -->
-            <VBox spacing="8.0" style="-fx-background-color: rgba(255,255,255,0.1); -fx-background-radius: 12px; -fx-padding: 16px; -fx-border-color: rgba(255,255,255,0.2); -fx-border-radius: 12px; -fx-border-width: 1px;">
-               <Label text="📊 Bu Hafta" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 11px; -fx-text-fill: white; -fx-font-weight: bold;" />
-               <HBox spacing="16.0" alignment="CENTER_LEFT">
-                  <VBox spacing="2.0" alignment="CENTER">
-                     <Label fx:id="weeklyWorkoutsLabel" text="0" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 16px; -fx-text-fill: #3498db; -fx-font-weight: bold;" />
-                     <Label text="Antrenman" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 8px; -fx-text-fill: #bdc3c7;" />
-                  </VBox>
-                  <VBox spacing="2.0" alignment="CENTER">
-                     <Label fx:id="weeklyTimeLabel" text="0h" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 16px; -fx-text-fill: #27ae60; -fx-font-weight: bold;" />
-                     <Label text="Süre" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 8px; -fx-text-fill: #bdc3c7;" />
-                  </VBox>
-               </HBox>
-            </VBox>
-            
-            <!-- Profil Kartı -->
-            <VBox spacing="6.0" style="-fx-background-color: rgba(255,255,255,0.1); -fx-background-radius: 12px; -fx-padding: 12px; -fx-border-color: rgba(255,255,255,0.2); -fx-border-radius: 12px; -fx-border-width: 1px;" prefWidth="192">
-               <Button fx:id="profileBtn" text="👤 Profil" onAction="#handleProfile" prefHeight="28.0" prefWidth="192.0" 
-                       style="-fx-background-color: rgba(255,255,255,0.15); -fx-background-radius: 8px; -fx-text-fill: white; -fx-font-family: 'Segoe UI'; -fx-font-size: 10px; -fx-cursor: hand; -fx-border-color: rgba(255,255,255,0.3); -fx-border-radius: 8px; -fx-border-width: 1px;" />
-               
-               <Button fx:id="settingsBtn" text="⚙️ Ayarlar" onAction="#handleSettings" prefHeight="28.0" prefWidth="192.0" 
-                       style="-fx-background-color: rgba(255,255,255,0.15); -fx-background-radius: 8px; -fx-text-fill: white; -fx-font-family: 'Segoe UI'; -fx-font-size: 10px; -fx-cursor: hand; -fx-border-color: rgba(255,255,255,0.3); -fx-border-radius: 8px; -fx-border-width: 1px;" />
-            </VBox>
-            
-            <!-- Çıkış Butonu -->
-            <Button fx:id="logoutBtn" alignment="CENTER" mnemonicParsing="false" onAction="#handleLogout" prefHeight="36.0" prefWidth="192.0" 
-                    style="-fx-background-color: linear-gradient(45deg, #c0392b, #a93226); -fx-background-radius: 8px; -fx-text-fill: white; -fx-font-family: 'Segoe UI'; -fx-font-size: 10px; -fx-cursor: hand; -fx-font-weight: bold; -fx-effect: dropshadow(gaussian, rgba(192,57,43,0.5), 6, 0, 0, 2);" 
-                    text="🚪 Çıkış Yap" />
-         </VBox>
-      </VBox>
-   </left>
+    <left>
+        <!-- Sol Navigation Panel -->
+        <VBox prefWidth="240.0" style="-fx-background-color: linear-gradient(to bottom, #2c3e50, #34495e); -fx-padding: 0;">
 
-   <center>
-      <!-- Ana Content Area -->
-      <StackPane fx:id="contentArea" style="-fx-background-color: #f8f9fa;" prefWidth="1296" prefHeight="864" maxWidth="1296" maxHeight="864">
-         <!-- Buraya dinamik content yüklenecek -->
-      </StackPane>
-   </center>
-</BorderPane> 
+            <!-- Kullanıcı Profil Bölümü -->
+            <VBox spacing="12.0" style="-fx-padding: 24px 16px 20px 16px;">
+                <HBox spacing="12.0" alignment="CENTER_LEFT">
+                    <Label text="💪" style="-fx-font-size: 24px;" />
+                    <VBox spacing="2.0">
+                        <Label fx:id="userFullNameLabel" text="Sporcu Adı" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 14px; -fx-text-fill: white; -fx-font-weight: bold;" />
+                        <Label fx:id="userLevelLabel" text="Başlangıç Seviyesi" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 10px; -fx-text-fill: #bdc3c7;" />
+                    </VBox>
+                </HBox>
+                <Separator style="-fx-background-color: #3498db; -fx-pref-height: 2px; -fx-background-radius: 2px;" />
+            </VBox>
+
+            <!-- Navigation Menüsü -->
+            <VBox spacing="8.0" style="-fx-padding: 0 16px 20px 16px;">
+                <Label text="🏠 ANA MENÜ" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 12px; -fx-text-fill: #ecf0f1; -fx-font-weight: bold; -fx-padding: 0 0 8px 0;" />
+
+                <VBox spacing="4.0">
+                    <Button fx:id="dashboardBtn" alignment="CENTER_LEFT" mnemonicParsing="false" onAction="#handleDashboard" prefHeight="40.0" prefWidth="208.0"
+                            style="-fx-background-color: #3498db; -fx-background-radius: 8px; -fx-text-fill: white; -fx-font-family: 'Segoe UI'; -fx-font-size: 12px; -fx-font-weight: bold; -fx-padding: 0 16px; -fx-border-width: 0; -fx-effect: dropshadow(gaussian, rgba(52,152,219,0.4), 6, 0, 0, 2);"
+                            text="📊 Dashboard" />
+
+                    <Button fx:id="workoutBtn" alignment="CENTER_LEFT" mnemonicParsing="false" onAction="#handleWorkout" prefHeight="40.0" prefWidth="208.0"
+                            style="-fx-background-color: transparent; -fx-text-fill: #ecf0f1; -fx-font-family: 'Segoe UI'; -fx-font-size: 12px; -fx-padding: 0 16px; -fx-border-width: 0; -fx-cursor: hand; -fx-background-radius: 8px;"
+                            text="🏋️ Antrenman" />
+
+                    <Button fx:id="exerciseLibraryBtn" alignment="CENTER_LEFT" mnemonicParsing="false" onAction="#handleExerciseLibrary" prefHeight="40.0" prefWidth="208.0"
+                            style="-fx-background-color: transparent; -fx-text-fill: #ecf0f1; -fx-font-family: 'Segoe UI'; -fx-font-size: 12px; -fx-padding: 0 16px; -fx-border-width: 0; -fx-cursor: hand; -fx-background-radius: 8px;"
+                            text="📚 Egzersiz Kütüphanesi" />
+
+                    <Button fx:id="progressBtn" alignment="CENTER_LEFT" mnemonicParsing="false" onAction="#handleProgress" prefHeight="40.0" prefWidth="208.0"
+                            style="-fx-background-color: transparent; -fx-text-fill: #ecf0f1; -fx-font-family: 'Segoe UI'; -fx-font-size: 12px; -fx-padding: 0 16px; -fx-border-width: 0; -fx-cursor: hand; -fx-background-radius: 8px;"
+                            text="📈 İlerleme Takibi" />
+
+                    <Button fx:id="bodyStatsBtn" alignment="CENTER_LEFT" mnemonicParsing="false" onAction="#handleBodyStats" prefHeight="40.0" prefWidth="208.0"
+                            style="-fx-background-color: transparent; -fx-text-fill: #ecf0f1; -fx-font-family: 'Segoe UI'; -fx-font-size: 12px; -fx-padding: 0 16px; -fx-border-width: 0; -fx-cursor: hand; -fx-background-radius: 8px;"
+                            text="📏 Vücut Ölçümleri" />
+
+                    <Button fx:id="goalsBtn" alignment="CENTER_LEFT" mnemonicParsing="false" onAction="#handleGoals" prefHeight="40.0" prefWidth="208.0"
+                            style="-fx-background-color: transparent; -fx-text-fill: #ecf0f1; -fx-font-family: 'Segoe UI'; -fx-font-size: 12px; -fx-padding: 0 16px; -fx-border-width: 0; -fx-cursor: hand; -fx-background-radius: 8px;"
+                            text="🎯 Hedeflerim" />
+                </VBox>
+            </VBox>
+
+            <!-- Spacer -->
+            <Region VBox.vgrow="ALWAYS" />
+
+            <!-- Alt Menü -->
+            <VBox spacing="12.0" style="-fx-padding: 20px 16px;">
+                <!-- Hızlı İstatistikler -->
+                <VBox spacing="8.0" style="-fx-background-color: rgba(255,255,255,0.1); -fx-background-radius: 12px; -fx-padding: 16px; -fx-border-color: rgba(255,255,255,0.2); -fx-border-radius: 12px; -fx-border-width: 1px;">
+                    <Label text="📊 Bu Hafta" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 11px; -fx-text-fill: white; -fx-font-weight: bold;" />
+                    <HBox spacing="16.0" alignment="CENTER_LEFT">
+                        <VBox spacing="2.0" alignment="CENTER">
+                            <Label fx:id="weeklyWorkoutsLabel" text="0" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 16px; -fx-text-fill: #3498db; -fx-font-weight: bold;" />
+                            <Label text="Antrenman" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 8px; -fx-text-fill: #bdc3c7;" />
+                        </VBox>
+                        <VBox spacing="2.0" alignment="CENTER">
+                            <Label fx:id="weeklyTimeLabel" text="0h" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 16px; -fx-text-fill: #27ae60; -fx-font-weight: bold;" />
+                            <Label text="Süre" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 8px; -fx-text-fill: #bdc3c7;" />
+                        </VBox>
+                    </HBox>
+                </VBox>
+
+                <!-- Profil Kartı -->
+                <VBox spacing="6.0" style="-fx-background-color: rgba(255,255,255,0.1); -fx-background-radius: 12px; -fx-padding: 12px; -fx-border-color: rgba(255,255,255,0.2); -fx-border-radius: 12px; -fx-border-width: 1px;" prefWidth="192">
+                    <Button fx:id="profileBtn" text="👤 Profil" onAction="#handleProfile" prefHeight="28.0" prefWidth="192.0"
+                            style="-fx-background-color: rgba(255,255,255,0.15); -fx-background-radius: 8px; -fx-text-fill: white; -fx-font-family: 'Segoe UI'; -fx-font-size: 10px; -fx-cursor: hand; -fx-border-color: rgba(255,255,255,0.3); -fx-border-radius: 8px; -fx-border-width: 1px;" />
+
+                    <Button fx:id="settingsBtn" text="⚙️ Ayarlar" onAction="#handleSettings" prefHeight="28.0" prefWidth="192.0"
+                            style="-fx-background-color: rgba(255,255,255,0.15); -fx-background-radius: 8px; -fx-text-fill: white; -fx-font-family: 'Segoe UI'; -fx-font-size: 10px; -fx-cursor: hand; -fx-border-color: rgba(255,255,255,0.3); -fx-border-radius: 8px; -fx-border-width: 1px;" />
+                </VBox>
+
+                <!-- Çıkış Butonu -->
+                <Button fx:id="logoutBtn" alignment="CENTER" mnemonicParsing="false" onAction="#handleLogout" prefHeight="36.0" prefWidth="192.0"
+                        style="-fx-background-color: linear-gradient(45deg, #c0392b, #a93226); -fx-background-radius: 8px; -fx-text-fill: white; -fx-font-family: 'Segoe UI'; -fx-font-size: 10px; -fx-cursor: hand; -fx-font-weight: bold; -fx-effect: dropshadow(gaussian, rgba(192,57,43,0.5), 6, 0, 0, 2);"
+                        text="🚪 Çıkış Yap" />
+            </VBox>
+        </VBox>
+    </left>
+
+    <center>
+        <!-- Ana Content Area -->
+        <StackPane fx:id="contentArea" style="-fx-background-color: #f8f9fa;" prefWidth="1296" prefHeight="864" maxWidth="1296" maxHeight="864">
+            <!-- Buraya dinamik content yüklenecek -->
+        </StackPane>
+    </center>
+</BorderPane>
 
 

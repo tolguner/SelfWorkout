@@ -1,4 +1,4 @@
-﻿package com.example.selfworkout.controller;
+package com.example.selfworkout.controller;
 
 import com.example.selfworkout.util.SceneManager;
 import javafx.concurrent.Task;

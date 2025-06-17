@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<ScrollPane xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.selfworkout.controller.WorkoutStartContentController" fitToWidth="true" style="-fx-background-color: transparent; -fx-background: transparent;">
+    <VBox spacing="24.0" style="-fx-padding: 32px;">
+
+        <!-- BaÅŸlÄ±k -->
+        <VBox spacing="8.0">
+            <Label text="ğŸƒâ€â™‚ï¸ Antrenman BaÅŸlat" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+            <Label text="Egzersiz seÃ§in ve antrenmanÄ±nÄ±zÄ± baÅŸlatÄ±n" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 14px; -fx-text-fill: #7f8c8d;" />
+        </VBox>
+
+        <!-- Aktif Antrenman UyarÄ±sÄ± (Gizli) -->
+        <VBox fx:id="activeWorkoutWarning" spacing="12.0" style="-fx-background-color: #fff3cd; -fx-border-color: #ffeaa7; -fx-border-width: 2px; -fx-border-radius: 8px; -fx-background-radius: 8px; -fx-padding: 16px;" visible="false" managed="false">
+            <HBox spacing="12.0" alignment="CENTER_LEFT">
+                <Label text="âš ï¸" style="-fx-font-size: 24px;" />
+                <VBox spacing="4.0">
+                    <Label text="Aktif AntrenmanÄ±nÄ±z Var!" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #856404;" />
+                    <Label fx:id="activeWorkoutLabel" text="Devam eden antrenmanÄ±nÄ±zÄ± tamamlayÄ±n veya iptal edin." style="-fx-font-family: 'Segoe UI'; -fx-font-size: 12px; -fx-text-fill: #856404;" />
+                </VBox>
+            </HBox>
+            <HBox spacing="12.0">
+                <Button fx:id="continueWorkoutBtn" text="ğŸ”„ Devam Et" onAction="#handleContinueWorkout"
+                        style="-fx-background-color: #28a745; -fx-text-fill: white; -fx-font-family: 'Segoe UI'; -fx-font-size: 12px; -fx-background-radius: 6px; -fx-cursor: hand;" />
+                <Button fx:id="cancelActiveWorkoutBtn" text="âŒ Ä°ptal Et" onAction="#handleCancelActiveWorkout"
+                        style="-fx-background-color: #dc3545; -fx-text-fill: white; -fx-font-family: 'Segoe UI'; -fx-font-size: 12px; -fx-background-radius: 6px; -fx-cursor: hand;" />
+            </HBox>
+        </VBox>
+
+        <!-- Egzersiz SeÃ§imi -->
+        <VBox spacing="16.0">
+            <Label text="ğŸ“š Egzersiz SeÃ§imi" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+
+            <!-- Arama ve Filtreler -->
+            <HBox spacing="16.0" alignment="CENTER_LEFT">
+                <VBox spacing="8.0" HBox.hgrow="ALWAYS">
+                    <Label text="Egzersiz Ara:" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 12px; -fx-text-fill: #7f8c8d;" />
+                    <TextField fx:id="exerciseSearchField" promptText="Egzersiz adÄ± yazÄ±n..."
+                               style="-fx-font-family: 'Segoe UI'; -fx-font-size: 14px; -fx-padding: 8px; -fx-background-radius: 6px; -fx-border-radius: 6px; -fx-border-color: #bdc3c7;" />
+                </VBox>
+
+                <VBox spacing="8.0">
+                    <Label text="Kas Grubu:" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 12px; -fx-text-fill: #7f8c8d;" />
+                    <ComboBox fx:id="muscleGroupCombo" promptText="TÃ¼mÃ¼" prefWidth="150"
+                              style="-fx-font-family: 'Segoe UI'; -fx-font-size: 12px;" />
+                </VBox>
+
+                <VBox spacing="8.0">
+                    <Label text="Zorluk:" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 12px; -fx-text-fill: #7f8c8d;" />
+                    <ComboBox fx:id="difficultyCombo" promptText="TÃ¼mÃ¼" prefWidth="120"
+                              style="-fx-font-family: 'Segoe UI'; -fx-font-size: 12px;" />
+                </VBox>
+
+                <VBox spacing="8.0">
+                    <Label text=" " />
+                    <Button fx:id="searchBtn" text="ğŸ” Ara" onAction="#handleSearch" prefWidth="80"
+                            style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-family: 'Segoe UI'; -fx-font-size: 12px; -fx-background-radius: 6px; -fx-cursor: hand;" />
+                </VBox>
+            </HBox>
+
+            <!-- Egzersiz Listesi -->
+            <VBox spacing="12.0" style="-fx-background-color: white; -fx-background-radius: 12px; -fx-padding: 20px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 8, 0, 0, 4);">
+                <Label text="Mevcut Egzersizler" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+
+                <ListView fx:id="exerciseListView" prefHeight="300" style="-fx-background-color: transparent; -fx-border-width: 0; -fx-font-family: 'Segoe UI';">
+                    <placeholder>
+                        <VBox alignment="CENTER" spacing="12.0" style="-fx-padding: 40px;">
+                            <Label text="ğŸ”" style="-fx-font-size: 48px;" />
+                            <Label text="Egzersiz bulunamadÄ±" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 16px; -fx-text-fill: #7f8c8d; -fx-font-weight: bold;" />
+                            <Label text="Arama kriterlerinizi deÄŸiÅŸtirmeyi deneyin" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 12px; -fx-text-fill: #bdc3c7;" />
+                        </VBox>
+                    </placeholder>
+                </ListView>
+            </VBox>
+        </VBox>
+
+        <!-- SeÃ§ilen Egzersiz DetaylarÄ± -->
+        <VBox fx:id="selectedExercisePanel" spacing="16.0" style="-fx-background-color: white; -fx-background-radius: 12px; -fx-padding: 20px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 8, 0, 0, 4);" visible="false" managed="false">
+            <Label text="ğŸ¯ SeÃ§ilen Egzersiz" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+
+            <VBox spacing="12.0">
+                <Label fx:id="selectedExerciseName" text="Egzersiz AdÄ±" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #3498db;" />
+                <Label fx:id="selectedExerciseDescription" text="Egzersiz aÃ§Ä±klamasÄ±..." style="-fx-font-family: 'Segoe UI'; -fx-font-size: 14px; -fx-text-fill: #7f8c8d; -fx-wrap-text: true;" />
+
+                <HBox spacing="20.0">
+                    <VBox spacing="4.0">
+                        <Label text="Zorluk Seviyesi:" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 12px; -fx-text-fill: #95a5a6;" />
+                        <Label fx:id="selectedExerciseDifficulty" text="Orta" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #f39c12;" />
+                    </VBox>
+
+                    <VBox spacing="4.0">
+                        <Label text="Kas GruplarÄ±:" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 12px; -fx-text-fill: #95a5a6;" />
+                        <Label fx:id="selectedExerciseMuscles" text="GÃ¶ÄŸÃ¼s, Triceps" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #27ae60;" />
+                    </VBox>
+                </HBox>
+            </VBox>
+
+            <!-- Antrenman Parametreleri -->
+            <VBox spacing="16.0" style="-fx-background-color: #f8f9fa; -fx-background-radius: 8px; -fx-padding: 16px;">
+                <Label text="âš™ï¸ Antrenman Parametreleri" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+
+                <HBox spacing="20.0" alignment="CENTER_LEFT">
+                    <VBox spacing="8.0">
+                        <Label text="Set SayÄ±sÄ±:" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 12px; -fx-text-fill: #7f8c8d;" />
+                        <Spinner fx:id="setsSpinner" prefWidth="80" />
+                    </VBox>
+
+                    <VBox spacing="8.0">
+                        <Label text="Tekrar SayÄ±sÄ±:" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 12px; -fx-text-fill: #7f8c8d;" />
+                        <Spinner fx:id="repsSpinner" prefWidth="80" />
+                    </VBox>
+
+                    <VBox spacing="8.0">
+                        <Label text="AÄŸÄ±rlÄ±k (kg):" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 12px; -fx-text-fill: #7f8c8d;" />
+                        <Spinner fx:id="weightSpinner" prefWidth="80" />
+                    </VBox>
+                </HBox>
+
+                <VBox spacing="8.0">
+                    <Label text="Notlar (Ä°steÄŸe baÄŸlÄ±):" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 12px; -fx-text-fill: #7f8c8d;" />
+                    <TextArea fx:id="notesTextArea" promptText="Antrenman notlarÄ±nÄ±zÄ± buraya yazabilirsiniz..." prefRowCount="3"
+                              style="-fx-font-family: 'Segoe UI'; -fx-font-size: 12px; -fx-background-radius: 6px; -fx-border-radius: 6px;" />
+                </VBox>
+            </VBox>
+
+            <!-- Antrenman BaÅŸlat Butonu -->
+            <HBox spacing="12.0" alignment="CENTER">
+                <Button fx:id="startWorkoutBtn" text="ğŸš€ AntrenmanÄ± BaÅŸlat" onAction="#handleStartWorkout" prefWidth="200" prefHeight="50"
+                        style="-fx-background-color: linear-gradient(45deg, #667eea, #764ba2); -fx-text-fill: white; -fx-font-family: 'Segoe UI'; -fx-font-size: 16px; -fx-font-weight: bold; -fx-background-radius: 12px; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(102,126,234,0.4), 10, 0, 0, 4);" />
+
+                <Button fx:id="clearSelectionBtn" text="ğŸ”„ Temizle" onAction="#handleClearSelection" prefWidth="120" prefHeight="50"
+                        style="-fx-background-color: #95a5a6; -fx-text-fill: white; -fx-font-family: 'Segoe UI'; -fx-font-size: 14px; -fx-background-radius: 12px; -fx-cursor: hand;" />
+            </HBox>
+        </VBox>
+
+    </VBox>
+</ScrollPane>
+
+

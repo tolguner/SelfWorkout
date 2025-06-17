@@ -14,55 +14,56 @@ import java.util.List;
  * Kullanıcı vücut istatistiklerini yönetir
  */
 public class BodyStatsDAO {
-    
+
     // SQL sorguları
-    private static final String INSERT_BODY_STATS = 
-        "INSERT INTO BodyStats (user_id, height, weight, record_date, notes) VALUES (?, ?, ?, ?, ?)";
-    
-    private static final String SELECT_BY_ID = 
-        "SELECT bs.*, u.username FROM BodyStats bs " +
-        "LEFT JOIN Users u ON bs.user_id = u.id WHERE bs.id = ?";
-    
-    private static final String SELECT_BY_USER_ID = 
-        "SELECT * FROM BodyStats WHERE user_id = ? ORDER BY record_date DESC";
-    
-    private static final String SELECT_LATEST_BY_USER = 
-        "SELECT TOP 1 * FROM BodyStats WHERE user_id = ? ORDER BY record_date DESC";
-    
-    private static final String SELECT_BY_USER_AND_DATE_RANGE = 
-        "SELECT * FROM BodyStats WHERE user_id = ? AND record_date BETWEEN ? AND ? ORDER BY record_date";
-    
-    private static final String UPDATE_BODY_STATS = 
-        "UPDATE BodyStats SET height = ?, weight = ?, record_date = ?, notes = ? WHERE id = ?";
-    
-    private static final String DELETE_BODY_STATS = 
-        "DELETE FROM BodyStats WHERE id = ?";
-    
-    private static final String COUNT_RECORDS_BY_USER = 
-        "SELECT COUNT(*) FROM BodyStats WHERE user_id = ?";
-    
-    private static final String SELECT_WEIGHT_HISTORY = 
-        "SELECT record_date, weight FROM BodyStats WHERE user_id = ? ORDER BY record_date";
-    
+    private static final String INSERT_BODY_STATS =
+            "INSERT INTO BodyStats (user_id, height, weight, record_date, notes) VALUES (?, ?, ?, ?, ?)";
+
+    private static final String SELECT_BY_ID =
+            "SELECT bs.*, u.username FROM BodyStats bs " +
+                    "LEFT JOIN Users u ON bs.user_id = u.id WHERE bs.id = ?";
+
+    private static final String SELECT_BY_USER_ID =
+            "SELECT * FROM BodyStats WHERE user_id = ? ORDER BY record_date DESC";
+
+    private static final String SELECT_LATEST_BY_USER =
+            "SELECT TOP 1 * FROM BodyStats WHERE user_id = ? ORDER BY record_date DESC";
+
+    private static final String SELECT_BY_USER_AND_DATE_RANGE =
+            "SELECT * FROM BodyStats WHERE user_id = ? AND record_date BETWEEN ? AND ? ORDER BY record_date";
+
+    private static final String UPDATE_BODY_STATS =
+            "UPDATE BodyStats SET height = ?, weight = ?, record_date = ?, notes = ? WHERE id = ?";
+
+    private static final String DELETE_BODY_STATS =
+            "DELETE FROM BodyStats WHERE id = ?";
+
+    private static final String COUNT_RECORDS_BY_USER =
+            "SELECT COUNT(*) FROM BodyStats WHERE user_id = ?";
+
+    private static final String SELECT_WEIGHT_HISTORY =
+            "SELECT record_date, weight FROM BodyStats WHERE user_id = ? ORDER BY record_date";
+
     /**
      * Yeni vücut istatistiği ekler
      */
     public BodyStats save(BodyStats bodyStats) throws SQLException {
-        try (Connection connection = DatabaseConnection.getConnection();
+        // DÜZELTİLDİ: DatabaseConnection.getInstance().getConnection() olarak değiştirildi
+        try (Connection connection = DatabaseConnection.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(INSERT_BODY_STATS, Statement.RETURN_GENERATED_KEYS)) {
-            
+
             statement.setLong(1, bodyStats.getUserId());
             statement.setDouble(2, bodyStats.getHeight());
             statement.setDouble(3, bodyStats.getWeight());
             statement.setDate(4, Date.valueOf(bodyStats.getRecordDate()));
             statement.setString(5, bodyStats.getNotes());
-            
+
             int affectedRows = statement.executeUpdate();
-            
+
             if (affectedRows == 0) {
                 throw new SQLException("Vücut istatistiği ekleme başarısız, hiçbir satır etkilenmedi.");
             }
-            
+
             try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
                     bodyStats.setId(generatedKeys.getInt(1));
@@ -74,16 +75,17 @@ public class BodyStatsDAO {
             }
         }
     }
-    
+
     /**
      * ID'ye göre vücut istatistiği bulur
      */
     public BodyStats findById(int id) throws SQLException {
-        try (Connection connection = DatabaseConnection.getConnection();
+        // DÜZELTİLDİ: DatabaseConnection.getInstance().getConnection() olarak değiştirildi
+        try (Connection connection = DatabaseConnection.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(SELECT_BY_ID)) {
-            
+
             statement.setInt(1, id);
-            
+
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
                     return mapResultSetToBodyStats(resultSet);
@@ -92,59 +94,67 @@ public class BodyStatsDAO {
             }
         }
     }
-    
+
     /**
      * Kullanıcının tüm vücut istatistiklerini getirir
      */
     public List<BodyStats> findByUserId(int userId) throws SQLException {
         List<BodyStats> bodyStatsList = new ArrayList<>();
-        
-        try (Connection connection = DatabaseConnection.getConnection();
+
+        // DÜZELTİLDİ: DatabaseConnection.getInstance().getConnection() olarak değiştirildi
+        try (Connection connection = DatabaseConnection.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(SELECT_BY_USER_ID)) {
-            
+
             statement.setInt(1, userId);
-            
+
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
                     bodyStatsList.add(mapResultSetToBodyStats(resultSet));
                 }
             }
         }
-        
+
         return bodyStatsList;
     }
-    
+
     /**
      * Kullanıcının sınırlı sayıda vücut istatistiğini getirir
      */
     public List<BodyStats> findByUserId(int userId, int limit) throws SQLException {
         List<BodyStats> bodyStatsList = new ArrayList<>();
-        String sql = SELECT_BY_USER_ID + " ORDER BY record_date DESC OFFSET 0 ROWS FETCH NEXT " + limit + " ROWS ONLY";
-        
-        try (Connection connection = DatabaseConnection.getConnection();
+        String sql = SELECT_BY_USER_ID; // Bu sorguya ORDER BY zaten ekli
+        if (limit > 0) {
+            // MSSQL için TOP N kullanımı
+            // ORDER BY clause'dan sonra OFFSET ve FETCH NEXT kullanılmalı
+            sql = "SELECT TOP " + limit + " * FROM BodyStats WHERE user_id = ? ORDER BY record_date DESC";
+        }
+
+        // DÜZELTİLDİ: DatabaseConnection.getInstance().getConnection() olarak değiştirildi
+        try (Connection connection = DatabaseConnection.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
-            
+
             statement.setInt(1, userId);
-            
+
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
                     bodyStatsList.add(mapResultSetToBodyStats(resultSet));
                 }
             }
         }
-        
+
         return bodyStatsList;
     }
-    
+
     /**
      * Kullanıcının en son vücut istatistiğini getirir
      */
     public BodyStats findLatestByUserId(int userId) throws SQLException {
-        try (Connection connection = DatabaseConnection.getConnection();
+        // DÜZELTİLDİ: DatabaseConnection.getInstance().getConnection() olarak değiştirildi
+        try (Connection connection = DatabaseConnection.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(SELECT_LATEST_BY_USER)) {
-            
+
             statement.setInt(1, userId);
-            
+
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
                     return mapResultSetToBodyStats(resultSet);
@@ -153,45 +163,47 @@ public class BodyStatsDAO {
             }
         }
     }
-    
+
     /**
      * Belirli tarih aralığındaki vücut istatistiklerini getirir
      */
     public List<BodyStats> findByUserAndDateRange(int userId, LocalDate startDate, LocalDate endDate) throws SQLException {
         List<BodyStats> bodyStatsList = new ArrayList<>();
-        
-        try (Connection connection = DatabaseConnection.getConnection();
+
+        // DÜZELTİLDİ: DatabaseConnection.getInstance().getConnection() olarak değiştirildi
+        try (Connection connection = DatabaseConnection.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(SELECT_BY_USER_AND_DATE_RANGE)) {
-            
+
             statement.setInt(1, userId);
             statement.setDate(2, Date.valueOf(startDate));
             statement.setDate(3, Date.valueOf(endDate));
-            
+
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
                     bodyStatsList.add(mapResultSetToBodyStats(resultSet));
                 }
             }
         }
-        
+
         return bodyStatsList;
     }
-    
+
     /**
      * Vücut istatistiğini günceller
      */
     public boolean update(BodyStats bodyStats) throws SQLException {
-        try (Connection connection = DatabaseConnection.getConnection();
+        // DÜZELTİLDİ: DatabaseConnection.getInstance().getConnection() olarak değiştirildi
+        try (Connection connection = DatabaseConnection.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(UPDATE_BODY_STATS)) {
-            
+
             statement.setDouble(1, bodyStats.getHeight());
             statement.setDouble(2, bodyStats.getWeight());
             statement.setDate(3, Date.valueOf(bodyStats.getRecordDate()));
             statement.setString(4, bodyStats.getNotes());
             statement.setInt(5, bodyStats.getId());
-            
+
             int affectedRows = statement.executeUpdate();
-            
+
             if (affectedRows > 0) {
                 System.out.println("✅ Vücut istatistiği başarıyla güncellendi.");
                 return true;
@@ -199,18 +211,19 @@ public class BodyStatsDAO {
             return false;
         }
     }
-    
+
     /**
      * Vücut istatistiğini siler
      */
     public boolean delete(int id) throws SQLException {
-        try (Connection connection = DatabaseConnection.getConnection();
+        // DÜZELTİLDİ: DatabaseConnection.getInstance().getConnection() olarak değiştirildi
+        try (Connection connection = DatabaseConnection.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(DELETE_BODY_STATS)) {
-            
+
             statement.setInt(1, id);
-            
+
             int affectedRows = statement.executeUpdate();
-            
+
             if (affectedRows > 0) {
                 System.out.println("✅ Vücut istatistiği başarıyla silindi.");
                 return true;
@@ -218,16 +231,17 @@ public class BodyStatsDAO {
             return false;
         }
     }
-    
+
     /**
      * Kullanıcının kaç tane kayıt olduğunu sayar
      */
     public int countRecordsByUserId(int userId) throws SQLException {
-        try (Connection connection = DatabaseConnection.getConnection();
+        // DÜZELTİLDİ: DatabaseConnection.getInstance().getConnection() olarak değiştirildi
+        try (Connection connection = DatabaseConnection.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(COUNT_RECORDS_BY_USER)) {
-            
+
             statement.setInt(1, userId);
-            
+
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
                     return resultSet.getInt(1);
@@ -236,18 +250,19 @@ public class BodyStatsDAO {
             }
         }
     }
-    
+
     /**
      * Kullanıcının kilo geçmişini getirir (grafik için)
      */
     public List<BodyStats> getWeightHistory(int userId) throws SQLException {
         List<BodyStats> weightHistory = new ArrayList<>();
-        
-        try (Connection connection = DatabaseConnection.getConnection();
+
+        // DÜZELTİLDİ: DatabaseConnection.getInstance().getConnection() olarak değiştirildi
+        try (Connection connection = DatabaseConnection.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(SELECT_WEIGHT_HISTORY)) {
-            
+
             statement.setInt(1, userId);
-            
+
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
                     BodyStats stats = new BodyStats();
@@ -258,50 +273,53 @@ public class BodyStatsDAO {
                 }
             }
         }
-        
+
         return weightHistory;
     }
-    
+
     /**
      * Kullanıcının kilo değişimini hesaplar
      */
     public double calculateWeightChange(int userId, int daysPeriod) throws SQLException {
         LocalDate endDate = LocalDate.now();
         LocalDate startDate = endDate.minusDays(daysPeriod);
-        
+
         List<BodyStats> stats = findByUserAndDateRange(userId, startDate, endDate);
-        
+
         if (stats.size() < 2) {
             return 0.0; // Yeterli veri yok
         }
-        
+
         // En eski ve en yeni kayıtları al
-        BodyStats oldest = stats.get(stats.size() - 1);
-        BodyStats newest = stats.get(0);
-        
+        // Not: findByUserAndDateRange ORDER BY record_date ASC ise ilk eleman en eski, son eleman en yeni olur.
+        // Eğer DESC ise, ilk eleman en yeni, son eleman en eski olur.
+        // Mevcut sorgu "ORDER BY record_date" yani varsayılan olarak ASC'dir.
+        BodyStats oldest = stats.get(0);
+        BodyStats newest = stats.get(stats.size() - 1);
+
         return newest.getWeight() - oldest.getWeight();
     }
-    
+
     /**
      * Kullanıcının ortalama BMI'sını hesaplar (son 30 gün)
      */
     public double calculateAverageBMI(int userId) throws SQLException {
         LocalDate endDate = LocalDate.now();
         LocalDate startDate = endDate.minusDays(30);
-        
+
         List<BodyStats> stats = findByUserAndDateRange(userId, startDate, endDate);
-        
+
         if (stats.isEmpty()) {
             return 0.0;
         }
-        
+
         double totalBMI = stats.stream()
                 .mapToDouble(BodyStats::calculateBMI)
                 .sum();
-        
+
         return totalBMI / stats.size();
     }
-    
+
     /**
      * ResultSet'ten BodyStats nesnesini oluşturur
      */
@@ -313,9 +331,10 @@ public class BodyStatsDAO {
         bodyStats.setWeight(resultSet.getDouble("weight"));
         bodyStats.setRecordDate(resultSet.getDate("record_date").toLocalDate());
         bodyStats.setNotes(resultSet.getString("notes"));
-        
+
         // Eğer JOIN yapılmışsa user bilgisini de set et
         try {
+            // ResultSet'te 'username' kolonu yoksa SQLException fırlatır, bu yüzden try-catch
             String username = resultSet.getString("username");
             if (username != null) {
                 User user = new User();
@@ -324,9 +343,10 @@ public class BodyStatsDAO {
                 bodyStats.setUser(user);
             }
         } catch (SQLException e) {
-            // Username kolonu yoksa, ignore et
+            // Username kolonu yoksa (yani JOIN yapılmamışsa), ignore et
+            // Bu normal bir durumdur, her sorguda username olmayabilir.
         }
-        
+
         return bodyStats;
     }
-} 
+}

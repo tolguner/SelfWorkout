@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.chart.*?>
+
+<ScrollPane xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.selfworkout.controller.UserDashboardContentController" fitToWidth="true" style="-fx-background-color: transparent; -fx-background: transparent;">
+    <VBox spacing="24.0" style="-fx-padding: 32px;">
+
+        <!-- HoÅŸ Geldiniz BÃ¶lÃ¼mÃ¼ -->
+        <VBox spacing="8.0">
+            <Label fx:id="welcomeLabel" text="HoÅŸ Geldiniz!" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+            <Label fx:id="motivationLabel" text="BugÃ¼n harika bir antrenman gÃ¼nÃ¼! ğŸ’ª" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 14px; -fx-text-fill: #7f8c8d;" />
+        </VBox>
+
+        <!-- HÄ±zlÄ± Ä°statistikler -->
+        <VBox spacing="16.0">
+            <Label text="ğŸ“Š Genel BakÄ±ÅŸ" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+
+            <HBox spacing="20.0" alignment="CENTER_LEFT">
+                <!-- Toplam Antrenman -->
+                <VBox alignment="CENTER" spacing="8.0" style="-fx-background: linear-gradient(135deg, #667eea, #764ba2); -fx-background-radius: 16px; -fx-padding: 24px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 12, 0, 0, 6);" prefWidth="300" prefHeight="140">
+                    <Label text="ğŸ‹ï¸" style="-fx-font-size: 32px;" />
+                    <Label fx:id="totalWorkoutsLabel" text="0" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: white;" />
+                    <Label text="Toplam Antrenman" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 12px; -fx-text-fill: rgba(255,255,255,0.9);" />
+                </VBox>
+
+                <!-- Bu Ay -->
+                <VBox alignment="CENTER" spacing="8.0" style="-fx-background: linear-gradient(135deg, #43e97b, #38f9d7); -fx-background-radius: 16px; -fx-padding: 24px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 12, 0, 0, 6);" prefWidth="300" prefHeight="140">
+                    <Label text="ğŸ“…" style="-fx-font-size: 32px;" />
+                    <Label fx:id="monthlyWorkoutsLabel" text="0" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: white;" />
+                    <Label text="Bu Ay" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 12px; -fx-text-fill: rgba(255,255,255,0.9);" />
+                </VBox>
+
+                <!-- Mevcut BMI -->
+                <VBox alignment="CENTER" spacing="8.0" style="-fx-background: linear-gradient(135deg, #fa709a, #fee140); -fx-background-radius: 16px; -fx-padding: 24px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 12, 0, 0, 6);" prefWidth="300" prefHeight="140">
+                    <Label text="âš–ï¸" style="-fx-font-size: 32px;" />
+                    <Label fx:id="currentBMILabel" text="--" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: white;" />
+                    <Label text="Mevcut BMI" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 12px; -fx-text-fill: rgba(255,255,255,0.9);" />
+                </VBox>
+
+                <!-- Hedef Ä°lerleme -->
+                <VBox alignment="CENTER" spacing="8.0" style="-fx-background: linear-gradient(135deg, #4facfe, #00f2fe); -fx-background-radius: 16px; -fx-padding: 24px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 12, 0, 0, 6);" prefWidth="300" prefHeight="140">
+                    <Label text="ğŸ¯" style="-fx-font-size: 32px;" />
+                    <Label fx:id="goalProgressLabel" text="0%" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: white;" />
+                    <Label text="AylÄ±k Hedef" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 12px; -fx-text-fill: rgba(255,255,255,0.9);" />
+                </VBox>
+            </HBox>
+        </VBox>
+
+        <!-- HÄ±zlÄ± Eylemler -->
+        <VBox spacing="16.0">
+            <Label text="âš¡ HÄ±zlÄ± Eylemler" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+
+            <HBox spacing="16.0" alignment="CENTER_LEFT">
+                <Button fx:id="startWorkoutBtn" onAction="#handleStartWorkout" prefWidth="220" prefHeight="80"
+                        style="-fx-background-color: linear-gradient(45deg, #667eea, #764ba2); -fx-background-radius: 12px; -fx-text-fill: white; -fx-font-family: 'Segoe UI'; -fx-font-size: 14px; -fx-font-weight: bold; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(102,126,234,0.4), 10, 0, 0, 4);"
+                        text="ğŸƒâ€â™‚ï¸ Antrenman BaÅŸlat" />
+
+                <Button fx:id="trackWorkoutBtn" onAction="#handleTrackWorkout" prefWidth="220" prefHeight="80"
+                        style="-fx-background-color: linear-gradient(45deg, #f093fb, #f5576c); -fx-background-radius: 12px; -fx-text-fill: white; -fx-font-family: 'Segoe UI'; -fx-font-size: 14px; -fx-font-weight: bold; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(240,147,251,0.4), 10, 0, 0, 4);"
+                        text="â±ï¸ Antrenman Takibi" />
+
+                <Button fx:id="addBodyStatsBtn" onAction="#handleAddBodyStats" prefWidth="220" prefHeight="80"
+                        style="-fx-background-color: linear-gradient(45deg, #43e97b, #38f9d7); -fx-background-radius: 12px; -fx-text-fill: white; -fx-font-family: 'Segoe UI'; -fx-font-size: 14px; -fx-font-weight: bold; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(67,233,123,0.4), 10, 0, 0, 4);"
+                        text="ğŸ“ Ã–lÃ§Ã¼m Ekle" />
+
+                <Button fx:id="viewProgressBtn" onAction="#handleViewProgress" prefWidth="220" prefHeight="80"
+                        style="-fx-background-color: linear-gradient(45deg, #fa709a, #fee140); -fx-background-radius: 12px; -fx-text-fill: white; -fx-font-family: 'Segoe UI'; -fx-font-size: 14px; -fx-font-weight: bold; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(250,112,154,0.4), 10, 0, 0, 4);"
+                        text="ğŸ“ˆ Ä°lerleme GÃ¶rÃ¼ntÃ¼le" />
+
+                <Button fx:id="browseExercisesBtn" onAction="#handleBrowseExercises" prefWidth="220" prefHeight="80"
+                        style="-fx-background-color: linear-gradient(45deg, #4facfe, #00f2fe); -fx-background-radius: 12px; -fx-text-fill: white; -fx-font-family: 'Segoe UI'; -fx-font-size: 14px; -fx-font-weight: bold; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(79,172,254,0.4), 10, 0, 0, 4);"
+                        text="ğŸ“š Egzersizleri KeÅŸfet" />
+            </HBox>
+        </VBox>
+
+        <!-- Son Aktiviteler ve Ä°lerleme Grafikleri -->
+        <HBox spacing="24.0" alignment="TOP_CENTER">
+            <!-- Son Antrenmanlar -->
+            <VBox spacing="12.0" style="-fx-background-color: white; -fx-background-radius: 16px; -fx-padding: 24px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 12, 0, 0, 6);" prefWidth="600" prefHeight="320">
+                <Label text="ğŸ“‹ Son Antrenmanlar" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+
+                <ListView fx:id="recentWorkoutsList" prefHeight="260" style="-fx-background-color: transparent; -fx-border-width: 0; -fx-font-family: 'Segoe UI'; -fx-font-size: 12px;">
+                    <placeholder>
+                        <VBox alignment="CENTER" spacing="12.0" style="-fx-padding: 40px;">
+                            <Label text="ğŸ‹ï¸" style="-fx-font-size: 48px;" />
+                            <Label text="HenÃ¼z antrenman kaydÄ±nÄ±z yok" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 16px; -fx-text-fill: #7f8c8d; -fx-font-weight: bold;" />
+                            <Label text="Ä°lk antrenmanÄ±nÄ±zÄ± baÅŸlatarak fitness yolculuÄŸunuza baÅŸlayÄ±n!" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 12px; -fx-text-fill: #bdc3c7; -fx-wrap-text: true; -fx-text-alignment: center; -fx-max-width: 300;" />
+                        </VBox>
+                    </placeholder>
+                </ListView>
+            </VBox>
+
+            <!-- Ä°lerleme GrafiÄŸi -->
+            <VBox spacing="12.0" style="-fx-background-color: white; -fx-background-radius: 16px; -fx-padding: 24px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 12, 0, 0, 6);" prefWidth="600" prefHeight="320">
+                <Label text="ğŸ“Š HaftalÄ±k Ä°lerleme" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+
+                <LineChart fx:id="progressChart" prefHeight="260" prefWidth="550" createSymbols="true" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 10px;">
+                    <xAxis>
+                        <CategoryAxis fx:id="progressXAxis" label="Hafta" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 10px;" />
+                    </xAxis>
+                    <yAxis>
+                        <NumberAxis fx:id="progressYAxis" label="Antrenman SayÄ±sÄ±" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 10px;" />
+                    </yAxis>
+                </LineChart>
+            </VBox>
+        </HBox>
+
+        <!-- Motivasyon ve Ä°puÃ§larÄ± -->
+        <VBox spacing="12.0" style="-fx-background: linear-gradient(135deg, #667eea, #764ba2); -fx-background-radius: 16px; -fx-padding: 24px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 12, 0, 0, 6);">
+            <Label text="ğŸ’¡ GÃ¼nÃ¼n Ä°pucu" style="-fx-font-family: 'Segoe UI'; -fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: white;" />
+            <Label fx:id="dailyTipLabel" text="DÃ¼zenli antrenman yapmak, sadece vÃ¼cudunuzu deÄŸil ruhunuzu da gÃ¼Ã§lendirir!"
+                   style="-fx-font-family: 'Segoe UI'; -fx-font-size: 14px; -fx-text-fill: rgba(255,255,255,0.9); -fx-wrap-text: true;" />
+        </VBox>
+
+    </VBox>
+</ScrollPane>
+
+

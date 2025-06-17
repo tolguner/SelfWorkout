@@ -12,45 +12,46 @@ import java.util.List;
  * CRUD operasyonlarını yönetir
  */
 public class RoleDAO {
-    
+
     // SQL sorguları
-    private static final String INSERT_ROLE = 
-        "INSERT INTO Roles (role_name, description) VALUES (?, ?)";
-    
-    private static final String SELECT_BY_ID = 
-        "SELECT * FROM Roles WHERE id = ?";
-    
-    private static final String SELECT_ALL = 
-        "SELECT * FROM Roles ORDER BY role_name";
-    
-    private static final String SELECT_BY_NAME = 
-        "SELECT * FROM Roles WHERE role_name = ?";
-    
-    private static final String UPDATE_ROLE = 
-        "UPDATE Roles SET role_name = ?, description = ? WHERE id = ?";
-    
-    private static final String DELETE_ROLE = 
-        "DELETE FROM Roles WHERE id = ?";
-    
-    private static final String COUNT_USERS_BY_ROLE = 
-        "SELECT COUNT(*) FROM Users WHERE role_id = ?";
-    
+    private static final String INSERT_ROLE =
+            "INSERT INTO Roles (role_name, description) VALUES (?, ?)";
+
+    private static final String SELECT_BY_ID =
+            "SELECT * FROM Roles WHERE id = ?";
+
+    private static final String SELECT_ALL =
+            "SELECT * FROM Roles ORDER BY role_name";
+
+    private static final String SELECT_BY_NAME =
+            "SELECT * FROM Roles WHERE role_name = ?";
+
+    private static final String UPDATE_ROLE =
+            "UPDATE Roles SET role_name = ?, description = ? WHERE id = ?";
+
+    private static final String DELETE_ROLE =
+            "DELETE FROM Roles WHERE id = ?";
+
+    private static final String COUNT_USERS_BY_ROLE =
+            "SELECT COUNT(*) FROM Users WHERE role_id = ?";
+
     /**
      * Yeni rol ekler
      */
     public Role save(Role role) throws SQLException {
-        try (Connection connection = DatabaseConnection.getConnection();
+        // DÜZELTİLDİ: DatabaseConnection.getInstance().getConnection() olarak değiştirildi
+        try (Connection connection = DatabaseConnection.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(INSERT_ROLE, Statement.RETURN_GENERATED_KEYS)) {
-            
+
             statement.setString(1, role.getRoleName());
             statement.setString(2, role.getDescription());
-            
+
             int affectedRows = statement.executeUpdate();
-            
+
             if (affectedRows == 0) {
                 throw new SQLException("Rol ekleme başarısız, hiçbir satır etkilenmedi.");
             }
-            
+
             // Oluşturulan ID'yi al
             try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
@@ -63,16 +64,17 @@ public class RoleDAO {
             }
         }
     }
-    
+
     /**
      * ID'ye göre rol bulur
      */
     public Role findById(int id) throws SQLException {
-        try (Connection connection = DatabaseConnection.getConnection();
+        // DÜZELTİLDİ: DatabaseConnection.getInstance().getConnection() olarak değiştirildi
+        try (Connection connection = DatabaseConnection.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(SELECT_BY_ID)) {
-            
+
             statement.setInt(1, id);
-            
+
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
                     return mapResultSetToRole(resultSet);
@@ -81,16 +83,17 @@ public class RoleDAO {
             }
         }
     }
-    
+
     /**
      * Rol adına göre bulur
      */
     public Role findByName(String roleName) throws SQLException {
-        try (Connection connection = DatabaseConnection.getConnection();
+        // DÜZELTİLDİ: DatabaseConnection.getInstance().getConnection() olarak değiştirildi
+        try (Connection connection = DatabaseConnection.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(SELECT_BY_NAME)) {
-            
+
             statement.setString(1, roleName);
-            
+
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
                     return mapResultSetToRole(resultSet);
@@ -99,38 +102,40 @@ public class RoleDAO {
             }
         }
     }
-    
+
     /**
      * Tüm rolleri getirir
      */
     public List<Role> findAll() throws SQLException {
         List<Role> roles = new ArrayList<>();
-        
-        try (Connection connection = DatabaseConnection.getConnection();
+
+        // DÜZELTİLDİ: DatabaseConnection.getInstance().getConnection() olarak değiştirildi
+        try (Connection connection = DatabaseConnection.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(SELECT_ALL);
              ResultSet resultSet = statement.executeQuery()) {
-            
+
             while (resultSet.next()) {
                 roles.add(mapResultSetToRole(resultSet));
             }
         }
-        
+
         return roles;
     }
-    
+
     /**
      * Rolü günceller
      */
     public boolean update(Role role) throws SQLException {
-        try (Connection connection = DatabaseConnection.getConnection();
+        // DÜZELTİLDİ: DatabaseConnection.getInstance().getConnection() olarak değiştirildi
+        try (Connection connection = DatabaseConnection.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(UPDATE_ROLE)) {
-            
+
             statement.setString(1, role.getRoleName());
             statement.setString(2, role.getDescription());
             statement.setInt(3, role.getId());
-            
+
             int affectedRows = statement.executeUpdate();
-            
+
             if (affectedRows > 0) {
                 System.out.println("✅ Rol başarıyla güncellendi: " + role.getRoleName());
                 return true;
@@ -138,7 +143,7 @@ public class RoleDAO {
             return false;
         }
     }
-    
+
     /**
      * Rolü siler (eğer kullanıcı yoksa)
      */
@@ -147,14 +152,15 @@ public class RoleDAO {
         if (hasUsers(id)) {
             throw new SQLException("Bu role sahip kullanıcılar bulunduğu için silinemez.");
         }
-        
-        try (Connection connection = DatabaseConnection.getConnection();
+
+        // DÜZELTİLDİ: DatabaseConnection.getInstance().getConnection() olarak değiştirildi
+        try (Connection connection = DatabaseConnection.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(DELETE_ROLE)) {
-            
+
             statement.setInt(1, id);
-            
+
             int affectedRows = statement.executeUpdate();
-            
+
             if (affectedRows > 0) {
                 System.out.println("✅ Rol başarıyla silindi.");
                 return true;
@@ -162,16 +168,17 @@ public class RoleDAO {
             return false;
         }
     }
-    
+
     /**
      * Bu role sahip kullanıcı var mı kontrol eder
      */
     public boolean hasUsers(int roleId) throws SQLException {
-        try (Connection connection = DatabaseConnection.getConnection();
+        // DÜZELTİLDİ: DatabaseConnection.getInstance().getConnection() olarak değiştirildi
+        try (Connection connection = DatabaseConnection.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(COUNT_USERS_BY_ROLE)) {
-            
+
             statement.setInt(1, roleId);
-            
+
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
                     return resultSet.getInt(1) > 0;
@@ -180,7 +187,7 @@ public class RoleDAO {
             }
         }
     }
-    
+
     /**
      * ResultSet'ten Role nesnesini oluşturur
      */
@@ -191,4 +198,4 @@ public class RoleDAO {
         role.setDescription(resultSet.getString("description"));
         return role;
     }
-} 
+}

@@ -1,4 +1,4 @@
-﻿package com.example.selfworkout.controller;
+package com.example.selfworkout.controller;
 
 import com.example.selfworkout.model.User;
 import com.example.selfworkout.model.Exercise;

@@ -1,4 +1,4 @@
-﻿package com.example.selfworkout.controller;
+package com.example.selfworkout.controller;
 
 import com.example.selfworkout.controller.user.UserDashboardController;
 import com.example.selfworkout.model.Exercise;
@@ -333,7 +333,7 @@ public class WorkoutStartContentController extends BaseController implements Ini
             workoutService.createWorkout(workout);
             
             // Show success message
-            AlertUtil.showSuccess("BaÅŸarÄ±lÄ±", 
+            AlertUtil.showSuccess("Başarılı",
                 String.format("Antrenman baÅŸlatÄ±ldÄ±!\n\nEgzersiz: %s\nSet: %d x Tekrar: %d\nAÄŸÄ±rlÄ±k: %.1f kg", 
                     selectedExercise.getName(), sets, reps, weight));
             
@@ -387,7 +387,7 @@ public class WorkoutStartContentController extends BaseController implements Ini
         if (activeWorkout == null) return;
         
         Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION);
-        confirmAlert.setTitle("Antrenman Ä°ptali");
+        confirmAlert.setTitle("Antrenman iptali");
         confirmAlert.setHeaderText("Aktif antrenmanÄ± iptal etmek istediÄŸinizden emin misiniz?");
         confirmAlert.setContentText("Bu iÅŸlem geri alÄ±namaz ve antrenman verileriniz kaybedilecektir.");
         
@@ -395,7 +395,7 @@ public class WorkoutStartContentController extends BaseController implements Ini
             if (response == ButtonType.OK) {
                 try {
                     workoutService.cancelWorkout(activeWorkout.getId());
-                    AlertUtil.showSuccess("BaÅŸarÄ±lÄ±", "Antrenman iptal edildi.");
+                    AlertUtil.showSuccess("Başarılı", "Antrenman iptal edildi.");
                     
                     // Refresh active workout check
                     checkActiveWorkout();
