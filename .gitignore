@@ -3,11 +3,14 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+### Ortam degiskenleri - sir icerir, asla commit'lenmemeli ###
+.env
+.env.local
+
 ### IntelliJ IDEA ###
-.idea/modules.xml
-.idea/jarRepositories.xml
-.idea/compiler.xml
-.idea/libraries/
+# Tum .idea klasoru haric tutulur; dataSources.xml gibi dosyalar
+# baglanti bilgisi tasiyabiliyor.
+.idea/
 *.iws
 *.iml
 *.ipr

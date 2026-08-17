@@ -45,6 +45,18 @@ public class DatabaseConnection {
         }
     }
 
+    /**
+     * Ayarı önce ortam değişkeninden, yoksa database.properties dosyasından okur.
+     * Böylece kimlik bilgileri kaynak koda gömülmek zorunda kalmaz.
+     */
+    private String resolve(String propertyKey, String environmentKey) {
+        String fromEnvironment = System.getenv(environmentKey);
+        if (fromEnvironment != null && !fromEnvironment.isBlank()) {
+            return fromEnvironment;
+        }
+        return properties.getProperty(propertyKey);
+    }
+
     public Connection getConnection() throws SQLException {
         // Eğer bağlantı null ise veya kapalı ise yeni bir bağlantı oluştur
         if (connection == null || connection.isClosed()) {
@@ -52,10 +64,17 @@ public class DatabaseConnection {
                 // JDBC sürücüsünü yükle (Maven pom.xml'de tanımlı olması gerekir)
                 Class.forName(properties.getProperty("db.driver"));
 
+                String password = resolve("db.password", "DB_PASSWORD");
+                if (password == null || password.isBlank()) {
+                    throw new SQLException(
+                            "Veritabanı parolası tanımlı değil. DB_PASSWORD ortam değişkenini ayarlayın "
+                                    + "(ayrıntı için README dosyasına bakın).");
+                }
+
                 connection = DriverManager.getConnection(
-                        properties.getProperty("db.url"),
-                        properties.getProperty("db.username"), // properties.getProperty("db.user") yerine username kullanıldı
-                        properties.getProperty("db.password")
+                        resolve("db.url", "DB_URL"),
+                        resolve("db.username", "DB_USERNAME"),
+                        password
                 );
                 System.out.println("✅ Veritabanı bağlantısı kuruldu.");
             } catch (ClassNotFoundException e) {
@@ -86,9 +105,10 @@ public class DatabaseConnection {
      * Bağlantı bilgilerini konsola yazdırır (debugging için).
      */
     public static void printConnectionInfo() {
-        System.out.println("Veritabanı URL: " + getInstance().properties.getProperty("db.url"));
-        System.out.println("Veritabanı Kullanıcı: " + getInstance().properties.getProperty("db.username")); // 'user' yerine 'username'
-        System.out.println("Veritabanı Sürücü: " + getInstance().properties.getProperty("db.driver"));
+        DatabaseConnection db = getInstance();
+        System.out.println("Veritabanı URL: " + db.resolve("db.url", "DB_URL"));
+        System.out.println("Veritabanı Kullanıcı: " + db.resolve("db.username", "DB_USERNAME"));
+        System.out.println("Veritabanı Sürücü: " + db.properties.getProperty("db.driver"));
     }
 
     /**
