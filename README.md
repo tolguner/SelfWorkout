@@ -80,11 +80,19 @@ Katmanlı mimari; her katman yalnızca bir alttakini tanır:
 
 ### 1. Veritabanını oluştur
 
-`src/main/sql/selfworkout.sql` betiği şemayı ve başlangıç verisini kurar:
+İki betik sırayla çalıştırılır. İlki şemayı ve başlangıç verisini kurar:
 
 ```bash
 sqlcmd -S localhost\SQLEXPRESS -U sa -i src/main/sql/selfworkout.sql
 ```
+
+İkincisi görünüm, fonksiyon, tetikleyici ve saklanan yordamları ekler:
+
+```bash
+sqlcmd -S localhost\SQLEXPRESS -U sa -i src/main/sql/selfworkout_objects.sql
+```
+
+Nesne betiği tekrar tekrar çalıştırılabilir; her nesne varsa önce düşürülür.
 
 Ayrıntılı SQL Server kurulumu için [MSSQL_Database_Setup.md](MSSQL_Database_Setup.md).
 
@@ -134,6 +142,47 @@ ortam değişkeni tanımlıysa oradaki değerin yerine geçer.
 - **`BodyStats`** — kullanıcının ölçüm geçmişi
 - **`FavoriteExercises`**, **`Logs`** — favoriler ve sistem etkinlik kaydı
 
+### Veritabanı nesneleri
+
+Raporlama ve iş kuralları kısmen veritabanı katmanında çözülür
+(`src/main/sql/selfworkout_objects.sql`).
+
+**Görünümler**
+
+| Görünüm | İşlevi |
+|---|---|
+| `vw_UserWorkoutSummary` | Antrenman başına süre, egzersiz/set sayısı ve toplam hacim |
+| `vw_ExerciseCatalog` | Egzersizin kas grupları ve ekipmanları tek satırda (`STRING_AGG`) |
+| `vw_UserMonthlyProgress` | Aylık antrenman sayısı, hacim, ortalama süre |
+| `vw_PopularExercises` | Kullanım, favori ve rutin sayılarına göre popülerlik |
+| `vw_BodyStatsTrend` | Ölçümlerin bir öncekine göre değişimi (`LAG`) |
+
+**Fonksiyonlar**
+
+| Fonksiyon | İşlevi |
+|---|---|
+| `fn_WorkoutVolume` | Antrenmanın toplam hacmi (tekrar × ağırlık) |
+| `fn_EstimatedOneRepMax` | Epley formülüyle tahmini 1RM |
+| `fn_WorkoutStreak` | Güncel kesintisiz antrenman serisi |
+| `fn_LongestWorkoutStreak` | Şimdiye kadarki en uzun seri |
+| `fn_LatestBMI` | Son ölçüme göre vücut kitle indeksi |
+
+**Tetikleyiciler**
+
+| Tetikleyici | İşlevi |
+|---|---|
+| `trg_UserWorkoutCompleted` | Antrenman tamamlanınca süreyi hesaplar ve `Logs`'a kayıt düşer |
+| `trg_PreventDuplicateFavorite` | Aynı egzersizin iki kez favorilenmesini engeller |
+| `trg_ValidateBodyStats` | Mantık dışı ölçüm değerlerini reddeder |
+
+**Saklanan yordamlar**
+
+| Yordam | İşlevi |
+|---|---|
+| `sp_StartWorkout` | Rutin veya tek egzersizden antrenman başlatır |
+| `sp_CompleteWorkout` | Antrenmanı tamamlanmış olarak işaretler |
+| `sp_UserDashboardStats` | Pano istatistiklerini tek çağrıda döndürür |
+
 ---
 
 ## Proje yapısı
@@ -153,7 +202,9 @@ src/main/
 │   │   ├── user/        kullanıcı ekranları (FXML)
 │   │   └── css/         3 tema
 │   └── database.properties
-└── sql/selfworkout.sql  şema ve başlangıç verisi
+└── sql/
+    ├── selfworkout.sql          şema ve başlangıç verisi
+    └── selfworkout_objects.sql  görünüm, fonksiyon, tetikleyici, yordam
 ```
 
 ---

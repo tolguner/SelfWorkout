@@ -1,6 +1,12 @@
 -- Yeni veritabanı oluştur
+-- Not: CREATE DATABASE kendi toplu işinde (batch) tek başına çalışmak zorundadır,
+-- bu yüzden GO ayraçları gereklidir. Aksi halde sqlcmd ile çalıştırıldığında
+-- "Database does not exist" hatası alınır.
 CREATE DATABASE selfworkout;
+GO
+
 USE selfworkout;
+GO
 
 -- 1. Roller tablosu
 CREATE TABLE Roles (
