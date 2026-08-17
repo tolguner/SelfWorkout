@@ -1,6 +1,7 @@
 package com.example.selfworkout.controller;
 
 import com.example.selfworkout.controller.user.UserDashboardController;
+import com.example.selfworkout.dao.ReportingDAO;
 import com.example.selfworkout.model.User;
 import com.example.selfworkout.model.UserWorkout;
 import com.example.selfworkout.model.BodyStats;
@@ -53,6 +54,7 @@ public class UserDashboardContentController implements Initializable {
     private UserService userService;
     private WorkoutService workoutService;
     private BodyStatsService bodyStatsService;
+    private final ReportingDAO reportingDAO = new ReportingDAO();
     private Object parentController; // Parent controller referansÄ±
 
     @Override
@@ -144,14 +146,23 @@ public class UserDashboardContentController implements Initializable {
         if (currentUser == null) return;
         
         try {
-            // Toplam antrenman sayÄ±sÄ±
-            WorkoutService.WorkoutStats stats = workoutService.getWorkoutStats();
-            totalWorkoutsLabel.setText(String.valueOf(stats.totalWorkouts));
-            
-            // Bu ayki antrenmanlar
-            LocalDate startOfMonth = LocalDate.now().withDayOfMonth(1);
-            LocalDate endOfMonth = LocalDate.now();
-            int monthlyWorkouts = getWorkoutCountInDateRange(startOfMonth, endOfMonth);
+            // Toplam antrenman sayÄ±sÄ± sp_UserDashboardStats yordamÄ±ndan gelir.
+            ReportingDAO.DashboardStats dashboardStats =
+                    reportingDAO.findDashboardStats(currentUser.getId());
+            totalWorkoutsLabel.setText(
+                    String.valueOf(dashboardStats != null ? dashboardStats.getCompletedWorkouts() : 0));
+
+            // Bu ayki antrenmanlar vw_UserMonthlyProgress gÃ¶rÃ¼nÃ¼mÃ¼nden okunur.
+            LocalDate today = LocalDate.now();
+            int monthlyWorkouts = 0;
+            for (ReportingDAO.MonthlyProgress progress :
+                    reportingDAO.findMonthlyProgress(currentUser.getId())) {
+                if (progress.getYear() == today.getYear()
+                        && progress.getMonth() == today.getMonthValue()) {
+                    monthlyWorkouts = progress.getWorkoutCount();
+                    break;
+                }
+            }
             monthlyWorkoutsLabel.setText(String.valueOf(monthlyWorkouts));
             
             // Hedef ilerleme (basit hesaplama - aylÄ±k hedef 12 antrenman)

@@ -1,5 +1,6 @@
 package com.example.selfworkout.controller;
 
+import com.example.selfworkout.dao.ReportingDAO;
 import com.example.selfworkout.model.User;
 import com.example.selfworkout.service.*;
 import com.example.selfworkout.util.DatabaseConnection; // Doğru import
@@ -60,6 +61,7 @@ public class SystemReportsContentController implements Initializable {
     private UserService userService;
     private ExerciseService exerciseService;
     private MuscleGroupService muscleGroupService;
+    private final ReportingDAO reportingDAO = new ReportingDAO();
     private User currentUser; // Bu kullanıcı, SceneManager tarafından atanır.
 
     @Override
@@ -338,42 +340,27 @@ public class SystemReportsContentController implements Initializable {
         Task<Void> task = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
-                // DÜZELTİLDİ: DatabaseConnection.getInstance().getConnection() olarak değiştirildi
-                try (Connection conn = DatabaseConnection.getInstance().getConnection()) {
-                    String sql = "SELECT TOP 5 e.name, COUNT(l.id) as usage_count " +
-                            "FROM Exercises e " +
-                            "LEFT JOIN Logs l ON l.description LIKE '%' + e.name + '%' " +
-                            "WHERE l.action IN ('WORKOUT_START', 'WORKOUT_COMPLETE', 'EXERCISE_FAVORITE') " +
-                            "GROUP BY e.name " +
-                            "ORDER BY usage_count DESC";
-
-                    PreparedStatement stmt = conn.prepareStatement(sql);
-                    ResultSet rs = stmt.executeQuery();
-
+                // Veri vw_PopularExercises görünümünden gelir: kayıtlı set sayısı,
+                // favorilenme ve rutinlerde kullanım. Daha önce Logs.description
+                // üzerinde metin eşleştirmesi yapılıyor, veri bulunamazsa rastgele
+                // sayı üretiliyordu; artık gerçek kullanım verisi gösteriliyor.
+                try {
                     XYChart.Series<String, Number> series = new XYChart.Series<>();
                     series.setName("Kullanım Sayısı");
 
-                    boolean hasData = false;
-                    while (rs.next()) {
-                        hasData = true;
-                        String exerciseName = rs.getString("name");
-                        int usageCount = rs.getInt("usage_count");
-                        series.getData().add(new XYChart.Data<>(exerciseName, usageCount));
+                    for (ReportingDAO.PopularExercise row : reportingDAO.findPopularExercises(5)) {
+                        series.getData().add(
+                                new XYChart.Data<>(row.getExerciseName(), row.getUsageCount()));
                     }
 
-                    if (!hasData) {
-                        String fallbackSql = "SELECT TOP 5 name FROM Exercises ORDER BY NEWID()"; // MSSQL'de rastgele sıralama için NEWID()
-                        PreparedStatement fallbackStmt = conn.prepareStatement(fallbackSql);
-                        ResultSet fallbackRs = fallbackStmt.executeQuery();
-
-                        while (fallbackRs.next()) {
-                            String exerciseName = fallbackRs.getString("name");
-                            int randomUsage = 2 + (int)(Math.random() * 4); // 2-5 arası
-                            series.getData().add(new XYChart.Data<>(exerciseName, randomUsage));
-                        }
-                    }
+                    boolean hasData = !series.getData().isEmpty();
 
                     Platform.runLater(() -> {
+                        if (!hasData) {
+                            popularExercisesChart.getData().clear();
+                            popularExercisesChart.setTitle("Henüz antrenman kaydı yok");
+                            return;
+                        }
                         popularExercisesChart.getData().clear();
                         popularExercisesChart.getData().add(series);
                         popularExercisesChart.setAnimated(true);
@@ -392,15 +379,10 @@ public class SystemReportsContentController implements Initializable {
                     System.err.println("❌ Popüler egzersiz verisi yüklenirken hata: " + e.getMessage());
                     e.printStackTrace();
                     Platform.runLater(() -> {
-                        // Hata durumunda örnek veriler
-                        XYChart.Series<String, Number> fallbackSeries = new XYChart.Series<>();
-                        fallbackSeries.setName("Kullanım Sayısı (Demo)");
-                        fallbackSeries.getData().add(new XYChart.Data<>("Squat", 5));
-                        fallbackSeries.getData().add(new XYChart.Data<>("Pushup", 4));
-                        fallbackSeries.getData().add(new XYChart.Data<>("Run", 3));
+                        // Hata durumunda uydurma veri gosterilmez; grafik bos birakilir.
                         popularExercisesChart.getData().clear();
-                        popularExercisesChart.getData().add(fallbackSeries);
-                        showAlert("Uyarı", "Popüler egzersizler grafiği yüklenemedi. Demo veriler gösteriliyor.");
+                        popularExercisesChart.setTitle("Veri yüklenemedi");
+                        showAlert("Uyarı", "Popüler egzersizler grafiği yüklenemedi: " + e.getMessage());
                     });
                 }
                 return null;
