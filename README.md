@@ -119,6 +119,10 @@ export DB_PASSWORD="sql_server_parolaniz"
 ```
 
 `DB_PASSWORD` tanımlı değilse uygulama açıklayıcı bir hata ile durur.
+
+**Windows kimlik doğrulaması:** `DB_URL` içinde `integratedSecurity=true` kullanırsanız
+kullanıcı adı ve parola gerekmez, kimlik bilgisi işletim sisteminden alınır. Bu yöntem
+için JDBC sürücüsünün `mssql-jdbc_auth` DLL dosyasının sistemde bulunması gerekir.
 Varsayılan bağlantı ayarları `src/main/resources/database.properties` içindedir;
 ortam değişkeni tanımlıysa oradaki değerin yerine geçer.
 

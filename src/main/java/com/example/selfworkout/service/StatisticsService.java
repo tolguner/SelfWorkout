@@ -1,6 +1,7 @@
 package com.example.selfworkout.service;
 
 import com.example.selfworkout.dao.BodyStatsDAO;
+import com.example.selfworkout.dao.ReportingDAO;
 import com.example.selfworkout.model.BodyStats;
 
 import java.sql.SQLException;
@@ -14,11 +15,79 @@ import java.util.ArrayList;
 public class StatisticsService {
     
     private final BodyStatsDAO bodyStatsDAO;
+    private final ReportingDAO reportingDAO;
     private final AuthenticationService authService;
-    
+
     public StatisticsService(AuthenticationService authService) {
         this.bodyStatsDAO = new BodyStatsDAO();
+        this.reportingDAO = new ReportingDAO();
         this.authService = authService;
+    }
+
+    /**
+     * Giriş yapmış kullanıcının pano istatistiklerini tek sorguda döndürür.
+     * sp_UserDashboardStats yordamını kullanır.
+     */
+    public ReportingDAO.DashboardStats getDashboardStats() {
+        if (!authService.requireLogin()) {
+            return null;
+        }
+
+        try {
+            return reportingDAO.findDashboardStats(authService.getCurrentUserId());
+        } catch (SQLException e) {
+            System.err.println("❌ Pano istatistikleri alınamadı: " + e.getMessage());
+            return null;
+        }
+    }
+
+    /**
+     * Kullanıcının güncel kesintisiz antrenman serisi (gün).
+     * Hesaplama fn_WorkoutStreak fonksiyonunda yapılır.
+     */
+    public int getCurrentWorkoutStreak() {
+        if (!authService.requireLogin()) {
+            return 0;
+        }
+
+        try {
+            return reportingDAO.findCurrentStreak(authService.getCurrentUserId());
+        } catch (SQLException e) {
+            System.err.println("❌ Antrenman serisi hesaplanamadı: " + e.getMessage());
+            return 0;
+        }
+    }
+
+    /**
+     * Kullanıcının şimdiye kadarki en uzun antrenman serisi (gün).
+     */
+    public int getLongestWorkoutStreak() {
+        if (!authService.requireLogin()) {
+            return 0;
+        }
+
+        try {
+            return reportingDAO.findLongestStreak(authService.getCurrentUserId());
+        } catch (SQLException e) {
+            System.err.println("❌ En uzun antrenman serisi hesaplanamadı: " + e.getMessage());
+            return 0;
+        }
+    }
+
+    /**
+     * Kullanıcının bir egzersizdeki tahmini tek tekrar maksimumu (Epley).
+     */
+    public double getEstimatedOneRepMax(int exerciseId) {
+        if (!authService.requireLogin()) {
+            return 0.0;
+        }
+
+        try {
+            return reportingDAO.findEstimatedOneRepMax(authService.getCurrentUserId(), exerciseId);
+        } catch (SQLException e) {
+            System.err.println("❌ Tahmini 1RM hesaplanamadı: " + e.getMessage());
+            return 0.0;
+        }
     }
     
     /**

@@ -21,13 +21,31 @@ public class ReportService {
     private final DailyWorkoutDAO dailyWorkoutDAO;
     private final BodyStatsDAO bodyStatsDAO;
     private final LogDAO logDAO;
-    
+    private final ReportingDAO reportingDAO;
+
     public ReportService() {
         this.userDAO = new UserDAO();
         this.exerciseDAO = new ExerciseDAO();
         this.dailyWorkoutDAO = new DailyWorkoutDAO();
         this.bodyStatsDAO = new BodyStatsDAO();
         this.logDAO = new LogDAO();
+        this.reportingDAO = new ReportingDAO();
+    }
+
+    /**
+     * Kullanıcının antrenman özetlerini döndürür (süre, set sayısı, toplam hacim).
+     * vw_UserWorkoutSummary görünümünü kullanır.
+     */
+    public List<ReportingDAO.WorkoutSummary> getWorkoutSummaries(int userId) throws SQLException {
+        return reportingDAO.findWorkoutSummaries(userId);
+    }
+
+    /**
+     * Kullanıcının aylık ilerleme dökümünü döndürür.
+     * vw_UserMonthlyProgress görünümünü kullanır.
+     */
+    public List<ReportingDAO.MonthlyProgress> getMonthlyProgress(int userId) throws SQLException {
+        return reportingDAO.findMonthlyProgress(userId);
     }
     
     /**
@@ -129,19 +147,17 @@ public class ReportService {
             throw new IllegalArgumentException("Limit pozitif olmalı!");
         }
         
-        List<Exercise> allExercises = exerciseDAO.findAll();
-        
-        // Basit popülerlik hesaplama (gerçek uygulamada kullanım sayısı kullanılabilir)
-        List<ExercisePopularity> popularExercises = allExercises.stream()
-            .map(exercise -> {
-                // Basit popülerlik skoru (alfabetik sıra + rastgele faktör)
-                int popularityScore = 100 - exercise.getName().length() + (exercise.getId() % 10);
-                return new ExercisePopularity(exercise, popularityScore);
-            })
-            .sorted((e1, e2) -> Integer.compare(e2.getPopularityScore(), e1.getPopularityScore()))
-            .limit(limit)
-            .collect(Collectors.toList());
-        
+        // Popülerlik vw_PopularExercises görünümünden gelir: kayıtlı set sayısı,
+        // favorilenme ve rutinlerde kullanım. Skor formülü PopularExercise içinde.
+        List<ExercisePopularity> popularExercises = new ArrayList<>();
+
+        for (ReportingDAO.PopularExercise row : reportingDAO.findPopularExercises(limit)) {
+            Exercise exercise = exerciseDAO.findById(row.getExerciseId());
+            if (exercise != null) {
+                popularExercises.add(new ExercisePopularity(exercise, row.getPopularityScore()));
+            }
+        }
+
         return new PopularExercisesReport(popularExercises);
     }
     

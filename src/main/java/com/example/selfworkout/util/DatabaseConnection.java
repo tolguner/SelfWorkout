@@ -57,6 +57,13 @@ public class DatabaseConnection {
         return properties.getProperty(propertyKey);
     }
 
+    /**
+     * Baglanti adresi Windows kimlik dogrulamasi kullaniyor mu?
+     */
+    private boolean usesIntegratedSecurity(String url) {
+        return url != null && url.toLowerCase().contains("integratedsecurity=true");
+    }
+
     public Connection getConnection() throws SQLException {
         // Eğer bağlantı null ise veya kapalı ise yeni bir bağlantı oluştur
         if (connection == null || connection.isClosed()) {
@@ -64,18 +71,26 @@ public class DatabaseConnection {
                 // JDBC sürücüsünü yükle (Maven pom.xml'de tanımlı olması gerekir)
                 Class.forName(properties.getProperty("db.driver"));
 
+                String url = resolve("db.url", "DB_URL");
                 String password = resolve("db.password", "DB_PASSWORD");
-                if (password == null || password.isBlank()) {
-                    throw new SQLException(
-                            "Veritabanı parolası tanımlı değil. DB_PASSWORD ortam değişkenini ayarlayın "
-                                    + "(ayrıntı için README dosyasına bakın).");
-                }
 
-                connection = DriverManager.getConnection(
-                        resolve("db.url", "DB_URL"),
-                        resolve("db.username", "DB_USERNAME"),
-                        password
-                );
+                // Windows kimlik dogrulamasinda (integratedSecurity=true) kullanici
+                // adi ve parola gerekmez; kimlik bilgisi isletim sisteminden gelir.
+                if (usesIntegratedSecurity(url)) {
+                    connection = DriverManager.getConnection(url);
+                } else {
+                    if (password == null || password.isBlank()) {
+                        throw new SQLException(
+                                "Veritabanı parolası tanımlı değil. DB_PASSWORD ortam değişkenini ayarlayın "
+                                        + "(ayrıntı için README dosyasına bakın).");
+                    }
+
+                    connection = DriverManager.getConnection(
+                            url,
+                            resolve("db.username", "DB_USERNAME"),
+                            password
+                    );
+                }
                 System.out.println("✅ Veritabanı bağlantısı kuruldu.");
             } catch (ClassNotFoundException e) {
                 System.err.println("❌ JDBC sürücüsü bulunamadı: " + e.getMessage());
