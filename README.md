@@ -50,7 +50,7 @@ Katmanlı mimari; her katman yalnızca bir alttakini tanır:
           │
        Service      (17 sınıf — iş kuralları, doğrulama, raporlama)
           │
-        DAO         (17 sınıf — SQL erişimi)
+        DAO         (18 sınıf — SQL erişimi)
           │
        Model        (18 sınıf — veri nesneleri)
           │
@@ -196,7 +196,7 @@ src/main/
 ├── java/com/example/selfworkout/
 │   ├── controller/      19 controller (admin/ ve user/ alt paketleri dahil)
 │   ├── service/         17 servis — iş mantığı
-│   ├── dao/             17 DAO — veritabanı erişimi
+│   ├── dao/             18 DAO — veritabanı erişimi (raporlama dahil)
 │   ├── model/           18 veri sınıfı
 │   ├── util/            bağlantı, sahne, tema, uyarı yardımcıları
 │   └── test/            elle çalıştırılan doğrulama betikleri
@@ -219,7 +219,6 @@ src/main/
 
 - [ ] **Gerçek test altyapısı** — `test/` altındaki elle çalıştırılan betiklerin JUnit testlerine dönüştürülmesi (JUnit bağımlılığı `pom.xml`'de zaten mevcut)
 - [ ] **Bağlantı havuzu** — `database.properties` içinde havuz ayarları tanımlı ama kod tek bir bağlantıyı yeniden kullanıyor; HikariCP'ye geçilmeli
-- [ ] **Görsel varlık optimizasyonu** — `images/foto.png` 4269×2400 ve 24 MB; giriş ekranı için gereğinden büyük
 - [ ] **Yinelenen controller'ların birleştirilmesi** — `ExerciseManagementController` ve `ExerciseManagementContentController` gibi çiftler
 
 ### Orta vade
@@ -232,7 +231,7 @@ src/main/
 ### Uzun vade
 
 - [ ] **Antrenman şablonu paylaşımı** — kullanıcılar arası rutin paylaşımı
-- [ ] **Grafik zenginleştirme** — hacim, sıklık ve kişisel rekor takibi
+- [ ] **Grafik zenginleştirme** — hacim, sıklık ve kişisel rekor grafikleri. *Veri katmanı hazır:* `fn_WorkoutVolume`, `fn_EstimatedOneRepMax` ve `vw_UserMonthlyProgress` mevcut, arayüz henüz kullanmıyor
 - [ ] **Çoklu dil desteği**
 - [ ] **Mobil eşlik uygulaması**
 
