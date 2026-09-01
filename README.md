@@ -239,4 +239,4 @@ src/main/
 
 ## Lisans
 
-Belirtilmemiş.
+MIT — bkz. [LICENSE](LICENSE).
